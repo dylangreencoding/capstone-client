@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom'
+
 export default function LandingPage () {
   return (
     <div className='container'>
@@ -9,10 +11,10 @@ export default function LandingPage () {
         <p>This is an virtual battlemap for playing tabletop roleplaying games.</p>
         <p>You can create and save maps, characters and monsters, and run multiple game sessions.</p>
         <p>
-          <a href='#' className='link'>Log In</a>
+          <Link to={'/Login'} className='link'>Log In</Link>
         </p>
         <p>
-          <a href='#' className='link'>Create Account</a>
+          <Link to={'/CreateAccount'} className='link'>Create Account</Link>
         </p>
       </main>
       <footer>

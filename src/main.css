@@ -39,11 +39,19 @@ header {
   margin-bottom: 6rem;
   padding-top: 2.4rem;
   font-family: monospace;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
 }
 
 h1 {
   font-size: 4.8rem;
 }
+
+/* h1 .link {
+  border-bottom: none;
+} */
 
 main {
   margin-bottom: 6rem;
@@ -67,7 +75,7 @@ footer {
 .auth-form {
   display: flex;
   flex-direction: column;
-  gap: 2.4rem;
+  margin-bottom: 2.4rem;
 }
 
 .auth-input {
@@ -75,7 +83,8 @@ footer {
   font-family: inherit;
 
   max-width: 24rem;
-  height: 2.4rem; 
+  height: 2.4rem;
+  margin-bottom: 2.4rem;
 }
 
 .auth-input:focus {
