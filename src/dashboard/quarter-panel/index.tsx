@@ -6,6 +6,7 @@ import Panel from "./panel";
 interface Props {
   current: string;
   setCurrent: Function;
+  userEmail: string;
 }
 
 export default function QuarterPanel (props: Props) {
@@ -19,6 +20,7 @@ export default function QuarterPanel (props: Props) {
         setTab={setTab}
         current={props.current}
         setCurrent={props.setCurrent}
+        userEmail={props.userEmail}
       />
       <Tabs 
         tab={tab}

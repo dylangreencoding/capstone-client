@@ -1,0 +1,15 @@
+export async function logOut () {
+  const response = await fetch('http://localhost:8080/auth/logout', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': 'http://localhost:8080/auth/logout',
+    }
+  });
+
+  if (!response.ok) {
+    throw new Error('logOut failed')
+  }
+
+  return await response.json()
+}

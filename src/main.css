@@ -153,11 +153,12 @@ footer {
   width: 100%;
   padding: 0.6rem 0 0.6rem;
   letter-spacing: 2px;
+  transition: all 0.2s;
 }
 
 .tab:hover {
   cursor: pointer;
-  color: hsl(0, 0%, 98%);
+  color: #FFF;
 }
 
 .active {
@@ -177,4 +178,15 @@ footer {
 
 .options li:hover {
   cursor: pointer;
+}
+
+.logout {
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.logout:hover {
+  color: rgb(96, 0, 0);
+  color: #FFF;
 }

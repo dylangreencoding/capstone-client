@@ -1,14 +1,32 @@
+import { useNavigate } from "react-router-dom";
+import { logOut } from "../../../server-calls/log-out";
 
 interface Props {
   setCurrent: Function;
+  userEmail: string;
 }
 
 export default function Options (props: Props) {
+
+  const navigate = useNavigate();
+
+  const handleLogout = async (e: any) => {
+    e.preventDefault();
+    try {
+      const response = await logOut();
+      alert(response.message);
+      navigate('/');
+    } catch (error) {
+      alert(error);
+    }
+    
+  }
+
   return (
     <div className='options'>
       <div>
-        <div>USERNAME</div>
-        <div>LOGOUT</div>
+        <div>{props.userEmail}</div>
+        <div className='logout' onClick={handleLogout}>logout</div>
       </div>
       <br />
       <br />

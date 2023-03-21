@@ -6,12 +6,13 @@ interface Props {
   setTab: Function;
   current: string;
   setCurrent: Function;
+  userEmail: string;
 }
 
 export default function Panel (props: Props) {
   return (
     <div className="panel">
-      {props.tab === 'options' ? <Options setCurrent={props.setCurrent}/> : <Current current={props.current}/>}
+      {props.tab === 'options' ? <Options setCurrent={props.setCurrent} userEmail={props.userEmail}/> : <Current current={props.current}/>}
     </div>
   )
 }
