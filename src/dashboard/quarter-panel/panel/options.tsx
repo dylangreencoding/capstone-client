@@ -3,6 +3,7 @@ import { logOut } from "../../../server-calls/log-out";
 
 interface Props {
   setCurrent: Function;
+  setTab: Function;
   userEmail: string;
 }
 
@@ -15,24 +16,42 @@ export default function Options (props: Props) {
     try {
       const response = await logOut();
       alert(response.message);
-      navigate('/');
+      navigate('/', {replace: true});
     } catch (error) {
       alert(error);
     }
-    
+  }
+
+  const handleNewMap = (e: any) => {
+    props.setCurrent('map');
+    props.setTab('current');
+  }
+
+  const handleNewChar = (e: any) => {
+    props.setCurrent('char');
+    props.setTab('current')
+  }
+
+  const handleNewGame = (e: any) => {
+    props.setCurrent('game');
+    props.setTab('current')
   }
 
   return (
     <div className='options'>
       <div>
         <div>{props.userEmail}</div>
-        <div className='logout' onClick={handleLogout}>logout</div>
+        <div>
+          <span className='options-link' onClick={handleLogout}>logout</span></div>
       </div>
       <br />
       <br />
       <br />
       <div>
-        <div>Maps</div>
+        <div>
+          <span>Maps </span>
+          <span className="options-link" onClick={handleNewMap}>new</span>
+        </div>
         <ul>
           <li>- </li>
           <li>- </li>
@@ -43,7 +62,10 @@ export default function Options (props: Props) {
       <br />
       <br />
       <div>
-        <div>Characters</div>
+        <div>
+          <span>Characters </span>
+          <span className="options-link" onClick={handleNewChar}>new</span>
+        </div>
         <ul>
           <li>- </li>
           <li>- </li>
@@ -54,7 +76,10 @@ export default function Options (props: Props) {
       <br />
       <br />
       <div>
-        <div>Games</div>
+        <div>
+          <span>Games </span>
+          <span className="options-link" onClick={handleNewGame}>new</span>
+        </div>
         <ul>
           <li>- </li>
           <li>- </li>

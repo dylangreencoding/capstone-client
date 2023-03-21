@@ -17,7 +17,7 @@ export default function LogIn () {
     try {
       const response = await logIn(data);
       alert(response.message)
-      navigate('/Dashboard', {state: response});
+      navigate('/Dashboard', {state: response, replace: true});
     } catch (error) {
       alert(error);
     }
@@ -29,7 +29,7 @@ export default function LogIn () {
     <div className='container'>
       <header>
         <h1>Capstone</h1>
-        <Link to={'/'} className='link'>Home</Link>
+        <Link to={'/'} replace={true} className='link'>Home</Link>
       </header>
       <main>
         <h2>Log In</h2>
@@ -51,7 +51,7 @@ export default function LogIn () {
           <button className='auth-button' type="submit">Log In</button>
         </form>
         <p>
-          <Link to={'/CreateAccount'} className='link'>Create Account</Link>
+          <Link to={'/CreateAccount'} replace={true} className='link'>Create Account</Link>
         </p>
       </main>
       <footer>

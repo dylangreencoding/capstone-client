@@ -11,10 +11,10 @@ export default function LandingPage () {
         <p>This is an virtual battlemap for playing tabletop roleplaying games.</p>
         <p>You can create and save maps, characters and monsters, and run multiple game sessions.</p>
         <p>
-          <Link to={'/Login'} className='link'>Log In</Link>
+          <Link to={'/Login'} replace={true} className='link'>Log In</Link>
         </p>
         <p>
-          <Link to={'/CreateAccount'} className='link'>Create Account</Link>
+          <Link to={'/CreateAccount'} replace={true} className='link'>Create Account</Link>
         </p>
       </main>
       <footer>

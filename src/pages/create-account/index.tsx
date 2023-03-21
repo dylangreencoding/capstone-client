@@ -17,7 +17,7 @@ export default function CreateAccount () {
     try {
       const response = await createAccount(data);
       alert(response.message)
-      navigate('/Login');
+      navigate('/Login', { replace: true });
     } catch (error) {
       alert('Account may already exist, try logging in');
     }
@@ -29,7 +29,7 @@ export default function CreateAccount () {
     <div className='container'>
       <header>
         <h1>Capstone</h1>
-        <Link to={'/'} className='link'>Home</Link>
+        <Link to={'/'} replace={true} className='link'>Home</Link>
       </header>
       <main>
         <h2>Create Account</h2>
@@ -51,7 +51,7 @@ export default function CreateAccount () {
           <button className='auth-button' type="submit">Create Account</button>
         </form>
         <p>
-            <Link to={'/LogIn'} className='link'>Log In</Link>
+            <Link to={'/LogIn'} replace={true} className='link'>Log In</Link>
         </p>
       </main>
       <footer>

@@ -7,6 +7,8 @@ interface Props {
   current: string;
   setCurrent: Function;
   userEmail: string;
+  savedMap: any;
+  setSavedMap: Function;
 }
 
 export default function QuarterPanel (props: Props) {
@@ -21,6 +23,8 @@ export default function QuarterPanel (props: Props) {
         current={props.current}
         setCurrent={props.setCurrent}
         userEmail={props.userEmail}
+        savedMap={props.savedMap}
+        setSavedMap={props.setSavedMap}
       />
       <Tabs 
         tab={tab}
