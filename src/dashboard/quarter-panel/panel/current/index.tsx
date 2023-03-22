@@ -6,15 +6,19 @@ interface Props {
   current: string;
   savedMap: any;
   setSavedMap: Function;
+  tool: string;
+  setTool: Function
 }
 
 export default function Current (props: Props) {
-
+  
   const displayCurrent = () => {
     if (props.current === 'map') {
       return <MapTools 
         savedMap={props.savedMap}
         setSavedMap={props.setSavedMap}
+        tool={props.tool}
+        setTool={props.setTool}
       />
     } else if (props.current === 'game') {
       return <GameTools />

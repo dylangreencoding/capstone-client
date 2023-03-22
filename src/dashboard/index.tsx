@@ -9,19 +9,22 @@ import QuarterPanel from './quarter-panel';
 
 export default function Dashboard () {
 
-  // either map, game, or char
   // sets options tab and main panel display
   const [current, setCurrent] = useState<string>('map');
+  const [tab, setTab] = useState<string>('options')
+
+  // sets map tool
+  const [tool, setTool] = useState<string>('none');
 
   // TODO
   // replace with fetched map data
   const [savedMap, setSavedMap] = useState<any>({
-    width: 20,
-    height: 10,
-    selected: { x: undefined, y: undefined }
+    width: 40,
+    height: 20,
+    selected: { x: undefined, y: undefined },
   });
 
-
+  
   // get state from useNavigate called at login
   // call custom hook to GET user data (on component mount?)
   const location = useLocation();
@@ -34,15 +37,22 @@ export default function Dashboard () {
     <div className='dashboard'>
       <MainPanel 
         current={current}
+        tab={tab}
         savedMap={savedMap}
         setSavedMap={setSavedMap}
+        tool={tool}
+        setTool={setTool}
       />
       <QuarterPanel 
         current={current}
         setCurrent={setCurrent}
+        tab={tab}
+        setTab={setTab}
         userEmail={'data.email'}
         savedMap={savedMap}
         setSavedMap={setSavedMap}
+        tool={tool}
+        setTool={setTool}
       />
     </div>
   )

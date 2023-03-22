@@ -25,7 +25,7 @@ const router = createBrowserRouter([
     element: <LogIn />,
   },
   {
-    path: '/Dashboard',
+    path: '/capstone_user_account',
     element: <Dashboard />,
   },
 ])

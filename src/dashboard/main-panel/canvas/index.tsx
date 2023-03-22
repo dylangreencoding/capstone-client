@@ -7,6 +7,8 @@ interface Props {
   height: number;
   savedMap: any;
   setSavedMap: Function;
+  tool: string;
+  setTool: Function;
 }
 
 export default function Canvas (props: Props) {
@@ -14,9 +16,9 @@ export default function Canvas (props: Props) {
 
   const gridPosition = useRef<any>({ x: 0, y: 0, scale: 25, selector: { x: undefined, y: undefined}, selected: { x: undefined, y: undefined} });
 
+  const currentMap = props.savedMap
 
   useEffect(() => {
-    const currentMap = props.savedMap
     
     // assure typescript compiler canvasRef is not null
     const canvas = canvasRef.current!;
@@ -85,7 +87,9 @@ export default function Canvas (props: Props) {
 
     const handleMouseDown = (e: MouseEvent) => {
       mouse.pressed = true;
+      props.setSavedMap({...props.savedMap, currentMap});
       console.log('selected on mousedown', gridPosition.current.selected);
+      console.log(props.tool);
     }
 
     const handleMouseMove = (e: MouseEvent) => {
@@ -137,6 +141,30 @@ export default function Canvas (props: Props) {
       mouse.movedMap = false;
     }
 
+    const handleMouseWheel = (e: WheelEvent) => {
+      console.log(e);
+      if (e.deltaY > 0 && gridPosition.current.scale < 50) {
+        gridPosition.current.selected = { x: undefined, y: undefined };
+        currentMap.selected = { x: undefined, y: undefined };
+        gridPosition.current.selector = { x: undefined, y: undefined };
+        gridPosition.current.scale += 5;
+        hashX = getHashX();
+        hashY = getHashY();
+        props.setSavedMap({...props.savedMap, currentMap});
+        draw(ctx, canvas.width, canvas.height, gridPosition.current, currentMap);
+      }
+      if (e.deltaY < 0 && gridPosition.current.scale > 5) {
+        gridPosition.current.selected = { x: undefined, y: undefined };
+        currentMap.selected = { x: undefined, y: undefined };
+        gridPosition.current.selector = { x: undefined, y: undefined };
+        gridPosition.current.scale -= 5;
+        hashX = getHashX();
+        hashY = getHashY();
+        props.setSavedMap({...props.savedMap, currentMap});
+        draw(ctx, canvas.width, canvas.height, gridPosition.current, currentMap);
+      }
+    }
+
     const handleMouseLeave = (e: MouseEvent) => {
       mouse.pressed = false;
       gridPosition.current.selector.x = undefined;
@@ -153,12 +181,14 @@ export default function Canvas (props: Props) {
     canvas.addEventListener('mousedown', handleMouseDown);
     canvas.addEventListener('mousemove', handleMouseMove);
     canvas.addEventListener('mouseup', handleMouseUp);
+    canvas.addEventListener('wheel', handleMouseWheel);
     canvas.addEventListener('mouseleave', handleMouseLeave);
     window.addEventListener('resize', handleResize);
     return () => {
       canvas.removeEventListener('mousedown', handleMouseDown);
       canvas.removeEventListener('mousemove', handleMouseMove);
       canvas.removeEventListener('mouseup', handleMouseUp);
+      canvas.removeEventListener('wheel', handleMouseWheel);
       canvas.removeEventListener('mouseleave', handleMouseLeave);
       window.removeEventListener('resize', handleResize);
       console.log('cleaned up')
@@ -167,11 +197,14 @@ export default function Canvas (props: Props) {
   }, []);
 
   return (
-    <canvas
-      className='canvas'
-      ref={canvasRef}
-      width={props.width}
-      height={props.height}
-    />
+    <div>
+      <canvas
+        className='canvas'
+        ref={canvasRef}
+        width={props.width}
+        height={props.height}
+      />
+      <div className='canvas-updater'>{props.tool}</div>
+    </div>
   )
 }
