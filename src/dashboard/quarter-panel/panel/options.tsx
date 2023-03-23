@@ -39,50 +39,34 @@ export default function Options (props: Props) {
 
   return (
     <div className='options'>
-      <div>
-        <div>{props.userEmail}</div>
-        <div>
-          <span className='options-link' onClick={handleLogout}>logout</span></div>
+      <div className='flex-space-between mb36'>
+        <h3>{props.userEmail}</h3>
+        <button type="button" className='tool btn' onClick={handleLogout}>logout</button>
       </div>
-      <br />
-      <br />
-      <br />
-      <div>
-        <div>
-          <span>Maps </span>
-          <span className="options-link" onClick={handleNewMap}>new</span>
+      <div className="mb36">
+        <div className='flex-space-between'>
+          <h4>maps </h4>
+          <button type='button' className="tool btn" onClick={handleNewMap}>new</button>
         </div>
         <ul>
-          <li>- </li>
-          <li>- </li>
           <li>- </li>
         </ul>
       </div>
-      <br />
-      <br />
-      <br />
-      <div>
-        <div>
-          <span>Characters </span>
-          <span className="options-link" onClick={handleNewChar}>new</span>
+      <div className="mb36">
+        <div className='flex-space-between'>
+          <h4>characters </h4>
+          <button type='button' className="tool btn" onClick={handleNewChar}>new</button>
         </div>
         <ul>
-          <li>- </li>
-          <li>- </li>
           <li>- </li>
         </ul>
       </div>
-      <br />
-      <br />
-      <br />
-      <div>
-        <div>
-          <span>Games </span>
-          <span className="options-link" onClick={handleNewGame}>new</span>
+      <div className="mb36">
+        <div className='flex-space-between'>
+          <h4>games </h4>
+          <button type='button' className="tool btn" onClick={handleNewGame}>new</button>
         </div>
         <ul>
-          <li>- </li>
-          <li>- </li>
           <li>- </li>
         </ul>
       </div>

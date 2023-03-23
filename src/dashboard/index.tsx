@@ -13,15 +13,24 @@ export default function Dashboard () {
   const [current, setCurrent] = useState<string>('map');
   const [tab, setTab] = useState<string>('options')
 
-  // sets map tool
-  const [tool, setTool] = useState<string>('none');
-
   // TODO
   // replace with fetched map data
   const [savedMap, setSavedMap] = useState<any>({
+
+    id: '',
+    name: 'zombie road',
+
+    x: 0, 
+    y: 0, 
+    scale: 25, 
+    selected: { x: undefined, y: undefined },
+    tool: 'none',
+
     width: 40,
     height: 20,
-    selected: { x: undefined, y: undefined },
+    
+    walls: [],
+    zombies: []
   });
 
   
@@ -29,9 +38,9 @@ export default function Dashboard () {
   // call custom hook to GET user data (on component mount?)
   const location = useLocation();
   // *** COMMENT OUT FOR OFFLINE WORK *** \\
-  // const [accessToken, setAccessToken] = useState<string>(location.state.accessToken);
-  // const { data, getData } = useGetData(accessToken);
-  // console.log(data.email);
+  const [accessToken, setAccessToken] = useState<string>(location.state.accessToken);
+  const { data, getData } = useGetData(accessToken);
+  console.log(data.email)
 
   return (
     <div className='dashboard'>
@@ -40,19 +49,15 @@ export default function Dashboard () {
         tab={tab}
         savedMap={savedMap}
         setSavedMap={setSavedMap}
-        tool={tool}
-        setTool={setTool}
       />
       <QuarterPanel 
         current={current}
         setCurrent={setCurrent}
         tab={tab}
         setTab={setTab}
-        userEmail={'data.email'}
+        userEmail={data.email}
         savedMap={savedMap}
         setSavedMap={setSavedMap}
-        tool={tool}
-        setTool={setTool}
       />
     </div>
   )

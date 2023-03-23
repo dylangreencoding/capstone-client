@@ -7,8 +7,6 @@ interface Props {
   savedMap: any;
   tab: string;
   setSavedMap: Function;
-  tool: string;
-  setTool: Function;
 }
 
 export default function MainPanel (props: Props) {
@@ -24,8 +22,6 @@ export default function MainPanel (props: Props) {
         height={window.innerHeight}
         savedMap={props.savedMap}
         setSavedMap={props.setSavedMap}
-        tool={props.tool}
-        setTool={props.setTool}
       />
     }
   }

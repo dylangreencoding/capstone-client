@@ -4,7 +4,12 @@ export default function CharTools () {
 
   return (
     <div>
-      Character Tools
+      <div className='mb36 flex-space-between'>
+        <span>
+          {''}
+        </span>
+        <h3>name</h3>
+      </div>
     </div>
   )
 }

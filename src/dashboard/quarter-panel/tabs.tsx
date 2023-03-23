@@ -2,6 +2,7 @@
 interface Props {
   tab: string;
   setTab: Function;
+  current: string;
 }
 
 export default function Tabs (props: Props) {
@@ -13,21 +14,31 @@ export default function Tabs (props: Props) {
   const handleCurrentTab = () => {
     props.setTab('current');
   }
+
+  const displayCurrentTab = () => {
+    if (props.current === 'map') {
+      return 'map'
+    } else if (props.current === 'char') {
+      return 'character'
+    } else if (props.current === 'game') {
+      return 'game'
+    }
+  }
   
   return (
     <nav className='panel-tabs'>
-      <span 
-        className={`tab ${props.tab === 'options' ? 'active' : ''}`}
+      <button 
+        className={`tab btn ${props.tab === 'options' ? 'active' : ''}`}
         onClick={handleOptionsTab}
       >
-        options
-      </span>
-      <span 
-        className={`tab ${props.tab === 'current' ? 'active' : ''}`}
+        home
+      </button>
+      <button 
+        className={`tab btn ${props.tab === 'current' ? 'active' : ''}`}
         onClick={handleCurrentTab}
       >
-        current
-      </span>
+        {displayCurrentTab()}
+      </button>
     </nav>
   )
 }

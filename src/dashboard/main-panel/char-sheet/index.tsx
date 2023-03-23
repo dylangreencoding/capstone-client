@@ -4,7 +4,7 @@ export default function CharSheet () {
 
   return (
     <div className='char-sheet'>
-      Character Sheet
+      character sheet
     </div>
   )
 }

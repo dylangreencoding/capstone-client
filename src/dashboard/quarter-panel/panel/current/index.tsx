@@ -6,8 +6,6 @@ interface Props {
   current: string;
   savedMap: any;
   setSavedMap: Function;
-  tool: string;
-  setTool: Function
 }
 
 export default function Current (props: Props) {
@@ -17,11 +15,12 @@ export default function Current (props: Props) {
       return <MapTools 
         savedMap={props.savedMap}
         setSavedMap={props.setSavedMap}
-        tool={props.tool}
-        setTool={props.setTool}
       />
     } else if (props.current === 'game') {
-      return <GameTools />
+      return <GameTools 
+        savedMap={props.savedMap}
+        setSavedMap={props.setSavedMap}
+      />
     } else if (props.current === 'char') {
       return <CharTools />
     }

@@ -7,17 +7,18 @@ interface Props {
   height: number;
   savedMap: any;
   setSavedMap: Function;
-  tool: string;
-  setTool: Function;
 }
 
 export default function Canvas (props: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  const gridPosition = useRef<any>({ x: 0, y: 0, scale: 25, selector: { x: undefined, y: undefined}, selected: { x: undefined, y: undefined} });
-
-  const currentMap = props.savedMap
-
+  // can't remember why I need this
+  // might just pass props.savedMap as useEffect dependency
+  // also might put props.tool inside props.savedMap
+  // see comments above props.tool state variable initialization in Dashboard component
+  // for now this seems fine
+  const currentMap = props.savedMap;
+  
   useEffect(() => {
     
     // assure typescript compiler canvasRef is not null
@@ -26,13 +27,24 @@ export default function Canvas (props: Props) {
     canvas.width = window.innerWidth * 0.75;
     canvas.height = window.innerHeight;
 
+    interface Mouse {
+      pressed: boolean;
+      movedMap: boolean;
+      movementXY: { x: any, y: any };
+      position: { x: any, y: any };
+      selected: { x: any, y: any };
+      selector: { x: any, y: any };
+      doubleTap: boolean;
+    }
+    let mouse : Mouse = { pressed: false, movedMap: false, movementXY: { x: undefined, y: undefined }, position: { x: undefined, y: undefined }, selected: { x: undefined, y: undefined }, selector: { x: undefined, y: undefined }, doubleTap: false };
+
     const getHashX = () => {
       let hashX : any = {};
-      let currentSquare = gridPosition.current.x;
+      let currentSquare = currentMap.x;
       let hashCounter = 0;
-      for (let x = gridPosition.current.x; x < (gridPosition.current.scale * currentMap.width) + gridPosition.current.x; x++) {
-        if (hashCounter === gridPosition.current.scale) {
-          currentSquare += gridPosition.current.scale;
+      for (let x = currentMap.x; x < (currentMap.scale * currentMap.width) + currentMap.x; x++) {
+        if (hashCounter === currentMap.scale) {
+          currentSquare += currentMap.scale;
           hashCounter = 0;
         }
         hashCounter += 1;
@@ -43,11 +55,11 @@ export default function Canvas (props: Props) {
 
     const getHashY = () => {
       let hashY : any = {};
-      let currentSquare = gridPosition.current.y;
+      let currentSquare = currentMap.y;
       let hashCounter = 0;
-      for (let y = gridPosition.current.y; y < (gridPosition.current.scale * currentMap.height) + gridPosition.current.y; y++) {
-        if (hashCounter === gridPosition.current.scale) {
-          currentSquare += gridPosition.current.scale;
+      for (let y = currentMap.y; y < (currentMap.scale * currentMap.height) + currentMap.y; y++) {
+        if (hashCounter === currentMap.scale) {
+          currentSquare += currentMap.scale;
           hashCounter = 0;
         }
         hashCounter += 1;
@@ -56,18 +68,18 @@ export default function Canvas (props: Props) {
       return hashY
     }
 
-    draw(ctx, canvas.width, canvas.height, gridPosition.current, currentMap);
+    draw(ctx, canvas.width, canvas.height, mouse.selector, currentMap, props.savedMap);
     let hashX = getHashX();
     let hashY = getHashY();
 
-    interface Mouse {
-      pressed: boolean;
-      movedMap: boolean;
-      movementXY: { x: any, y: any };
-      position: { x: any, y: any };
-      selected: { x: any, y: any };
+    const getWall = (start: any, end: any) => {
+      return {
+        aX: start.x,
+        aY: start.y,
+        bX: end.x,
+        bY: end.y
+      }
     }
-    let mouse : Mouse = { pressed: false, movedMap: false, movementXY: { x: undefined, y: undefined }, position: { x: undefined, y: undefined }, selected: { x: undefined, y: undefined } };
 
     const getMousePositionXY = (e: MouseEvent) => {
       let positionX = hashX[e.clientX];
@@ -87,9 +99,6 @@ export default function Canvas (props: Props) {
 
     const handleMouseDown = (e: MouseEvent) => {
       mouse.pressed = true;
-      props.setSavedMap({...props.savedMap, currentMap});
-      console.log('selected on mousedown', gridPosition.current.selected);
-      console.log(props.tool);
     }
 
     const handleMouseMove = (e: MouseEvent) => {
@@ -98,42 +107,80 @@ export default function Canvas (props: Props) {
 
       if (mouse.pressed === true) {
         mouse.movedMap = true;
-        gridPosition.current.selector = {};
+        mouse.selector = { x: undefined, y: undefined };
+        
+        currentMap.selected = {};
+        currentMap.x += mouse.movementXY.x;
+        currentMap.y += mouse.movementXY.y;
 
-        gridPosition.current.x += mouse.movementXY.x;
-        gridPosition.current.y += mouse.movementXY.y;
+        // moves walls
+        for (const wall of currentMap.walls) {
+          if (mouse.pressed === true) {
+            wall.aX += mouse.movementXY.x
+            wall.aY += mouse.movementXY.y
+            wall.bX += mouse.movementXY.x
+            wall.bY += mouse.movementXY.y
+          }
+        }
 
-        gridPosition.current.selected.x += mouse.movementXY.x
-        gridPosition.current.selected.y += mouse.movementXY.y
+        for (const zombie of currentMap.zombies) {
+          if (mouse.pressed === true) {
+            zombie.x += mouse.movementXY.x
+            zombie.y += mouse.movementXY.y
+          }
+        }
 
       } else {
-        gridPosition.current.selector.x = mouse.position.x;
-        gridPosition.current.selector.y = mouse.position.y;
+        mouse.selector.x = mouse.position.x;
+        mouse.selector.y = mouse.position.y;
       }
 
-      draw(ctx, canvas.width, canvas.height, gridPosition.current, currentMap);
+      draw(ctx, canvas.width, canvas.height, mouse.selector, currentMap, props.savedMap);
     }
 
     const handleMouseUp = (e: MouseEvent) => {
+      
       mouse.pressed = false;
       mouse.selected = getMousePositionXY(e)
+
       if (mouse.movedMap === false) {
-        if ((mouse.selected.x === gridPosition.current.selected.x && mouse.selected.y === gridPosition.current.selected.y) || mouse.selected.x === undefined || mouse.selected.y === undefined) {
-          gridPosition.current.selected = { x: undefined, y: undefined };
-          currentMap.selected = { x: undefined, y: undefined };
+
+        // deselects selected
+        if ((mouse.selected.x === currentMap.selected.x && mouse.selected.y === currentMap.selected.y) || mouse.selected.x === undefined || mouse.selected.y === undefined) {        
+          mouse.doubleTap = true;
+        } 
+        
+
+        if (currentMap.tool === 'add wall' && mouse.doubleTap !== true) {
+          if (currentMap.selected.x !== undefined && currentMap.selected.y !== undefined && mouse.selected.x !== undefined && mouse.selected.y !== undefined) {
+            const newWall = getWall(currentMap.selected, mouse.selected);
+            currentMap.walls.push(newWall);
+          }
+          currentMap.selected = mouse.selected;
+
+
+        } else if (currentMap.tool === 'add zombie' && mouse.doubleTap === true && mouse.selected.x !== undefined && mouse.selected.y !== undefined) {
+
+          currentMap.zombies.push(mouse.selected);
+          currentMap.selected = mouse.selected;
+
+
         } else {
-          gridPosition.current.selected = mouse.selected;
           currentMap.selected = mouse.selected;
         }
 
+        if (mouse.doubleTap === true) {
+          currentMap.selected = { x: undefined, y: undefined };
+        }
+
         props.setSavedMap({...props.savedMap, currentMap});
-        draw(ctx, canvas.width, canvas.height, gridPosition.current, currentMap);
+        draw(ctx, canvas.width, canvas.height, mouse.selector, currentMap, props.savedMap);
+
 
       } else {
-        gridPosition.current.selected = { x: undefined, y: undefined };
         currentMap.selected = { x: undefined, y: undefined };
         props.setSavedMap({...props.savedMap, currentMap});
-        draw(ctx, canvas.width, canvas.height, gridPosition.current, currentMap);
+        draw(ctx, canvas.width, canvas.height, mouse.selector, currentMap, props.savedMap);
       }
 
       hashX = getHashX();
@@ -141,60 +188,35 @@ export default function Canvas (props: Props) {
       mouse.movedMap = false;
     }
 
-    const handleMouseWheel = (e: WheelEvent) => {
-      console.log(e);
-      if (e.deltaY > 0 && gridPosition.current.scale < 50) {
-        gridPosition.current.selected = { x: undefined, y: undefined };
-        currentMap.selected = { x: undefined, y: undefined };
-        gridPosition.current.selector = { x: undefined, y: undefined };
-        gridPosition.current.scale += 5;
-        hashX = getHashX();
-        hashY = getHashY();
-        props.setSavedMap({...props.savedMap, currentMap});
-        draw(ctx, canvas.width, canvas.height, gridPosition.current, currentMap);
-      }
-      if (e.deltaY < 0 && gridPosition.current.scale > 5) {
-        gridPosition.current.selected = { x: undefined, y: undefined };
-        currentMap.selected = { x: undefined, y: undefined };
-        gridPosition.current.selector = { x: undefined, y: undefined };
-        gridPosition.current.scale -= 5;
-        hashX = getHashX();
-        hashY = getHashY();
-        props.setSavedMap({...props.savedMap, currentMap});
-        draw(ctx, canvas.width, canvas.height, gridPosition.current, currentMap);
-      }
-    }
-
     const handleMouseLeave = (e: MouseEvent) => {
       mouse.pressed = false;
-      gridPosition.current.selector.x = undefined;
-      gridPosition.current.selector.y = undefined;
-      draw(ctx, canvas.width, canvas.height, gridPosition.current, currentMap);
+      mouse.selector.x = undefined;
+      mouse.selector.y = undefined;
+      draw(ctx, canvas.width, canvas.height, mouse.selector, currentMap, props.savedMap);
     }
 
     const handleResize = (e: Event) => {
       canvas.width = window.innerWidth * 0.75;
       canvas.height = window.innerHeight;
-      draw(ctx, canvas.width, canvas.height, gridPosition.current, currentMap);
+      draw(ctx, canvas.width, canvas.height, mouse.selector, currentMap, props.savedMap);
     }
 
     canvas.addEventListener('mousedown', handleMouseDown);
     canvas.addEventListener('mousemove', handleMouseMove);
     canvas.addEventListener('mouseup', handleMouseUp);
-    canvas.addEventListener('wheel', handleMouseWheel);
+    // canvas.addEventListener('wheel', handleMouseWheel);
     canvas.addEventListener('mouseleave', handleMouseLeave);
     window.addEventListener('resize', handleResize);
     return () => {
       canvas.removeEventListener('mousedown', handleMouseDown);
       canvas.removeEventListener('mousemove', handleMouseMove);
       canvas.removeEventListener('mouseup', handleMouseUp);
-      canvas.removeEventListener('wheel', handleMouseWheel);
+      // canvas.removeEventListener('wheel', handleMouseWheel);
       canvas.removeEventListener('mouseleave', handleMouseLeave);
       window.removeEventListener('resize', handleResize);
       console.log('cleaned up')
     }
-
-  }, []);
+  }, [props.savedMap, props.setSavedMap]);
 
   return (
     <div>
@@ -204,7 +226,6 @@ export default function Canvas (props: Props) {
         width={props.width}
         height={props.height}
       />
-      <div className='canvas-updater'>{props.tool}</div>
     </div>
   )
 }

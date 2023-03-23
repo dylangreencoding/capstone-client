@@ -9,8 +9,6 @@ interface Props {
   userEmail: string;
   savedMap: any;
   setSavedMap: Function;
-  tool: string;
-  setTool: Function
 }
 
 export default function Panel (props: Props) {
@@ -26,8 +24,6 @@ export default function Panel (props: Props) {
         current={props.current}
         savedMap={props.savedMap}
         setSavedMap={props.setSavedMap}
-        tool={props.tool}
-        setTool={props.setTool}
         />}
     </div>
   )

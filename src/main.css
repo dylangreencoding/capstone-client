@@ -10,23 +10,44 @@ html {
 
 body {
   font-size: 1.8rem;
-  font-family: sans-serif;
+
+  font-family: 'Mulish', sans-serif;
+  /* font-family: 'Zilla Slab', serif; */
 
   background-color: hsl(0, 0%, 88%);
   color: hsl(0, 0%, 8%);
 }
 
-/* ************************** */
-/* For Pages (not Dashboard) */
-/* ************************ */
-/* *********************** */
-/* ********************** */
+.flex-space-between {
+  display: flex;
+  justify-content: space-between;
+}
+
+.mb24 {
+  margin-bottom: 2.4rem;
+}
+.mb36 {
+  margin-bottom: 3.6rem;
+}
+
+.btn {
+  border: none;
+  background: none;
+  font-family: inherit;
+  font-size: inherit;
+  color: hsl(0, 0%, 88%);
+}
+
+/* *************** */
+/*  HTML elements */
+/* ************* */
+/* ************ */
+/* *********** */
 
 header {
   margin-bottom: 6rem;
   padding-top: 2.4rem;
-  font-family: monospace;
-
+  
   display: flex;
   justify-content: space-between;
   align-items: baseline;
@@ -42,15 +63,44 @@ main {
 
 h1 {
   font-size: 4.8rem;
+  font-family: monospace;
 }
 
 h2 {
   font-size: 2.4rem;
   margin-bottom: 2.4rem;
+  font-family: monospace;
+}
+
+h3 {
+  font-weight: 500;
+  font-size: inherit;
+  font-family: monospace;
+  letter-spacing: 2px;
+}
+
+h4 {
+  font-weight: 500;
+  font-size: 2.4rem;
 }
 
 p {
   margin-bottom: 2.4rem;
+}
+
+ul {
+  list-style: none;
+  padding-left: 1.2rem;
+  margin-bottom: 1.2rem;
+}
+
+li {
+  margin-bottom: 1.2rem;
+}
+
+li:hover {
+  cursor: pointer;
+  color: #FFF;
 }
 
 /* Limit content width and center in window */
@@ -124,21 +174,6 @@ p {
 /* ********************** */
 /* ********************* */
 
-ul {
-  list-style: none;
-  padding-left: 1.2rem;
-  margin-bottom: 1.2rem;
-}
-
-li {
-  margin-bottom: 1.2rem;
-}
-
-li:hover {
-  cursor: pointer;
-  color: #FFF;
-}
-
 /* set content dimensions to fit window */
 .dashboard {
   width: 100vw;
@@ -163,14 +198,20 @@ li:hover {
   flex-direction: column;
   justify-content: space-between;
 
-  padding-left: 1.2rem;
+  padding: 0.2rem 0rem 0 1.2rem;
   border-left: hsl(0, 0%, 45%) 1px dotted;
 }
 
-/* tabs */
+/* set scrollbar in panel */
+.panel {
+  overflow-y: scroll;
+  height: 100%;
+  padding-right: 1.2rem;
+}
+
+/* tabs (pseudo-links) */
 .panel-tabs {
   display: flex;
-  padding-top: 1.2rem;
 }
 
 .tab {
@@ -184,63 +225,38 @@ li:hover {
 .tab:hover {
   cursor: pointer;
   color: #FFF;
+  
 }
 
-.active {
-  background-color: rgb(96, 0, 0);
-}
-
-/* set scrollbar in panel */
-.panel {
-  overflow-y: scroll;
-  height: 100%;
-}
-
-/* tools */
+/* tools (pseudo-links) */
 .tool-box {
   display: flex;
   flex-direction: column;
 }
 
 .tool {
-  border: none;
-  background: none;
-  font-family: inherit;
-  font-size: inherit;
-  color: hsl(0, 0%, 88%);
-
   max-width: fit-content;
-  padding: 0 1.2rem;
-  border-radius: 3px;
-  margin-bottom: 1.2rem;
+  padding: 0.2rem;
 }
+
 .tool:hover {
   cursor: pointer;
   color: #FFF;
-}
-.tool-active {
-  background-color: rgb(96, 0, 0);
-}
-
-h3 {
-  font-size: inherit;
-  letter-spacing: 2px;
-}
-
-.tools-heading {
-  display: flex;
-  justify-content: space-between;
-
-  margin-bottom: 2.4rem;
+  background-color: black;
 }
 
 .tools-body {
   display: flex;
   flex-direction: column;
-  height: 80vh;
   justify-content: space-between;
+  height: 80vh;
 }
 
+.active {
+  background-color: rgb(96, 0, 0);
+}
+
+/* text input */
 .text-input {
   border: none;
   font-family: inherit;
@@ -254,7 +270,7 @@ h3 {
 
 .text-input:focus {
   outline: none;
-  background-color: hsla(0, 0%, 88%, 0.651);
+  background-color: #e0e0e0a6
 }
 
 .text-form {
@@ -262,23 +278,14 @@ h3 {
   justify-content: space-between;
   align-items: baseline;
 
-  padding-right: 1.2rem;
 }
 
-/* options pseudo links */
-.options-link {
-  font-size: 1.2rem;
-  border-bottom: hsl(0, 0%, 88%) solid 1px;
-}
-.options-link:hover {
-  cursor: pointer;
-  color: #FFF;
-  border-bottom: none;
+
+
+.capstone-info {
+  border: none;
 }
 
-.canvas-updater {
-  position: absolute;
-  top: 0;
-  left: 0;
-  background-color: rgb(96, 0, 0);
+.char-sheet {
+  padding: 1.2rem;
 }

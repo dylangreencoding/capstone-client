@@ -11,8 +11,6 @@ interface Props {
   userEmail: string;
   savedMap: any;
   setSavedMap: Function;
-  tool: string;
-  setTool: Function
 }
 
 export default function QuarterPanel (props: Props) {
@@ -29,12 +27,11 @@ export default function QuarterPanel (props: Props) {
         userEmail={props.userEmail}
         savedMap={props.savedMap}
         setSavedMap={props.setSavedMap}
-        tool={props.tool}
-        setTool={props.setTool}
       />
       <Tabs 
         tab={props.tab}
         setTab={props.setTab}
+        current={props.current}
       />
     </div>
   )
