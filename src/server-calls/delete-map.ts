@@ -1,6 +1,6 @@
-export async function newMap (token: string, map: any = {}) {
-  console.log(token, map);
-  const response = await fetch('http://localhost:8080/auth/new-map', {
+export async function deleteMap (token: string, map: any = {}) {
+  console.log(token);
+  const response = await fetch('http://localhost:8080/auth/delete-map', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -11,8 +11,7 @@ export async function newMap (token: string, map: any = {}) {
   });
 
   if (!response.ok) {
-    console.log(await response.json())
-    throw new Error('newMap_ failed')
+    throw new Error('deleteMap_ failed')
   }
   
   return await response.json()

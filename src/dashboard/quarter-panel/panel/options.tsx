@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { logOut } from "../../../server-calls/log-out";
 // import { useNewMap } from "../../../custom-hooks/useNewMap";
 import { newMap } from "../../../server-calls/new-map";
+import { deleteMap } from "../../../server-calls/delete-map";
 import { useEffect } from "react";
 
 interface Props {
@@ -58,10 +59,7 @@ export default function Options (props: Props) {
     const currentMap = await handleDataFetch();
     console.log('added new map', currentMap);
 
-
-    // TODO: find a better way to update maps list
     // location.reload();
-
     // TODO: rename this to getuserData
     props.getUser();
   }
@@ -87,13 +85,15 @@ export default function Options (props: Props) {
       }
     }
     console.log(selectedMap);
+
+    // not sure why i have to setState like this here
     // props.setSavedMap({...props.savedMap, selectedMap});
     props.setSavedMap(selectedMap)
     props.setCurrent('map');
     props.setTab('current');
   }
 
-  const handleDeleteMap = (e: any) => {
+  const handleDeleteMap = async (e: any) => {
     e.preventDefault();
     // console.log(e.target.value)
     let selectedMap = '';
@@ -103,7 +103,14 @@ export default function Options (props: Props) {
         selectedMap = map;
       }
     }
-    console.log('delete', selectedMap);
+
+    async function handleDataFetch () {
+      const result = await deleteMap(props.accessToken, selectedMap);
+      return result.map
+    }
+    const currentMap = await handleDataFetch();
+    console.log('delete', currentMap);
+    props.getUser();
   }
 
 

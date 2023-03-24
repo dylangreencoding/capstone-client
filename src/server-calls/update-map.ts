@@ -1,5 +1,5 @@
-export async function newMap (token: string, map: any = {}) {
-  console.log(token, map);
+export async function updateMap (token: string, map: any = {}) {
+  console.log(token);
   const response = await fetch('http://localhost:8080/auth/new-map', {
     method: 'POST',
     headers: {
@@ -11,7 +11,6 @@ export async function newMap (token: string, map: any = {}) {
   });
 
   if (!response.ok) {
-    console.log(await response.json())
     throw new Error('newMap_ failed')
   }
   

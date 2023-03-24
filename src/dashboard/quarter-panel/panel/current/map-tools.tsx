@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-
+import { updateMap } from "../../../../server-calls/update-map";
 
 interface Props {
   savedMap: any;
@@ -18,14 +18,22 @@ export default function MapTools (props: Props) {
   // useEffect(() => console.log(props.savedMap), [props.savedMap, props.setSavedMap]);
 
   let currentMap = props.savedMap;
-
-  const handleSubmitMap = (e: any) => {
+  currentMap.name = mapName;
+  currentMap.map = []
+  const handleSubmitMap = async (e: any) => {
     e.preventDefault();
-    currentMap.name = mapName;
-    // saveMap();
-    // currentMap = map;
-    currentMap.map = []
-    props.setSavedMap({...props.savedMap, currentMap});
+    async function handleDataFetch () {
+      const result = await updateMap(props.accessToken, currentMap);
+      return result.map
+    }
+    const updatedMap = await handleDataFetch();
+    console.log('added new map', updatedMap);
+
+
+    // TODO: find a better way to update maps list
+    // location.reload();
+    // TODO: rename this to getuserData
+    props.getUser();
   }
 
   const handlePickTool = (e: any) => {

@@ -15,8 +15,3 @@ export async function getMap (token: string) {
 
   return await response.json()
 }
-
-// TODO: change 'get-protected' to 'get-user' because thats what it get
-// just like how as this is 'get-map'
-
-// the server route for this will also use protected middleware
