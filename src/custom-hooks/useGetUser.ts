@@ -7,7 +7,6 @@ export const useGetUser = (token: string) => {
 
   async function handleDataFetch () {
     const result = await getUser(token);
-    console.log(result.user)
     setUser(result.user[0]);
     setMaps(result.maps);
   }

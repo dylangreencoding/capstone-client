@@ -16,7 +16,7 @@ export default function Dashboard () {
   // *** COMMENT OUT FOR OFFLINE WORK *** \\
   const [accessToken, setAccessToken] = useState<string>(location.state.accessToken);
   const { user, maps, getUser } = useGetUser(accessToken);
-  console.log('rendering dash', maps)
+  
 
   // sets options tab and main panel display
   const [current, setCurrent] = useState<string>('map');
@@ -42,7 +42,7 @@ export default function Dashboard () {
     walls: [],
     zombies: []
   }
-  const [savedMap, setSavedMap] = useState<any>('');
+  const [savedMap, setSavedMap] = useState<any>(blankMap);
 
 
   return (

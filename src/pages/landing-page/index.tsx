@@ -8,7 +8,7 @@ export default function LandingPage () {
       </header>
       <main>
         <h2>What is this?</h2>
-        <p>This is an virtual battlemap for playing tabletop roleplaying games.</p>
+        <p>This is a virtual battlemap for playing tabletop roleplaying games.</p>
         <p>You can create and save maps, characters and monsters, and run multiple game sessions.</p>
         <p>
           <Link to={'/Login'} replace={true} className='link'>Log In</Link>

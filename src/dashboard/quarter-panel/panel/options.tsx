@@ -4,6 +4,7 @@ import { logOut } from "../../../server-calls/log-out";
 import { newMap } from "../../../server-calls/new-map";
 import { deleteMap } from "../../../server-calls/delete-map";
 import { useEffect } from "react";
+import { getUser } from "../../../server-calls/get-user";
 
 interface Props {
   setCurrent: Function;
@@ -84,13 +85,13 @@ export default function Options (props: Props) {
         selectedMap = map;
       }
     }
-    console.log(selectedMap);
 
     // not sure why i have to setState like this here
     // props.setSavedMap({...props.savedMap, selectedMap});
     props.setSavedMap(selectedMap)
     props.setCurrent('map');
     props.setTab('current');
+    props.getUser();
   }
 
   const handleDeleteMap = async (e: any) => {
@@ -124,7 +125,7 @@ export default function Options (props: Props) {
       <div className="mb36">
         <div className='flex-space-between mb12'>
           <h4>maps </h4>
-          <button type='button' className="tool btn" onClick={handleNewMap}>new</button>
+          <button type='button' className="tool btn" onClick={handleNewMap}>create</button>
         </div>
         <ul>
           {props.maps.map((map: any) => {
@@ -139,7 +140,7 @@ export default function Options (props: Props) {
       <div className="mb36">
         <div className='flex-space-between mb12'>
           <h4>characters </h4>
-          <button type='button' className="tool btn" onClick={handleNewChar}>new</button>
+          <button type='button' className="tool btn" onClick={handleNewChar}>create</button>
         </div>
         <ul>
           <li>- </li>
@@ -148,7 +149,10 @@ export default function Options (props: Props) {
       <div className="mb36">
         <div className='flex-space-between mb12'>
           <h4>games </h4>
-          <button type='button' className="tool btn" onClick={handleNewGame}>new</button>
+          <div>
+            <button type='button' className="tool btn" onClick={handleNewGame}>host -</button>
+            <button type='button' className="tool btn" onClick={handleNewGame}>- join</button>
+          </div>
         </div>
         <ul>
           <li>- </li>

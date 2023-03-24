@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { updateMap } from "../../../../server-calls/update-map";
 
 interface Props {
@@ -11,11 +11,8 @@ interface Props {
 }
 
 export default function MapTools (props: Props) {
-  // console.log('saved map', props.savedMap)
 
-  const [mapName, setmapName] = useState<string>('');
-
-  // useEffect(() => console.log(props.savedMap), [props.savedMap, props.setSavedMap]);
+  const [mapName, setmapName] = useState<string>(props.savedMap.name);
 
   let currentMap = props.savedMap;
   currentMap.name = mapName;
@@ -27,10 +24,7 @@ export default function MapTools (props: Props) {
       return result.map
     }
     const updatedMap = await handleDataFetch();
-    console.log('added new map', updatedMap);
 
-
-    // TODO: find a better way to update maps list
     // location.reload();
     // TODO: rename this to getuserData
     props.getUser();
@@ -40,7 +34,6 @@ export default function MapTools (props: Props) {
     const currentMap = props.savedMap;
     currentMap.tool = e.target.value;
     props.setSavedMap({...props.savedMap, currentMap});
-    console.log(props.savedMap)
   }
 
   const handleUndoWall = (e: any) => {
@@ -61,7 +54,7 @@ export default function MapTools (props: Props) {
       
       <div className='mb36 flex-space-between'>
         <span>
-          {props.savedMap.selected.x}, {props.savedMap.selected.y} , {props.savedMap.id}
+          {props.savedMap.selected.x}, {props.savedMap.selected.y}
         </span>
         <h3>{props.savedMap.name}</h3>
       </div>

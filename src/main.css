@@ -26,6 +26,7 @@ body {
 .mb12 {
   margin-bottom: 1.2rem;
 }
+
 .mb24 {
   margin-bottom: 2.4rem;
 }
@@ -43,7 +44,7 @@ body {
 
 .btn:hover {
   cursor: pointer;
-  color: #FFF;
+  color: rgba(255, 217, 0, 0.88);
 }
 
 /* *************** */
