@@ -155,8 +155,19 @@ export default function Canvas (props: Props) {
           if (currentMap.selected.x !== undefined && currentMap.selected.y !== undefined && mouse.selected.x !== undefined && mouse.selected.y !== undefined) {
             const newWall = getWall(currentMap.selected, mouse.selected);
             currentMap.walls.push(newWall);
-          }
+            currentMap.selected = { x: undefined, y: undefined};
+          } else {
           currentMap.selected = mouse.selected;
+          }
+          
+          // // this is better for adding curvy walls
+          // if (currentMap.selected.x !== undefined && currentMap.selected.y !== undefined && mouse.selected.x !== undefined && mouse.selected.y !== undefined) {
+          //   const newWall = getWall(currentMap.selected, mouse.selected);
+          //   currentMap.walls.push(newWall);
+          // }
+          // currentMap.selected = mouse.selected;
+          
+        
 
 
         } else if (currentMap.tool === 'add zombie' && mouse.doubleTap === true && mouse.selected.x !== undefined && mouse.selected.y !== undefined) {

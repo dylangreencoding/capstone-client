@@ -26,8 +26,8 @@ export function draw (ctx: any, canvasWidth: number, canvasHeight: number, selec
 
   // draw walls
   for (const wall of savedMap.walls) {
-    ctx.strokeStyle = 'white';
-    ctx.lineWidth = 3;
+    ctx.strokeStyle = '#e0e0e0a';
+    ctx.lineWidth = 6;
 
     ctx.beginPath();
     ctx.moveTo(wall.aX, wall.aY);
@@ -70,12 +70,12 @@ export function draw (ctx: any, canvasWidth: number, canvasHeight: number, selec
     ctx.fill();
     
     ctx.beginPath();
-    ctx.arc(selector.x, selector.y, map_.scale*0.25, 0, Math.PI*2);
+    ctx.arc(selector.x, selector.y, map_.scale*0.3, 0, Math.PI*2);
     ctx.closePath();
     ctx.fill();
     
     ctx.strokeStyle = '#e0e0e0a6';
-    ctx.lineWidth = 5;
+    ctx.lineWidth = 3;
 
     ctx.beginPath();
     ctx.moveTo(map_.selected.x, map_.selected.y);

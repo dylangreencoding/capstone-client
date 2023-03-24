@@ -1,17 +1,38 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
 
 interface Props {
   savedMap: any;
   setSavedMap: Function;
+  user: any;
+  getUser: Function;
+  accessToken: string;
+  map: any;
 }
 
 export default function MapTools (props: Props) {
+  // console.log('saved map', props.savedMap)
+
   const [mapName, setmapName] = useState<string>('');
+
+  // useEffect(() => console.log(props.savedMap), [props.savedMap, props.setSavedMap]);
+
+  let currentMap = props.savedMap;
+
+  const handleSubmitMap = (e: any) => {
+    e.preventDefault();
+    currentMap.name = mapName;
+    // saveMap();
+    // currentMap = map;
+    currentMap.map = []
+    props.setSavedMap({...props.savedMap, currentMap});
+  }
 
   const handlePickTool = (e: any) => {
     const currentMap = props.savedMap;
     currentMap.tool = e.target.value;
     props.setSavedMap({...props.savedMap, currentMap});
+    console.log(props.savedMap)
   }
 
   const handleUndoWall = (e: any) => {
@@ -26,21 +47,13 @@ export default function MapTools (props: Props) {
     props.setSavedMap({...props.savedMap, currentMap});
   }
 
-  const handleSubmitMap = (e: any) => {
-    e.preventDefault();
-    const currentMap = props.savedMap;
-    currentMap.name = mapName;
-    props.setSavedMap({...props.savedMap, currentMap});
-    console.log(props.savedMap);
-    // HERE: save map to database
-  }
 
   return (
     <div className='map-tools'>
       
       <div className='mb36 flex-space-between'>
         <span>
-          {props.savedMap.selected.x}, {props.savedMap.selected.y}
+          {props.savedMap.selected.x}, {props.savedMap.selected.y} , {props.savedMap.id}
         </span>
         <h3>{props.savedMap.name}</h3>
       </div>
@@ -83,7 +96,7 @@ export default function MapTools (props: Props) {
             >undo zombie</button>
           </div>
         </div>
-        <form className="text-form" onSubmit={handleSubmitMap}>
+        <form className="text-form" >
           <input 
             className='text-input' 
             type='text' 
@@ -91,7 +104,7 @@ export default function MapTools (props: Props) {
             value={mapName}
             onChange={ (e) => setmapName(e.target.value) }
           />
-          <button type='submit' className="tool btn">save</button>
+          <button type='button' onClick={handleSubmitMap} className="tool btn">save</button>
         </form>
       </div>
     </div>

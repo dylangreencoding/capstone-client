@@ -2,12 +2,21 @@ import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 //
 // import { getProtected } from '../server-calls/get-protected';
-import { useGetData } from '../custom-hooks/useFetchData';
+import { useGetUser } from '../custom-hooks/useGetUser';
 //
 import MainPanel from './main-panel';
 import QuarterPanel from './quarter-panel';
 
 export default function Dashboard () {
+
+
+  // get state from useNavigate called at login
+  // call custom hook to GET user data (on component mount?)
+  const location = useLocation();
+  // *** COMMENT OUT FOR OFFLINE WORK *** \\
+  const [accessToken, setAccessToken] = useState<string>(location.state.accessToken);
+  const { user, maps, getUser } = useGetUser(accessToken);
+  console.log('rendering dash', maps)
 
   // sets options tab and main panel display
   const [current, setCurrent] = useState<string>('map');
@@ -15,10 +24,11 @@ export default function Dashboard () {
 
   // TODO
   // replace with fetched map data
-  const [savedMap, setSavedMap] = useState<any>({
-
+  
+  const blankMap = {
     id: '',
-    name: 'zombie road',
+    maker: '',
+    name: '',
 
     x: 0, 
     y: 0, 
@@ -31,16 +41,9 @@ export default function Dashboard () {
     
     walls: [],
     zombies: []
-  });
+  }
+  const [savedMap, setSavedMap] = useState<any>('');
 
-  
-  // get state from useNavigate called at login
-  // call custom hook to GET user data (on component mount?)
-  const location = useLocation();
-  // *** COMMENT OUT FOR OFFLINE WORK *** \\
-  const [accessToken, setAccessToken] = useState<string>(location.state.accessToken);
-  const { data, getData } = useGetData(accessToken);
-  console.log(data.email)
 
   return (
     <div className='dashboard'>
@@ -55,9 +58,13 @@ export default function Dashboard () {
         setCurrent={setCurrent}
         tab={tab}
         setTab={setTab}
-        userEmail={data.email}
+        userEmail={user.email}
         savedMap={savedMap}
         setSavedMap={setSavedMap}
+        user={user}
+        getUser={getUser}
+        accessToken={accessToken}
+        maps={maps}
       />
     </div>
   )

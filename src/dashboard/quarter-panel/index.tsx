@@ -11,6 +11,10 @@ interface Props {
   userEmail: string;
   savedMap: any;
   setSavedMap: Function;
+  user: any;
+  getUser: Function;
+  accessToken: string;
+  maps: any;
 }
 
 export default function QuarterPanel (props: Props) {
@@ -27,6 +31,10 @@ export default function QuarterPanel (props: Props) {
         userEmail={props.userEmail}
         savedMap={props.savedMap}
         setSavedMap={props.setSavedMap}
+        user={props.user}
+        getUser={props.getUser}
+        accessToken={props.accessToken}
+        maps={props.maps}
       />
       <Tabs 
         tab={props.tab}
