@@ -25,23 +25,23 @@ export function draw (ctx: any, canvasWidth: number, canvasHeight: number, selec
   }
 
   // draw walls
-  for (const wall of savedMap.walls) {
+  for (const line of savedMap.lines) {
     ctx.strokeStyle = '#e0e0e0a';
     ctx.lineWidth = 6;
 
     ctx.beginPath();
-    ctx.moveTo(wall.aX, wall.aY);
-    ctx.lineTo(wall.bX, wall.bY);
-    ctx.moveTo(wall.aX, wall.aY);
+    ctx.moveTo(line.aX, line.aY);
+    ctx.lineTo(line.bX, line.bY);
+    ctx.moveTo(line.aX, line.aY);
     ctx.closePath();
     ctx.stroke();
   }
 
   // draw zombies
-  for (const zombie of savedMap.zombies) {
+  for (const location of savedMap.locations) {
     ctx.fillStyle = 'darkgreen';
     ctx.beginPath();
-    ctx.arc(zombie.x + (map_.scale*0.5), zombie.y + (map_.scale*0.5), map_.scale*0.25, 0, Math.PI*2);
+    ctx.arc(location.x + (map_.scale*0.5), location.y + (map_.scale*0.5), map_.scale*0.25, 0, Math.PI*2);
     ctx.closePath();
     ctx.fill();
   }
@@ -61,7 +61,7 @@ export function draw (ctx: any, canvasWidth: number, canvasHeight: number, selec
     ctx.closePath();
     ctx.stroke();
 
-  } else if (savedMap.tool === 'add wall') {
+  } else if (savedMap.tool === 'add line') {
     ctx.fillStyle = '#e0e0e0a6';
     
     ctx.beginPath();
@@ -84,7 +84,7 @@ export function draw (ctx: any, canvasWidth: number, canvasHeight: number, selec
     ctx.closePath();
     ctx.stroke();
 
-  } else if (savedMap.tool === 'add zombie') {
+  } else if (savedMap.tool === 'add location') {
     ctx.strokeStyle = 'darkgreen';
     ctx.lineWidth = 3;
 

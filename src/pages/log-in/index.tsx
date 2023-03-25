@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 //
-import { logIn } from '../../server-calls/log-in';
+import { logIn } from '../../expressAPI/log-in';
 
 export default function LogIn () {
   const [email, setEmail] =useState<string>('');
@@ -37,7 +37,8 @@ export default function LogIn () {
           <input 
             className='auth-input' 
             type='text' 
-            placeholder='Email...'
+            // placeholder='Email...'
+            placeholder='Username...'
             value={email}
             onChange={ (e) => setEmail(e.target.value) }
           />
@@ -50,11 +51,11 @@ export default function LogIn () {
           />
           <button className='auth-button' type="submit">Log In</button>
         </form>
+      </main>
+      <footer>
         <p>
           <Link to={'/CreateAccount'} replace={true} className='link'>Create Account</Link>
         </p>
-      </main>
-      <footer>
         <p>Copyright 2023 Dylan Green</p>
       </footer>
     </div>

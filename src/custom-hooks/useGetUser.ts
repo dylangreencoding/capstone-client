@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getUser } from '../server-calls/get-user'
+import { getUser } from '../expressAPI/get-user'
 
 export const useGetUser = (token: string) => {
   const [user, setUser] = useState<any>([]);
@@ -15,5 +15,5 @@ export const useGetUser = (token: string) => {
     handleDataFetch();
   }, [])
   
-  return {user, maps, getUser: handleDataFetch}
+  return {user, maps, getUserData: handleDataFetch}
 }

@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 //
-// import { getProtected } from '../server-calls/get-protected';
 import { useGetUser } from '../custom-hooks/useGetUser';
 //
 import MainPanel from './main-panel';
@@ -9,14 +8,13 @@ import QuarterPanel from './quarter-panel';
 
 export default function Dashboard () {
 
-
   // get state from useNavigate called at login
   // call custom hook to GET user data (on component mount?)
   const location = useLocation();
   // *** COMMENT OUT FOR OFFLINE WORK *** \\
+
   const [accessToken, setAccessToken] = useState<string>(location.state.accessToken);
-  const { user, maps, getUser } = useGetUser(accessToken);
-  
+  const { user, maps, getUserData } = useGetUser(accessToken);
 
   // sets options tab and main panel display
   const [current, setCurrent] = useState<string>('map');
@@ -40,7 +38,7 @@ export default function Dashboard () {
     height: 20,
     
     walls: [],
-    zombies: []
+    lines: []
   }
   const [savedMap, setSavedMap] = useState<any>(blankMap);
 
@@ -62,7 +60,7 @@ export default function Dashboard () {
         savedMap={savedMap}
         setSavedMap={setSavedMap}
         user={user}
-        getUser={getUser}
+        getUserData={getUserData}
         accessToken={accessToken}
         maps={maps}
       />

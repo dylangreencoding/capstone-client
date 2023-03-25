@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom'
 //
-import { createAccount } from '../../server-calls/create-account'
+import { createAccount } from '../../expressAPI/create-account'
 
 export default function CreateAccount () {
   const [email, setEmail] =useState<string>('');
@@ -37,7 +37,8 @@ export default function CreateAccount () {
           <input 
             className='auth-input' 
             type='text' 
-            placeholder='Email...'
+            // placeholder='Email...'
+            placeholder='Username...'
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
@@ -50,11 +51,11 @@ export default function CreateAccount () {
           />
           <button className='auth-button' type="submit">Create Account</button>
         </form>
+      </main>
+      <footer>
         <p>
             <Link to={'/LogIn'} replace={true} className='link'>Log In</Link>
         </p>
-      </main>
-      <footer>
         <p>Copyright 2023 Dylan Green</p>
       </footer>
     </div>

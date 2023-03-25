@@ -1,6 +1,6 @@
-export async function newMap (token: string, map: any = {}) {
+export async function createMap (token: string, map: any = {}) {
   console.log(token, map);
-  const response = await fetch('http://localhost:8080/auth/new-map', {
+  const response = await fetch('http://localhost:8080/auth/save-map', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -11,8 +11,7 @@ export async function newMap (token: string, map: any = {}) {
   });
 
   if (!response.ok) {
-    console.log(await response.json())
-    throw new Error('newMap_ failed')
+    throw new Error('createMap failed')
   }
   
   return await response.json()

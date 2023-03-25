@@ -72,7 +72,7 @@ export default function Canvas (props: Props) {
     let hashX = getHashX();
     let hashY = getHashY();
 
-    const getWall = (start: any, end: any) => {
+    const getLine = (start: any, end: any) => {
       return {
         aX: start.x,
         aY: start.y,
@@ -114,19 +114,19 @@ export default function Canvas (props: Props) {
         currentMap.y += mouse.movementXY.y;
 
         // moves walls
-        for (const wall of currentMap.walls) {
+        for (const line of currentMap.lines) {
           if (mouse.pressed === true) {
-            wall.aX += mouse.movementXY.x
-            wall.aY += mouse.movementXY.y
-            wall.bX += mouse.movementXY.x
-            wall.bY += mouse.movementXY.y
+            line.aX += mouse.movementXY.x
+            line.aY += mouse.movementXY.y
+            line.bX += mouse.movementXY.x
+            line.bY += mouse.movementXY.y
           }
         }
 
-        for (const zombie of currentMap.zombies) {
+        for (const location of currentMap.locations) {
           if (mouse.pressed === true) {
-            zombie.x += mouse.movementXY.x
-            zombie.y += mouse.movementXY.y
+            location.x += mouse.movementXY.x
+            location.y += mouse.movementXY.y
           }
         }
 
@@ -151,28 +151,18 @@ export default function Canvas (props: Props) {
         } 
         
 
-        if (currentMap.tool === 'add wall' && mouse.doubleTap !== true) {
+        if (currentMap.tool === 'add line' && mouse.doubleTap !== true) {
           if (currentMap.selected.x !== undefined && currentMap.selected.y !== undefined && mouse.selected.x !== undefined && mouse.selected.y !== undefined) {
-            const newWall = getWall(currentMap.selected, mouse.selected);
-            currentMap.walls.push(newWall);
+            const newLine = getLine(currentMap.selected, mouse.selected);
+            currentMap.lines.push(newLine);
             currentMap.selected = { x: undefined, y: undefined};
           } else {
           currentMap.selected = mouse.selected;
           }
-          
-          // // this is better for adding curvy walls
-          // if (currentMap.selected.x !== undefined && currentMap.selected.y !== undefined && mouse.selected.x !== undefined && mouse.selected.y !== undefined) {
-          //   const newWall = getWall(currentMap.selected, mouse.selected);
-          //   currentMap.walls.push(newWall);
-          // }
-          // currentMap.selected = mouse.selected;
-          
-        
+      
+        } else if (currentMap.tool === 'add location' && mouse.doubleTap === true && mouse.selected.x !== undefined && mouse.selected.y !== undefined) {
 
-
-        } else if (currentMap.tool === 'add zombie' && mouse.doubleTap === true && mouse.selected.x !== undefined && mouse.selected.y !== undefined) {
-
-          currentMap.zombies.push(mouse.selected);
+          currentMap.locations.push(mouse.selected);
           currentMap.selected = mouse.selected;
 
 

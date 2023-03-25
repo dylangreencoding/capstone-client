@@ -1,10 +1,13 @@
 import { useNavigate } from "react-router-dom";
-import { logOut } from "../../../server-calls/log-out";
+import { logOut } from "../../../expressAPI/log-out";
 // import { useNewMap } from "../../../custom-hooks/useNewMap";
-import { newMap } from "../../../server-calls/new-map";
-import { deleteMap } from "../../../server-calls/delete-map";
+import { createMap } from "../../../expressAPI/create-map";
+import { deleteMap } from "../../../expressAPI/delete-map";
 import { useEffect } from "react";
-import { getUser } from "../../../server-calls/get-user";
+
+// getUser is passed in as a prop
+// it might be better to import it
+// import { getUser } from "../../../expressAPI/get-user";
 
 interface Props {
   setCurrent: Function;
@@ -14,7 +17,7 @@ interface Props {
   savedMap: any;
   setSavedMap: Function;
   user: any;
-  getUser: Function;
+  getUserData: Function;
   maps: any;
 }
 
@@ -46,15 +49,15 @@ export default function Options (props: Props) {
     width: 40,
     height: 20,
     
-    walls: [],
-    zombies: []
+    lines: [],
+    locations: []
   }
 
   // add blank map to database
   const handleNewMap = async (e: any) => {
     e.preventDefault();
     async function handleDataFetch () {
-      const result = await newMap(props.accessToken, blankMap);
+      const result = await createMap(props.accessToken, blankMap);
       return result.map
     }
     const currentMap = await handleDataFetch();
@@ -62,7 +65,7 @@ export default function Options (props: Props) {
 
     // location.reload();
     // TODO: rename this to getuserData
-    props.getUser();
+    props.getUserData();
   }
 
   const handleNewChar = (e: any) => {
@@ -77,27 +80,27 @@ export default function Options (props: Props) {
 
   const handleChooseMap = (e: any) => {
     e.preventDefault();
-    // console.log(e.target.value)
-    let selectedMap = '';
+    console.log(e.target.value)
+    let selectedMap = {};
     for (const map of props.maps) {
       if (map.id === e.target.value) {
         // console.log(map.id)
         selectedMap = map;
       }
     }
-
+    // console.log(selectedMap)
     // not sure why i have to setState like this here
     // props.setSavedMap({...props.savedMap, selectedMap});
     props.setSavedMap(selectedMap)
     props.setCurrent('map');
     props.setTab('current');
-    props.getUser();
+    props.getUserData();
   }
 
   const handleDeleteMap = async (e: any) => {
     e.preventDefault();
     // console.log(e.target.value)
-    let selectedMap = '';
+    let selectedMap = {};
     for (const map of props.maps) {
       if (map.id === e.target.value) {
         // console.log(map.id)
@@ -111,7 +114,7 @@ export default function Options (props: Props) {
     }
     const currentMap = await handleDataFetch();
     console.log('delete', currentMap);
-    props.getUser();
+    props.getUserData();
   }
 
 

@@ -1,11 +1,11 @@
 
 
 export async function logIn (data: any = {}) {
-  const response = await fetch('http://localhost:8080/auth/signin', {
+  const response = await fetch('http://localhost:8080/auth/login', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': 'http://localhost:8080/auth/signin',
+      'Access-Control-Allow-Origin': 'http://localhost:8080/auth/login',
     },
     body: JSON.stringify(data)
   });

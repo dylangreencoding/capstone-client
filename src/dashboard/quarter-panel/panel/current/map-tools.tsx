@@ -1,13 +1,13 @@
 import { useState } from "react";
-import { updateMap } from "../../../../server-calls/update-map";
+import { updateMap } from "../../../../expressAPI/update-map";
 
 interface Props {
   savedMap: any;
   setSavedMap: Function;
   user: any;
-  getUser: Function;
+  getUserData: Function;
   accessToken: string;
-  map: any;
+  maps: any;
 }
 
 export default function MapTools (props: Props) {
@@ -26,8 +26,7 @@ export default function MapTools (props: Props) {
     const updatedMap = await handleDataFetch();
 
     // location.reload();
-    // TODO: rename this to getuserData
-    props.getUser();
+    props.getUserData();
   }
 
   const handlePickTool = (e: any) => {
@@ -36,15 +35,15 @@ export default function MapTools (props: Props) {
     props.setSavedMap({...props.savedMap, currentMap});
   }
 
-  const handleUndoWall = (e: any) => {
+  const handleUndoLine = (e: any) => {
     const currentMap = props.savedMap;
-    currentMap.walls.pop();
+    currentMap.lines.pop();
     props.setSavedMap({...props.savedMap, currentMap});
   }
 
-  const handleUndoZombie = (e: any) => {
+  const handleUndoLocation = (e: any) => {
     const currentMap = props.savedMap;
-    currentMap.zombies.pop();
+    currentMap.locations.pop();
     props.setSavedMap({...props.savedMap, currentMap});
   }
 
@@ -71,30 +70,30 @@ export default function MapTools (props: Props) {
           <div className="flex-space-between mb24">
             <button 
               type='button'
-              className={`tool btn ${props.savedMap.tool === 'add wall' ? 'active' : ''}`}
-              value='add wall'
+              className={`tool btn ${props.savedMap.tool === 'add line' ? 'active' : ''}`}
+              value='add line'
               onClick={handlePickTool}
-            >add wall</button>
+            >add line</button>
             <button 
               type='button'
               className='tool btn'
-              value='undo-wall'
-              onClick={handleUndoWall}
-            >undo wall</button>
+              value='undo-line'
+              onClick={handleUndoLine}
+            >undo line</button>
           </div>
           <div className="flex-space-between mb24">
             <button 
               type='button'
               className={`tool btn ${props.savedMap.tool === 'add zombie' ? 'active' : ''}`}
-              value='add zombie'
+              value='add location'
               onClick={handlePickTool}
-            >add zombie</button>
+            >add location</button>
             <button 
               type='button'
               className='tool btn'
-              value='undo-zombie'
-              onClick={handleUndoZombie}
-            >undo zombie</button>
+              value='undo-location'
+              onClick={handleUndoLocation}
+            >undo location</button>
           </div>
         </div>
         <form className="text-form" >
