@@ -47,6 +47,10 @@ body {
   color: rgba(255, 217, 0, 0.88);
 }
 
+.no-cursor {
+  cursor: none;
+}
+
 /* *************** */
 /*  HTML elements */
 /* ************* */
@@ -257,7 +261,7 @@ li:hover {
 }
 
 .active {
-  background-color: rgb(96, 0, 0);
+  background-color: #600000;
 }
 
 /* text input */

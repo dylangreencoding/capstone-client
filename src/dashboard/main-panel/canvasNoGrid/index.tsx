@@ -9,7 +9,7 @@ interface Props {
   setSavedMap: Function;
 }
 
-export default function Canvas (props: Props) {
+export default function CanvasNoGrid (props: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   // used for setting savedMap state variable
@@ -35,37 +35,6 @@ export default function Canvas (props: Props) {
     }
     let mouse : Mouse = { pressed: false, movedMap: false, movementXY: { x: undefined, y: undefined }, position: { x: undefined, y: undefined }, selected: { x: undefined, y: undefined }, selector: { x: undefined, y: undefined }, doubleTap: false };
 
-    // for constructing grid reference hashmap X
-    const getHashX = () => {
-      let hashX : any = {};
-      let currentSquare = currentMap.x;
-      let hashCounter = 0;
-      for (let x = currentMap.x; x < (currentMap.scale * currentMap.width) + currentMap.x; x++) {
-        if (hashCounter === currentMap.scale) {
-          currentSquare += currentMap.scale;
-          hashCounter = 0;
-        }
-        hashCounter += 1;
-        hashX[x] = currentSquare;
-      }
-      return hashX
-    }
-
-    // for constructing grid reference hashmap Y
-    const getHashY = () => {
-      let hashY : any = {};
-      let currentSquare = currentMap.y;
-      let hashCounter = 0;
-      for (let y = currentMap.y; y < (currentMap.scale * currentMap.height) + currentMap.y; y++) {
-        if (hashCounter === currentMap.scale) {
-          currentSquare += currentMap.scale;
-          hashCounter = 0;
-        }
-        hashCounter += 1;
-        hashY[y] = currentSquare;
-      }
-      return hashY
-    }
 
     // for constructing line object
     const getLine = (start: any, end: any) => {
@@ -79,14 +48,13 @@ export default function Canvas (props: Props) {
 
     // first draw
     draw(ctx, canvas.width, canvas.height, mouse.selector, currentMap, props.savedMap);
-    let hashX = getHashX();
-    let hashY = getHashY();
+
 
     // for constructing mouse data
     // need to be after hashmaps are constructed
     const getMousePositionXY = (e: MouseEvent) => {
-      let positionX = hashX[e.clientX];
-      let positionY = hashY[e.clientY];
+      let positionX = e.clientX;
+      let positionY = e.clientY;
       return {
         x: positionX,
         y: positionY
@@ -135,13 +103,8 @@ export default function Canvas (props: Props) {
         }
 
       } else {
-        if (mouse.position.x !== undefined && mouse.position.y !== undefined) {
-          mouse.selector.x = mouse.position.x;
-          mouse.selector.y = mouse.position.y;
-        } else {
-          mouse.selector.x = e.clientX;
-          mouse.selector.y = e.clientY;
-        }
+        mouse.selector.x = mouse.position.x;
+        mouse.selector.y = mouse.position.y;
       }
 
       draw(ctx, canvas.width, canvas.height, mouse.selector, currentMap, props.savedMap);
@@ -155,30 +118,23 @@ export default function Canvas (props: Props) {
       if (mouse.movedMap === false) {
 
         // deselects selected
-        if ((mouse.selected.x === currentMap.selected.x && mouse.selected.y === currentMap.selected.y) || mouse.selected.x === undefined || mouse.selected.y === undefined) {        
+        if (mouse.selected.x === currentMap.selected.x && mouse.selected.y === currentMap.selected.y) {        
           mouse.doubleTap = true;
         } 
         
 
         if (currentMap.tool === 'add line' && mouse.doubleTap !== true) {
-          // if (currentMap.selected.x !== undefined && currentMap.selected.y !== undefined && mouse.selected.x !== undefined && mouse.selected.y !== undefined) {
-          //   const newLine = getLine(currentMap.selected, mouse.selected);
-          //   currentMap.lines.push(newLine);
-          //   currentMap.selected = { x: undefined, y: undefined};
-          // } else {
-          // currentMap.selected = mouse.selected;
-          // }
 
-          if (currentMap.selected.x !== undefined && currentMap.selected.y !== undefined && mouse.selected.x !== undefined && mouse.selected.y !== undefined) {
-            const newLine = getLine(currentMap.selected, mouse.selected);
-            currentMap.lines.push(newLine);
-          }
+          const newLine = getLine(currentMap.selected, mouse.selected);
+          currentMap.lines.push(newLine);
+          
           currentMap.selected = mouse.selected;
       
-        } else if (currentMap.tool === 'add location' && mouse.doubleTap === true && mouse.selected.x !== undefined && mouse.selected.y !== undefined) {
+        } else if (currentMap.tool === 'add location') {
 
           currentMap.locations.push(mouse.selected);
           currentMap.selected = mouse.selected;
+          // currentMap.selected = { x: undefined, y: undefined };
 
         } else {
           currentMap.selected = mouse.selected;
@@ -198,8 +154,6 @@ export default function Canvas (props: Props) {
         draw(ctx, canvas.width, canvas.height, mouse.selector, currentMap, props.savedMap);
       }
 
-      hashX = getHashX();
-      hashY = getHashY();
       mouse.movedMap = false;
     }
 

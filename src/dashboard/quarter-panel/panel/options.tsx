@@ -35,19 +35,20 @@ export default function Options (props: Props) {
     }
   }
 
+  // for handleNewMap
   const blankMap = {
     id: '',
     maker: props.user.id,
-    name: 'NEW_MAP',
+    name: 'NEW MAP',
 
     x: 0, 
     y: 0, 
     scale: 25, 
-    selected: { x: 0, y: 0 },
+    selected: { x: undefined, y: undefined },
     tool: 'none',
 
-    width: 40,
-    height: 20,
+    width: 50,
+    height: 25,
     
     lines: [],
     locations: []
@@ -68,20 +69,10 @@ export default function Options (props: Props) {
     props.getUserData();
   }
 
-  const handleNewChar = (e: any) => {
-    props.setCurrent('char');
-    props.setTab('current');
-  }
-
-  const handleNewGame = (e: any) => {
-    props.setCurrent('game');
-    props.setTab('current');
-  }
-
   const handleChooseMap = (e: any) => {
     e.preventDefault();
     console.log(e.target.value)
-    let selectedMap = {};
+    let selectedMap;
     for (const map of props.maps) {
       if (map.id === e.target.value) {
         // console.log(map.id)
@@ -94,27 +85,38 @@ export default function Options (props: Props) {
     props.setSavedMap(selectedMap)
     props.setCurrent('map');
     props.setTab('current');
-    props.getUserData();
   }
 
   const handleDeleteMap = async (e: any) => {
     e.preventDefault();
     // console.log(e.target.value)
-    let selectedMap = {};
+    let selectedMap;
     for (const map of props.maps) {
       if (map.id === e.target.value) {
         // console.log(map.id)
         selectedMap = map;
       }
     }
+    await deleteMap(props.accessToken, selectedMap);
+    await props.getUserData();
 
-    async function handleDataFetch () {
-      const result = await deleteMap(props.accessToken, selectedMap);
-      return result.map
-    }
-    const currentMap = await handleDataFetch();
-    console.log('delete', currentMap);
-    props.getUserData();
+    selectedMap.name = 'Please choose a map';
+    selectedMap.height = 2;
+    selectedMap.width = 2;
+    props.setSavedMap(selectedMap);
+
+  }
+
+
+
+  const handleNewChar = (e: any) => {
+    props.setCurrent('char');
+    props.setTab('current');
+  }
+
+  const handleNewGame = (e: any) => {
+    props.setCurrent('game');
+    props.setTab('current');
   }
 
 

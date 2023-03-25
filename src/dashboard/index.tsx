@@ -11,8 +11,6 @@ export default function Dashboard () {
   // get state from useNavigate called at login
   // call custom hook to GET user data (on component mount?)
   const location = useLocation();
-  // *** COMMENT OUT FOR OFFLINE WORK *** \\
-
   const [accessToken, setAccessToken] = useState<string>(location.state.accessToken);
   const { user, maps, getUserData } = useGetUser(accessToken);
 
@@ -20,13 +18,11 @@ export default function Dashboard () {
   const [current, setCurrent] = useState<string>('map');
   const [tab, setTab] = useState<string>('options')
 
-  // TODO
-  // replace with fetched map data
-  
+  // blank map template
   const blankMap = {
     id: '',
     maker: '',
-    name: '',
+    name: 'Please choose a map',
 
     x: 0, 
     y: 0, 
@@ -34,14 +30,14 @@ export default function Dashboard () {
     selected: { x: undefined, y: undefined },
     tool: 'none',
 
-    width: 40,
-    height: 20,
+    width: 2,
+    height: 2,
     
-    walls: [],
-    lines: []
+    lines: [],
+    locations: []
   }
+  // might rename this
   const [savedMap, setSavedMap] = useState<any>(blankMap);
-
 
   return (
     <div className='dashboard'>

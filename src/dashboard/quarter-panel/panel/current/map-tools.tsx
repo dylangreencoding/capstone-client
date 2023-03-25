@@ -59,6 +59,7 @@ export default function MapTools (props: Props) {
       </div>
       <div className='tools-body'>
         <div className='tool-box'>
+          <h4 className="mb12">-----</h4>
           <div className="mb24">
             <button 
               type='button'
@@ -84,7 +85,7 @@ export default function MapTools (props: Props) {
           <div className="flex-space-between mb24">
             <button 
               type='button'
-              className={`tool btn ${props.savedMap.tool === 'add zombie' ? 'active' : ''}`}
+              className={`tool btn ${props.savedMap.tool === 'add location' ? 'active' : ''}`}
               value='add location'
               onClick={handlePickTool}
             >add location</button>

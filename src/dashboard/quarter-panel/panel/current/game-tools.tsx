@@ -35,6 +35,7 @@ export default function GameTools (props: Props) {
       </div>
       <div className='tools-body'>
         <div className='tool-box'>
+        <h4 className="mb12">-----</h4>
           <div className="mb24">
             <button 
               type='button'
