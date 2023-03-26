@@ -4,10 +4,11 @@ import { updateMap } from "../../../../expressAPI/update-map";
 interface Props {
   savedMap: any;
   setSavedMap: Function;
-  user: any;
-  getUserData: Function;
+
   accessToken: string;
+  user: any;
   maps: any;
+  getUserData: Function;
 }
 
 export default function MapTools (props: Props) {
@@ -19,14 +20,10 @@ export default function MapTools (props: Props) {
   currentMap.map = []
   const handleSubmitMap = async (e: any) => {
     e.preventDefault();
-    async function handleDataFetch () {
-      const result = await updateMap(props.accessToken, currentMap);
-      return result.map
-    }
-    const updatedMap = await handleDataFetch();
+    await updateMap(props.accessToken, currentMap);
 
     // location.reload();
-    props.getUserData();
+    await props.getUserData();
   }
 
   const handlePickTool = (e: any) => {

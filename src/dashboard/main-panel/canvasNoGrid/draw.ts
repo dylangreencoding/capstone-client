@@ -3,13 +3,12 @@
 export function draw (ctx: any, canvasWidth: number, canvasHeight: number, selector: any, map_: any, savedMap: any) {
 
   ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-  ctx.strokeStyle = "#737373";
-  ctx.lineWidth = 1;
-
-
+  
   ctx.fillStyle = "#2c2c2c";
   ctx.fillRect(map_.x, map_.y, map_.width * map_.scale, map_.height * map_.scale);
-
+  
+  ctx.strokeStyle = "#737373";
+  ctx.lineWidth = 1;
 
   // draw lines
   for (const line of savedMap.lines) {

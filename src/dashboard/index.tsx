@@ -52,13 +52,14 @@ export default function Dashboard () {
         setCurrent={setCurrent}
         tab={tab}
         setTab={setTab}
-        userEmail={user.email}
+
         savedMap={savedMap}
         setSavedMap={setSavedMap}
-        user={user}
-        getUserData={getUserData}
+
         accessToken={accessToken}
+        user={user}
         maps={maps}
+        getUserData={getUserData}
       />
     </div>
   )

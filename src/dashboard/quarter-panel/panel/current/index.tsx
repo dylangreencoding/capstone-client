@@ -4,12 +4,14 @@ import CharTools from "./char-tools";
 
 interface Props {
   current: string;
+
   savedMap: any;
   setSavedMap: Function;
-  user: any;
-  getUserData: Function;
+
   accessToken: string;
+  user: any;
   maps: any;
+  getUserData: Function;
 }
 
 export default function Current (props: Props) {
@@ -19,10 +21,11 @@ export default function Current (props: Props) {
       return <MapTools 
         savedMap={props.savedMap}
         setSavedMap={props.setSavedMap}
-        user={props.user}
-        getUserData={props.getUserData}
+
         accessToken={props.accessToken}
+        user={props.user}
         maps={props.maps}
+        getUserData={props.getUserData}
       />
     } else if (props.current === 'game') {
       return <GameTools 

@@ -86,13 +86,14 @@ export function draw (ctx: any, canvasWidth: number, canvasHeight: number, selec
 
   } else if (savedMap.tool === 'add location') {
     ctx.strokeStyle = '#a00000';
-    ctx.lineWidth = 3;
-
+    ctx.lineWidth = 1;
+    
     ctx.beginPath();
     ctx.strokeRect(map_.selected.x, map_.selected.y, map_.scale, map_.scale)
     ctx.closePath();
     ctx.stroke();
-
+    
+    ctx.strokeStyle = '#f00000';
     ctx.beginPath();
     ctx.arc(selector.x + (map_.scale*0.5), selector.y + (map_.scale*0.5), map_.scale*0.25, 0, Math.PI*2);
     ctx.closePath();

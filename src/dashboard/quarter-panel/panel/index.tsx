@@ -6,13 +6,14 @@ interface Props {
   setTab: Function;
   current: string;
   setCurrent: Function;
-  userEmail: string;
+
   savedMap: any;
   setSavedMap: Function;
-  user: any;
-  getUserData: Function;
+
   accessToken: string;
+  user: any;
   maps: any;
+  getUserData: Function;
 }
 
 export default function Panel (props: Props) {
@@ -22,22 +23,25 @@ export default function Panel (props: Props) {
       <Options 
         setCurrent={props.setCurrent}  
         setTab={props.setTab} 
-        userEmail={props.userEmail}
-        accessToken={props.accessToken}
+
         savedMap={props.savedMap}
         setSavedMap={props.setSavedMap}
+
+        accessToken={props.accessToken}
         user={props.user}
-        getUserData={props.getUserData}
         maps={props.maps}
+        getUserData={props.getUserData}
         /> : 
         <Current 
         current={props.current}
+
         savedMap={props.savedMap}
         setSavedMap={props.setSavedMap}
-        user={props.user}
-        getUserData={props.getUserData}
-        maps={props.maps}
+
         accessToken={props.accessToken}
+        user={props.user}
+        maps={props.maps}
+        getUserData={props.getUserData}
         />}
     </div>
   )

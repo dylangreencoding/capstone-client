@@ -12,13 +12,14 @@ import { useEffect } from "react";
 interface Props {
   setCurrent: Function;
   setTab: Function;
-  userEmail: string;
-  accessToken: string;
+
   savedMap: any;
   setSavedMap: Function;
+
+  accessToken: string;
   user: any;
-  getUserData: Function;
   maps: any;
+  getUserData: Function;
 }
 
 export default function Options (props: Props) {
@@ -57,29 +58,22 @@ export default function Options (props: Props) {
   // add blank map to database
   const handleNewMap = async (e: any) => {
     e.preventDefault();
-    async function handleDataFetch () {
-      const result = await createMap(props.accessToken, blankMap);
-      return result.map
-    }
-    const currentMap = await handleDataFetch();
-    console.log('added new map', currentMap);
+    await createMap(props.accessToken, blankMap);
 
     // location.reload();
-    // TODO: rename this to getuserData
-    props.getUserData();
+    await props.getUserData();
   }
 
   const handleChooseMap = (e: any) => {
     e.preventDefault();
-    console.log(e.target.value)
+
     let selectedMap;
     for (const map of props.maps) {
       if (map.id === e.target.value) {
-        // console.log(map.id)
         selectedMap = map;
       }
     }
-    // console.log(selectedMap)
+
     // not sure why i have to setState like this here
     // props.setSavedMap({...props.savedMap, selectedMap});
     props.setSavedMap(selectedMap)
@@ -87,19 +81,21 @@ export default function Options (props: Props) {
     props.setTab('current');
   }
 
+  // delete a map
   const handleDeleteMap = async (e: any) => {
     e.preventDefault();
-    // console.log(e.target.value)
+
     let selectedMap;
     for (const map of props.maps) {
       if (map.id === e.target.value) {
-        // console.log(map.id)
         selectedMap = map;
       }
     }
+
     await deleteMap(props.accessToken, selectedMap);
     await props.getUserData();
 
+    // so you cannot view a map you just deleted
     selectedMap.name = 'Please choose a map';
     selectedMap.height = 2;
     selectedMap.width = 2;
@@ -108,23 +104,20 @@ export default function Options (props: Props) {
   }
 
 
-
   const handleNewChar = (e: any) => {
     props.setCurrent('char');
     props.setTab('current');
   }
-
   const handleNewGame = (e: any) => {
     props.setCurrent('game');
     props.setTab('current');
   }
 
 
-
   return (
     <div className='options'>
       <div className='flex-space-between mb36'>
-        <h3>{props.userEmail}</h3>
+        <h3>{props.user.email}</h3>
         <button type="button" className='tool btn' onClick={handleLogout}>logout</button>
       </div>
       <div className="mb36">
@@ -163,7 +156,6 @@ export default function Options (props: Props) {
           <li>- </li>
         </ul>
       </div>
-
     </div>
   )
 }

@@ -161,21 +161,21 @@ export default function Canvas (props: Props) {
         
 
         if (currentMap.tool === 'add line' && mouse.doubleTap !== true) {
-          // if (currentMap.selected.x !== undefined && currentMap.selected.y !== undefined && mouse.selected.x !== undefined && mouse.selected.y !== undefined) {
-          //   const newLine = getLine(currentMap.selected, mouse.selected);
-          //   currentMap.lines.push(newLine);
-          //   currentMap.selected = { x: undefined, y: undefined};
-          // } else {
-          // currentMap.selected = mouse.selected;
-          // }
-
           if (currentMap.selected.x !== undefined && currentMap.selected.y !== undefined && mouse.selected.x !== undefined && mouse.selected.y !== undefined) {
             const newLine = getLine(currentMap.selected, mouse.selected);
             currentMap.lines.push(newLine);
-          }
+            currentMap.selected = { x: undefined, y: undefined};
+          } else {
           currentMap.selected = mouse.selected;
+          }
+
+          // if (currentMap.selected.x !== undefined && currentMap.selected.y !== undefined && mouse.selected.x !== undefined && mouse.selected.y !== undefined) {
+          //   const newLine = getLine(currentMap.selected, mouse.selected);
+          //   currentMap.lines.push(newLine);
+          // }
+          // currentMap.selected = mouse.selected;
       
-        } else if (currentMap.tool === 'add location' && mouse.doubleTap === true && mouse.selected.x !== undefined && mouse.selected.y !== undefined) {
+        } else if (currentMap.tool === 'add location' && mouse.doubleTap === false && mouse.selected.x !== undefined && mouse.selected.y !== undefined) {
 
           currentMap.locations.push(mouse.selected);
           currentMap.selected = mouse.selected;
