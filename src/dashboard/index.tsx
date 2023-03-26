@@ -13,7 +13,7 @@ export default function Dashboard () {
   const location = useLocation();
   const [accessToken, setAccessToken] = useState<string>(location.state.accessToken);
   const { user, maps, getUserData } = useGetUser(accessToken);
-
+  
   // sets options tab and main panel display
   const [current, setCurrent] = useState<string>('map');
   const [tab, setTab] = useState<string>('options')

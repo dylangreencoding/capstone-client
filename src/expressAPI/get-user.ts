@@ -12,7 +12,7 @@ export async function getUser (token: string) {
   if (!response.ok) {
     throw new Error('getUser failed')
   }
-
+  
   return await response.json()
 }
 
