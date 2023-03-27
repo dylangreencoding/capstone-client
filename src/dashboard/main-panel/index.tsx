@@ -2,7 +2,8 @@ import Canvas from "./canvas";
 import CharSheet from "./char-sheet";
 import CapstoneInfo from "./capstone-info";
 
-import CanvasNoGrid from "./canvasNoGrid";
+import CanvasNoGrid from "./canvas-no-grid";
+import CanvasCopy from "./canvas-copy";
 
 interface Props {
   current: string;
@@ -19,7 +20,7 @@ export default function MainPanel (props: Props) {
     } else if (props.tab === 'current' && props.current === 'char') {
       return <CharSheet />
     } else {
-      return <Canvas
+      return <CanvasCopy
         width={window.innerWidth * 0.75}
         height={window.innerHeight}
         savedMap={props.savedMap}
