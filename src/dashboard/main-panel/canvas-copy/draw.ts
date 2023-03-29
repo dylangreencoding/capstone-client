@@ -7,19 +7,19 @@ export function draw (ctx: any, canvasWidth: number, canvasHeight: number, selec
   ctx.lineWidth = 1;
 
   // draw grid
-  for (let x = map_.x; x <= (map_.width * map_.scale) + map_.x; x += map_.scale) {
+  for (let x = map_.x - map_.scale/2; x <= (map_.width * map_.scale) + map_.x; x += map_.scale) {
     ctx.beginPath();
-    ctx.moveTo(x, map_.y);
-    ctx.lineTo(x, (map_.height * map_.scale) + map_.y);
-    ctx.moveTo(x, map_.y);
+    ctx.moveTo(x, map_.y - map_.scale/2);
+    ctx.lineTo(x, (map_.height * map_.scale) + map_.y - map_.scale/2);
+    ctx.moveTo(x, map_.y - map_.scale/2);
     ctx.closePath();
     ctx.stroke();
   }
-  for (let y = map_.y; y <= (map_.height * map_.scale) + map_.y; y += map_.scale) {
+  for (let y = map_.y - map_.scale/2; y <= (map_.height * map_.scale) + map_.y; y += map_.scale) {
     ctx.beginPath();
-    ctx.moveTo(map_.x, y);
-    ctx.lineTo((map_.width * map_.scale) + map_.x, y);
-    ctx.moveTo(map_.x, y);
+    ctx.moveTo(map_.x - map_.scale/2, y);
+    ctx.lineTo((map_.width * map_.scale) - map_.scale/2 + map_.x, y);
+    ctx.moveTo(map_.x - map_.scale/2, y);
     ctx.closePath();
     ctx.stroke();
   }
@@ -27,7 +27,7 @@ export function draw (ctx: any, canvasWidth: number, canvasHeight: number, selec
   // draw lines
   for (const line of savedMap.lines) {
     ctx.strokeStyle = '#737373';
-    ctx.lineWidth = 6;
+    ctx.lineWidth = 0.5 * map_.scale;
 
     ctx.beginPath();
     ctx.moveTo(line.aX, line.aY);

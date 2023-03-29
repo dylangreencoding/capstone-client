@@ -10,7 +10,7 @@ export async function getUser (token: string) {
   });
 
   if (!response.ok) {
-    throw new Error('getUser failed')
+    throw new Error('capstone-client-get-user failed')
   }
   
   return await response.json()

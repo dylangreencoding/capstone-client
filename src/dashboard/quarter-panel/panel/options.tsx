@@ -118,7 +118,7 @@ export default function Options (props: Props) {
     <div className='options'>
       <div className='flex-space-between mb36'>
         <h3>{props.user.email}</h3>
-        <button type="button" className='tool btn' onClick={handleLogout}>logout</button>
+        <button type="button" className='tool btn' onClick={handleLogout}>LEAVE</button>
       </div>
       <div className="mb36">
         <div className='flex-space-between mb12'>

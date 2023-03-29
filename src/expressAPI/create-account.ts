@@ -10,7 +10,7 @@ export async function createAccount (data: any = {}) {
   });
 
   if (!response.ok) {
-    throw new Error('createAccount failed')
+    throw new Error('capstone-client-create-account failed')
   }
 
   return await response.json()

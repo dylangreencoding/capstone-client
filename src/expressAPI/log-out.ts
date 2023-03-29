@@ -8,7 +8,7 @@ export async function logOut () {
   });
 
   if (!response.ok) {
-    throw new Error('logOut failed')
+    throw new Error('capstone-client-logout failed')
   }
 
   return await response.json()

@@ -49,14 +49,13 @@ export default function MapTools (props: Props) {
     <div className='map-tools'>
       
       <div className='mb36 flex-space-between'>
-        <span>
-          {props.savedMap.selected.x}, {props.savedMap.selected.y}
-        </span>
         <h3>{props.savedMap.name}</h3>
       </div>
       <div className='tools-body'>
         <div className='tool-box'>
-          <h4 className="mb12">-----</h4>
+          <div className="mb24">
+            <span>{props.savedMap.selected.x}, {props.savedMap.selected.y}</span>
+          </div>
           <div className="mb24">
             <button 
               type='button'

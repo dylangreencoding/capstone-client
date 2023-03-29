@@ -11,7 +11,7 @@ export async function createMap (token: string, map: any = {}) {
   });
 
   if (!response.ok) {
-    throw new Error('createMap failed')
+    throw new Error('capstone-client-create-map failed')
   }
   
   return await response.json()

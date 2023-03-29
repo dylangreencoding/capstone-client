@@ -11,7 +11,7 @@ export async function deleteMap (token: string, map: any = {}) {
   });
 
   if (!response.ok) {
-    throw new Error('deleteMap_ failed')
+    throw new Error('capstone-client-delete-map failed')
   }
   
   return await response.json()

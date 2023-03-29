@@ -11,7 +11,7 @@ export async function updateMap (token: string, map: any = {}) {
   });
 
   if (!response.ok) {
-    throw new Error('newMap_ failed')
+    throw new Error('capstone-client-update-map failed')
   }
   
   return await response.json()
