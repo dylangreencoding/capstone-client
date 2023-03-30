@@ -1,6 +1,15 @@
 import { Link } from 'react-router-dom'
+import { useState } from 'react'
+import { useGetBlogPosts } from '../../custom-hooks/useGetBlogPosts';
 
 export default function LandingPage () {
+  const { blogPosts, getBlogPosts } = useGetBlogPosts();
+
+  console.log(blogPosts)
+
+  // TODO: display blog posts on landing page
+  
+
   return (
     <div className='container'>
       <header>
