@@ -1,13 +1,40 @@
 import { Link } from 'react-router-dom'
 import { useState } from 'react'
 import { useGetBlogPosts } from '../../custom-hooks/useGetBlogPosts';
+import { createBlogPost } from '../../expressAPI/create-blog-post';
 
 export default function LandingPage () {
   const { blogPosts, getBlogPosts } = useGetBlogPosts();
-
   console.log(blogPosts)
+  // HERE: map blog posts to landing page
 
-  // TODO: display blog posts on landing page
+
+  // *** FOR WRITING BLOG POSTS, REMOVE BEFORE DEPLOYMENT *** \\
+  const [blogTitle, setBlogTitle] = useState<string>('');
+  const [blogBody, setBlogBody] = useState<string>('');
+  const displayWritePost = () => {
+    const handleSubmitPost = async (e: any) => {
+      e.preventDefault();
+      const data = {
+        'blogTitle': blogTitle,
+        'blogBody': blogBody,
+      }
+      try {
+        const response = await createBlogPost(data);
+        alert(response.message)
+      } catch (error) {
+        alert('capstone-client-create-post failed');
+      }
+    }
+
+    return (
+      <form className='auth-form' onSubmit={handleSubmitPost}>
+        <input type='text' placeholder='Title' value={blogTitle} onChange={(e) => {setBlogTitle(e.target.value)}}/>
+        <textarea cols={50} rows={10} placeholder='Body' value={blogBody} onChange={(e) => {setBlogBody(e.target.value)}}></textarea>
+        <button type="submit">Submit</button>
+      </form>
+    )
+  }
   
 
   return (
@@ -26,7 +53,18 @@ export default function LandingPage () {
           <Link to={'/CreateAccount'} replace={true} className='link'>Create Account</Link>
         </p>
       </main>
+      <ul>
+        {blogPosts.map((blogPost: any) => {
+          return <li key={blogPost.id}>
+            <h2>{blogPost.blogTitle}</h2>
+            <p>{blogPost.__updatedtime__}</p>
+            <p>{blogPost.blogBody}</p>
+          </li>
+        })}
+      </ul>
       <footer>
+        {/* REMOVE BEFORE DEPLOYMENT */}
+        { displayWritePost() }
         <p>Copyright 2023 Dylan Green</p>
       </footer>
     </div>
