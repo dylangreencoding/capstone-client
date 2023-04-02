@@ -9,10 +9,13 @@ interface Props {
 
   savedMap: any;
   setSavedMap: Function;
+  savedChar: any;
+  setSavedChar: Function;
 
   accessToken: string;
   user: any;
   maps: any;
+  chars: any;
   getUserData: Function;
 }
 
@@ -26,10 +29,14 @@ export default function Panel (props: Props) {
 
         savedMap={props.savedMap}
         setSavedMap={props.setSavedMap}
+        savedChar={props.savedChar}
+        setSavedChar={props.setSavedChar}
+
 
         accessToken={props.accessToken}
         user={props.user}
         maps={props.maps}
+        chars={props.chars}
         getUserData={props.getUserData}
         /> : 
         <Current 
@@ -37,6 +44,8 @@ export default function Panel (props: Props) {
 
         savedMap={props.savedMap}
         setSavedMap={props.setSavedMap}
+        savedChar={props.savedChar}
+        setSavedChar={props.setSavedChar}
 
         accessToken={props.accessToken}
         user={props.user}

@@ -11,10 +11,13 @@ interface Props {
 
   savedMap: any;
   setSavedMap: Function;
+  savedChar: any;
+  setSavedChar: Function;
 
   accessToken: string;
   maps: any;
   user: any;
+  chars: any;
   getUserData: Function;
 }
 
@@ -32,10 +35,13 @@ export default function QuarterPanel (props: Props) {
 
         savedMap={props.savedMap}
         setSavedMap={props.setSavedMap}
+        savedChar={props.savedChar}
+        setSavedChar={props.setSavedChar}
 
         accessToken={props.accessToken}
         user={props.user}
         maps={props.maps}
+        chars={props.chars}
         getUserData={props.getUserData}
       />
       <Tabs 

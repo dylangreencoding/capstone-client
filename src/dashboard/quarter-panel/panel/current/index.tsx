@@ -7,6 +7,8 @@ interface Props {
 
   savedMap: any;
   setSavedMap: Function;
+  savedChar: any;
+  setSavedChar: Function;
 
   accessToken: string;
   user: any;
@@ -33,7 +35,10 @@ export default function Current (props: Props) {
         setSavedMap={props.setSavedMap}
       />
     } else if (props.current === 'char') {
-      return <CharTools />
+      return <CharTools 
+        savedChar={props.savedChar}
+        setSavedChar={props.setSavedChar}
+      />
     }
   }
   

@@ -1,13 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import { logOut } from "../../../expressAPI/log-out";
-// import { useNewMap } from "../../../custom-hooks/useNewMap";
+//
 import { createMap } from "../../../expressAPI/create-map";
 import { deleteMap } from "../../../expressAPI/delete-map";
-import { useEffect } from "react";
+//
+import { createChar } from "../../../expressAPI/create-char";
+import { deleteChar } from "../../../expressAPI/delete-char";
 
-// getUser is passed in as a prop
-// it might be better to import it
-// import { getUser } from "../../../expressAPI/get-user";
+
 
 interface Props {
   setCurrent: Function;
@@ -15,10 +15,13 @@ interface Props {
 
   savedMap: any;
   setSavedMap: Function;
+  savedChar: any;
+  setSavedChar: Function;
 
   accessToken: string;
   user: any;
   maps: any;
+  chars: any;
   getUserData: Function;
 }
 
@@ -103,11 +106,61 @@ export default function Options (props: Props) {
 
   }
 
+  const blankChar = {
+    id: '',
+    maker: props.user.id,
+    name: 'NEW CHAR',
 
-  const handleNewChar = (e: any) => {
+    x: 0, 
+    y: 0, 
+    
+    speed: 5,
+    status: 5
+  }
+
+  const handleNewChar = async (e: any) => {
+    await createChar(props.accessToken, blankChar);
+    await props.getUserData();
+
+  }
+
+  const handleChooseChar = (e: any) => {
+    e.preventDefault();
+
+    let selectedChar;
+    for (const char of props.chars) {
+      if (char.id === e.target.value) {
+        selectedChar = char;
+      }
+    }
+
+    props.setSavedChar(selectedChar)
     props.setCurrent('char');
     props.setTab('current');
   }
+
+  const handleDeleteChar = async (e: any) => {
+    e.preventDefault();
+
+    let selectedChar;
+    for (const char of props.chars) {
+      if (char.id === e.target.value) {
+        selectedChar = char;
+      }
+    }
+
+    await deleteChar(props.accessToken, selectedChar);
+    await props.getUserData();
+
+    // so you cannot view a character you just deleted
+    selectedChar.name = 'Please choose a character';
+    selectedChar.speed = 0;
+    selectedChar.status = 0;
+    props.setSavedChar(selectedChar);
+
+  }
+
+
   const handleNewGame = (e: any) => {
     props.setCurrent('game');
     props.setTab('current');
@@ -128,8 +181,8 @@ export default function Options (props: Props) {
         <ul>
           {props.maps.map((map: any) => {
             return <li key={map.id} className='flex-space-between'>
-              <button type="button" value={map.id} onClick={handleChooseMap} className="map btn" >{map.name}</button>
-              <button type="button" value={map.id} onClick={handleDeleteMap} className="map btn" >delete</button>
+              <button type="button" value={map.id} onClick={handleChooseMap} className="btn" >{map.name}</button>
+              <button type="button" value={map.id} onClick={handleDeleteMap} className="btn" >delete</button>
             </li>
           })}
           <li>- </li>
@@ -141,6 +194,12 @@ export default function Options (props: Props) {
           <button type='button' className="tool btn" onClick={handleNewChar}>create</button>
         </div>
         <ul>
+          {props.chars.map((char: any) => {
+            return <li key={char.id} className='flex-space-between'>
+              <button type="button" value={char.id} onClick={handleChooseChar} className="btn" >{char.name}</button>
+              <button type="button" value={char.id} onClick={handleDeleteChar} className="btn" >delete</button>
+            </li>
+          })}
           <li>- </li>
         </ul>
       </div>

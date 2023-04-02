@@ -1,14 +1,14 @@
+interface Props {
+  savedChar: any;
+  setSavedChar: Function;
+}
 
-
-export default function CharTools () {
+export default function CharTools (props: Props) {
 
   return (
     <div>
       <div className='mb36 flex-space-between'>
-        <span>
-          {''}
-        </span>
-        <h3>name</h3>
+        <h3>{props.savedChar.name}</h3>
       </div>
     </div>
   )
