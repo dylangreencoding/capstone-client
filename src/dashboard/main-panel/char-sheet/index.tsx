@@ -12,8 +12,7 @@ interface Props {
 
 export default function CharSheet (props: Props) {
   const [charName, setCharName] = useState<string>(props.savedChar.name);
-  const [charSpeed, setCharSpeed] = useState<number>(props.savedChar.speed);
-  const [charStatus, setCharStatus] = useState<number>(props.savedChar.status);
+  const [charLevel, setCharLevel] = useState<number>(props.savedChar.level);
 
 
   const handleSubmitChar = async (e: any) => {
@@ -21,8 +20,7 @@ export default function CharSheet (props: Props) {
     
     let currentChar = props.savedChar;
     currentChar.name = charName;
-    currentChar.speed = charSpeed;
-    currentChar.status = charStatus;
+    currentChar.level = charLevel;
 
     await updateChar(props.accessToken, currentChar);
 
@@ -42,19 +40,11 @@ export default function CharSheet (props: Props) {
           />
         </label>
         <label className="mb24">
-          Speed |
+          Level |
           <input 
             type="text"
-            value={charSpeed}
-            onChange={(e) => {setCharSpeed(isNaN(Number(e.target.value)) ? 5 : Number(e.target.value))}}
-          />
-        </label>
-        <label className="mb24">
-          Status |
-          <input 
-            type="text"
-            value={charStatus}
-            onChange={(e) => {setCharStatus(isNaN(Number(e.target.value)) ? 5 : Number(e.target.value))}}
+            value={charLevel}
+            onChange={(e) => {setCharLevel(isNaN(Number(e.target.value)) ? 5 : Number(e.target.value))}}
           />
         </label>
         <button className='btn' type="submit">SAVE</button>

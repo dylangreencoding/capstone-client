@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 //
 import { draw } from './draw';
+import { doIntersect } from './utilities';
 
 interface Props {
   width: number;
@@ -27,6 +28,7 @@ export default function CanvasCopy (props: Props) {
       pressed: boolean;
       movedMap: boolean;
       doubleTap: boolean;
+      canGoHere: boolean;
 
       movementXY: { x: any, y: any };
       position: { x: any, y: any };
@@ -34,7 +36,7 @@ export default function CanvasCopy (props: Props) {
       selector: { x: any, y: any };
 
     }
-    let mouse : Mouse = { pressed: false, movedMap: false, movementXY: { x: undefined, y: undefined }, position: { x: undefined, y: undefined }, selected: { x: undefined, y: undefined }, selector: { x: undefined, y: undefined }, doubleTap: false };
+    let mouse : Mouse = { pressed: false, movedMap: false, movementXY: { x: undefined, y: undefined }, position: { x: undefined, y: undefined }, selected: { x: undefined, y: undefined }, selector: { x: undefined, y: undefined }, doubleTap: false, canGoHere: false };
 
     // for constructing grid reference hashmap X
     const getHashX = () => {
@@ -72,7 +74,7 @@ export default function CanvasCopy (props: Props) {
     const reHashSelectFrom = () => {
       let newSelectFrom : any = {};
       for (const key of Object.keys(currentMap.selectFrom)) {
-        newSelectFrom[locationToString({x: currentMap.selectFrom[key].x, y: currentMap.selectFrom[key].y})] = { x: currentMap.selectFrom[key].x, y: currentMap.selectFrom[key].y, type: currentMap.selectFrom[key].type };
+        newSelectFrom[locationToString({x: currentMap.selectFrom[key].x, y: currentMap.selectFrom[key].y})] = currentMap.selectFrom[key];
       }
       console.log(newSelectFrom);
       return newSelectFrom
@@ -110,7 +112,7 @@ export default function CanvasCopy (props: Props) {
     }
 
     // first draw
-    draw(ctx, canvas.width, canvas.height, mouse.selector, currentMap, props.savedMap);
+    draw(ctx, canvas.width, canvas.height, mouse, currentMap, props.savedMap);
     let hashX = getHashX();
     let hashY = getHashY();
 
@@ -167,15 +169,37 @@ export default function CanvasCopy (props: Props) {
 
       } else {
         if (mouse.position.x !== undefined && mouse.position.y !== undefined) {
+          // set / draw selector on grid
           mouse.selector.x = mouse.position.x;
           mouse.selector.y = mouse.position.y;
+
+          if (currentMap.tool === 'move' || currentMap.tool === 'shoot' && currentMap.selected.x !== undefined && currentMap.selected.y !== undefined && mouse.selector.x !== undefined && mouse.selector.y !== undefined) {
+            const distance = Math.sqrt ( ( currentMap.selected.x - mouse.selector.x ) * ( currentMap.selected.x - mouse.selector.x ) + ( currentMap.selected.y - mouse.selector.y ) * ( currentMap.selected.y - mouse.selector.y ) );
+
+            const moveFrom = getSelected(currentMap);
+
+            if (distance <= moveFrom.level * currentMap.scale) {
+              mouse.canGoHere = true;
+            } else {
+              mouse.canGoHere = false;
+            }
+
+            for ( const line of currentMap.lines ) {
+              console.log(line)
+              if ( doIntersect ( { x: currentMap.selected.x, y: currentMap.selected.y}, { x: mouse.selector.x, y: mouse.selector.y }, {x: line.aX, y: line.aY}, {x: line.bX, y: line.bY} ) === true ) {
+                mouse.canGoHere = false;
+              }
+            }
+          }
+
         } else {
+          // draw selector when not on grid
           mouse.selector.x = e.clientX;
           mouse.selector.y = e.clientY;
         }
       }
 
-      draw(ctx, canvas.width, canvas.height, mouse.selector, currentMap, props.savedMap);
+      draw(ctx, canvas.width, canvas.height, mouse, currentMap, props.savedMap);
     }
 
     const handleMouseUp = (e: MouseEvent) => {
@@ -203,9 +227,7 @@ export default function CanvasCopy (props: Props) {
       
         } else if (currentMap.tool === 'add location' && mouse.doubleTap === false && mouse.selected.x !== undefined && mouse.selected.y !== undefined) {
 
-          // currentMap.locations.push(mouse.selected);
-
-          currentMap.selectFrom[locationToString(mouse.selected)] = {x: mouse.selected.x, y: mouse.selected.y, type: 'location'};
+          currentMap.selectFrom[locationToString(mouse.selected)] = {x: mouse.selected.x, y: mouse.selected.y, type: 'location', level: 10 };
 
           currentMap.selected = mouse.selected;
 
@@ -214,9 +236,9 @@ export default function CanvasCopy (props: Props) {
           if (currentMap.selected.x !== undefined && currentMap.selected.y !== undefined && mouse.selected.x !== undefined && mouse.selected.y !== undefined) {
             const moveFrom = getSelected(currentMap)
             const moveTo = getSelected(mouse)
-            if (moveFrom !== 'empty square' && moveFrom !== 'none selected' && moveTo === 'empty square') {
+            if (moveFrom !== 'empty square' && moveFrom !== 'none selected' && moveTo === 'empty square' && mouse.canGoHere === true) {
               delete currentMap.selectFrom[locationToString({x: currentMap.selected.x, y: currentMap.selected.y})];
-              currentMap.selectFrom[locationToString({x: mouse.selected.x, y: mouse.selected.y})] = {x: mouse.selected.x, y: mouse.selected.y, type: 'location'};
+              currentMap.selectFrom[locationToString({x: mouse.selected.x, y: mouse.selected.y})] = {x: mouse.selected.x, y: mouse.selected.y, type: 'location', level: 10};
             }
 
             currentMap.selected = { x: undefined, y: undefined};
@@ -232,7 +254,7 @@ export default function CanvasCopy (props: Props) {
             const shootTo = getSelected(mouse)
 
             // TODO change this condition to if you include if it is your character/turn to go
-            if (shootFrom !== 'empty square' && shootFrom !== 'none selected' && shootTo !== 'empty square') {
+            if (shootFrom !== 'empty square' && shootFrom !== 'none selected' && shootTo !== 'empty square' && mouse.canGoHere === true) {
               delete currentMap.selectFrom[locationToString({x: mouse.selected.x, y: mouse.selected.y})];
             }
 
@@ -251,7 +273,7 @@ export default function CanvasCopy (props: Props) {
         }
 
         props.setSavedMap({...props.savedMap, currentMap});
-        draw(ctx, canvas.width, canvas.height, mouse.selector, currentMap, props.savedMap);
+        draw(ctx, canvas.width, canvas.height, mouse, currentMap, props.savedMap);
 
 
       } else {
@@ -259,7 +281,7 @@ export default function CanvasCopy (props: Props) {
 
         currentMap.selected = { x: undefined, y: undefined };
         props.setSavedMap({...props.savedMap, currentMap});
-        draw(ctx, canvas.width, canvas.height, mouse.selector, currentMap, props.savedMap);
+        draw(ctx, canvas.width, canvas.height, mouse, currentMap, props.savedMap);
       }
 
       hashX = getHashX();
@@ -269,7 +291,7 @@ export default function CanvasCopy (props: Props) {
 
     const handleMouseEnter = (e: MouseEvent) => {
       canvas.classList.add('no-cursor');
-      draw(ctx, canvas.width, canvas.height, mouse.selector, currentMap, props.savedMap);
+      draw(ctx, canvas.width, canvas.height, mouse, currentMap, props.savedMap);
     }
 
     const handleMouseLeave = (e: MouseEvent) => {
@@ -279,13 +301,13 @@ export default function CanvasCopy (props: Props) {
       mouse.pressed = false;
       mouse.selector.x = undefined;
       mouse.selector.y = undefined;
-      draw(ctx, canvas.width, canvas.height, mouse.selector, currentMap, props.savedMap);
+      draw(ctx, canvas.width, canvas.height, mouse, currentMap, props.savedMap);
     }
 
     const handleResize = (e: Event) => {
       canvas.width = window.innerWidth * 0.75;
       canvas.height = window.innerHeight;
-      draw(ctx, canvas.width, canvas.height, mouse.selector, currentMap, props.savedMap);
+      draw(ctx, canvas.width, canvas.height, mouse, currentMap, props.savedMap);
     }
 
     canvas.addEventListener('mousedown', handleMouseDown);

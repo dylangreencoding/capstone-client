@@ -63,7 +63,7 @@ export default function MapTools (props: Props) {
     if (props.savedMap.selected.x !== undefined && props.savedMap.selected.y !== undefined) {
       selected = props.savedMap.selectFrom[locationToString(props.savedMap.selected)];
       if (selected != undefined) {
-        console.log(selected.type)
+        console.log(selected)
         return selected.type
       } else {
         return 'empty square'

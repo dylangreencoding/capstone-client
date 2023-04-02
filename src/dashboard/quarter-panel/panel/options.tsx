@@ -55,8 +55,7 @@ export default function Options (props: Props) {
     width: 50,
     height: 25,
     
-    lines: [],
-    locations: []
+    lines: []
   }
 
   // add blank map to database
@@ -115,8 +114,7 @@ export default function Options (props: Props) {
     x: 0, 
     y: 0, 
     
-    speed: 5,
-    status: 5
+    level: 5
   }
 
   const handleNewChar = async (e: any) => {
@@ -155,8 +153,7 @@ export default function Options (props: Props) {
 
     // so you cannot view a character you just deleted
     selectedChar.name = 'Please choose a character';
-    selectedChar.speed = 0;
-    selectedChar.status = 0;
+    selectedChar.level = 0;
     props.setSavedChar(selectedChar);
 
   }

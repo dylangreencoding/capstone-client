@@ -34,8 +34,7 @@ export default function Dashboard () {
     width: 2,
     height: 2,
     
-    lines: [],
-    locations: []
+    lines: []
   }
   // blank char template
   const blankChar = {
@@ -46,8 +45,7 @@ export default function Dashboard () {
     x: 0, 
     y: 0, 
     
-    speed: 0,
-    status: 0
+    level: 5
   }
 
   // might rename these
