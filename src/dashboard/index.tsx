@@ -28,6 +28,7 @@ export default function Dashboard () {
     y: 0, 
     scale: 25, 
     selected: { x: undefined, y: undefined },
+    selectFrom: {},
     tool: 'none',
 
     width: 2,

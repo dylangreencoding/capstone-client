@@ -2,6 +2,9 @@ import { useState } from "react";
 import { updateMap } from "../../../../expressAPI/update-map";
 
 interface Props {
+  setCurrent: Function;
+  setTab: Function;
+
   savedMap: any;
   setSavedMap: Function;
 
@@ -17,13 +20,23 @@ export default function MapTools (props: Props) {
 
   let currentMap = props.savedMap;
   currentMap.name = mapName;
-  currentMap.map = []
+  
   const handleSubmitMap = async (e: any) => {
     e.preventDefault();
+    currentMap.map = []
+    console.log(currentMap)
     await updateMap(props.accessToken, currentMap);
-
-    // location.reload();
     await props.getUserData();
+  }
+
+  const handleHostGame = async (e: any) => {
+    e.preventDefault();
+    currentMap.map = []
+    currentMap.tool = 'none'
+    await updateMap(props.accessToken, currentMap);
+    await props.getUserData();
+    props.setCurrent('game');
+    props.setTab('current');
   }
 
   const handlePickTool = (e: any) => {
@@ -38,23 +51,44 @@ export default function MapTools (props: Props) {
     props.setSavedMap({...props.savedMap, currentMap});
   }
 
-  const handleUndoLocation = (e: any) => {
-    const currentMap = props.savedMap;
-    currentMap.locations.pop();
-    props.setSavedMap({...props.savedMap, currentMap});
+  const locationToString = (location: any) => {
+    const x = location.x.toString();
+    const y = location.y.toString();
+    const xy = x.concat(' ', y);
+    return xy
+  }
+
+  const getSelected = () => {
+    let selected;
+    if (props.savedMap.selected.x !== undefined && props.savedMap.selected.y !== undefined) {
+      selected = props.savedMap.selectFrom[locationToString(props.savedMap.selected)];
+      if (selected != undefined) {
+        console.log(selected.type)
+        return selected.type
+      } else {
+        return 'empty square'
+      }
+    } else {
+      return 'none selected'
+    }
   }
 
 
   return (
     <div className='map-tools'>
       
-      <div className='mb36 flex-space-between'>
+      <div className='mb24 flex-space-between'>
         <h3>{props.savedMap.name}</h3>
+        <button type='button' className="tool btn" onClick={handleHostGame}>host game</button>
       </div>
+
       <div className='tools-body'>
         <div className='tool-box'>
           <div className="mb24">
             <span>{props.savedMap.selected.x}, {props.savedMap.selected.y}</span>
+          </div>
+          <div className="mb24">
+            <span>{getSelected()}</span>
           </div>
           <div className="mb24">
             <button 
@@ -85,12 +119,22 @@ export default function MapTools (props: Props) {
               value='add location'
               onClick={handlePickTool}
             >add location</button>
+          </div>
+          <div className="flex-space-between mb24">
             <button 
               type='button'
-              className='tool btn'
-              value='undo-location'
-              onClick={handleUndoLocation}
-            >undo location</button>
+              className={`tool btn ${props.savedMap.tool === 'move' ? 'active' : ''}`}
+              value='move'
+              onClick={handlePickTool}
+            >move</button>
+          </div>
+          <div className="flex-space-between mb24">
+            <button 
+              type='button'
+              className={`tool btn ${props.savedMap.tool === 'shoot' ? 'active' : ''}`}
+              value='shoot'
+              onClick={handlePickTool}
+            >shoot</button>
           </div>
         </div>
         <form className="text-form" >

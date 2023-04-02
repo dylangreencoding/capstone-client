@@ -49,6 +49,7 @@ export default function Options (props: Props) {
     y: 0, 
     scale: 25, 
     selected: { x: undefined, y: undefined },
+    selectFrom: {},
     tool: 'none',
 
     width: 50,
@@ -161,12 +162,6 @@ export default function Options (props: Props) {
   }
 
 
-  const handleNewGame = (e: any) => {
-    props.setCurrent('game');
-    props.setTab('current');
-  }
-
-
   return (
     <div className='options'>
       <div className='flex-space-between mb36'>
@@ -206,10 +201,6 @@ export default function Options (props: Props) {
       <div className="mb36">
         <div className='flex-space-between mb12'>
           <h4>games </h4>
-          <div>
-            <button type='button' className="tool btn" onClick={handleNewGame}>host -</button>
-            <button type='button' className="tool btn" onClick={handleNewGame}>- join</button>
-          </div>
         </div>
         <ul>
           <li>- </li>

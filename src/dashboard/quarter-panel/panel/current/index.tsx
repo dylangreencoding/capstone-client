@@ -4,6 +4,8 @@ import CharTools from "./char-tools";
 
 interface Props {
   current: string;
+  setCurrent: Function;
+  setTab: Function;
 
   savedMap: any;
   setSavedMap: Function;
@@ -21,6 +23,9 @@ export default function Current (props: Props) {
   const displayCurrent = () => {
     if (props.current === 'map') {
       return <MapTools 
+        setCurrent={props.setCurrent}
+        setTab={props.setTab}
+
         savedMap={props.savedMap}
         setSavedMap={props.setSavedMap}
 
@@ -36,6 +41,9 @@ export default function Current (props: Props) {
       />
     } else if (props.current === 'char') {
       return <CharTools 
+        setCurrent={props.setCurrent}
+        setTab={props.setTab}
+
         savedChar={props.savedChar}
         setSavedChar={props.setSavedChar}
       />

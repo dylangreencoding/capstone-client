@@ -24,18 +24,44 @@ export default function GameTools (props: Props) {
     // possibly on socket.disconnect
   }
 
+  const locationToString = (location: any) => {
+    const x = location.x.toString();
+    const y = location.y.toString();
+    const xy = x.concat(' ', y);
+    return xy
+  }
+
+  const getSelected = () => {
+    let selected;
+    if (props.savedMap.selected.x !== undefined && props.savedMap.selected.y !== undefined) {
+      selected = props.savedMap.selectFrom[locationToString(props.savedMap.selected)];
+      if (selected != undefined) {
+        return selected.type
+      } else {
+        return 'empty square'
+      }
+    } else {
+      return 'none selected'
+    }
+  }
+
 
   return (
     <div className="game-tools">
-      <div className='mb36 flex-space-between'>
-        <span>
-          {props.savedMap.selected.x}, {props.savedMap.selected.y}
-        </span>
+      <div className='mb24 flex-space-between'>
         <h3>{props.savedMap.name}</h3>
       </div>
+
+
       <div className='tools-body'>
         <div className='tool-box'>
-        <h4 className="mb12">-----</h4>
+
+          <div className="mb24">
+            <span>{props.savedMap.selected.x}, {props.savedMap.selected.y}</span>
+          </div>
+          <div className="mb24">
+            <span>{getSelected()}</span>
+          </div>
           <div className="mb24">
             <button 
               type='button'

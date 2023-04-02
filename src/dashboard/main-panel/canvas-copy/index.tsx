@@ -32,6 +32,7 @@ export default function CanvasCopy (props: Props) {
       position: { x: any, y: any };
       selected: { x: any, y: any };
       selector: { x: any, y: any };
+
     }
     let mouse : Mouse = { pressed: false, movedMap: false, movementXY: { x: undefined, y: undefined }, position: { x: undefined, y: undefined }, selected: { x: undefined, y: undefined }, selector: { x: undefined, y: undefined }, doubleTap: false };
 
@@ -67,6 +68,16 @@ export default function CanvasCopy (props: Props) {
       return hashY
     }
 
+    // when the board is moved
+    const reHashSelectFrom = () => {
+      let newSelectFrom : any = {};
+      for (const key of Object.keys(currentMap.selectFrom)) {
+        newSelectFrom[locationToString({x: currentMap.selectFrom[key].x, y: currentMap.selectFrom[key].y})] = { x: currentMap.selectFrom[key].x, y: currentMap.selectFrom[key].y, type: currentMap.selectFrom[key].type };
+      }
+      console.log(newSelectFrom);
+      return newSelectFrom
+    }
+
     // for constructing line object
     const getLine = (start: any, end: any) => {
       return {
@@ -74,6 +85,27 @@ export default function CanvasCopy (props: Props) {
         aY: start.y,
         bX: end.x,
         bY: end.y
+      }
+    }
+
+    const locationToString = (location: any) => {
+      const x = location.x.toString();
+      const y = location.y.toString();
+      const xy = x.concat(' ', y);
+      return xy
+    }
+
+    const getSelected = (m_object: any) => {
+      let selected;
+      if (m_object.selected.x !== undefined && m_object.selected.y !== undefined) {
+        selected = currentMap.selectFrom[locationToString(m_object.selected)];
+        if (selected != undefined) {
+          return selected
+        } else {
+          return 'empty square'
+        }
+      } else {
+        return 'none selected'
       }
     }
 
@@ -117,21 +149,20 @@ export default function CanvasCopy (props: Props) {
         currentMap.x += mouse.movementXY.x;
         currentMap.y += mouse.movementXY.y;
 
-        // moves walls
+        // moves lines
         for (const line of currentMap.lines) {
-          if (mouse.pressed === true) {
-            line.aX += mouse.movementXY.x
-            line.aY += mouse.movementXY.y
-            line.bX += mouse.movementXY.x
-            line.bY += mouse.movementXY.y
-          }
+          line.aX += mouse.movementXY.x
+          line.aY += mouse.movementXY.y
+          line.bX += mouse.movementXY.x
+          line.bY += mouse.movementXY.y
         }
 
-        for (const location of currentMap.locations) {
-          if (mouse.pressed === true) {
-            location.x += mouse.movementXY.x
-            location.y += mouse.movementXY.y
-          }
+
+        for (const key of Object.keys(currentMap.selectFrom)) {
+          currentMap.selectFrom[key].x += mouse.movementXY.x;
+          currentMap.selectFrom[key].y += mouse.movementXY.y;
+          console.log(currentMap.selectFrom[key].x)
+          console.log('hash', hashX[currentMap.selectFrom[key].x])
         }
 
       } else {
@@ -169,16 +200,47 @@ export default function CanvasCopy (props: Props) {
           currentMap.selected = mouse.selected;
           }
 
-          // if (currentMap.selected.x !== undefined && currentMap.selected.y !== undefined && mouse.selected.x !== undefined && mouse.selected.y !== undefined) {
-          //   const newLine = getLine(currentMap.selected, mouse.selected);
-          //   currentMap.lines.push(newLine);
-          // }
-          // currentMap.selected = mouse.selected;
       
         } else if (currentMap.tool === 'add location' && mouse.doubleTap === false && mouse.selected.x !== undefined && mouse.selected.y !== undefined) {
 
-          currentMap.locations.push(mouse.selected);
+          // currentMap.locations.push(mouse.selected);
+
+          currentMap.selectFrom[locationToString(mouse.selected)] = {x: mouse.selected.x, y: mouse.selected.y, type: 'location'};
+
           currentMap.selected = mouse.selected;
+
+        } else if (currentMap.tool === 'move' && mouse.doubleTap !== true) {
+
+          if (currentMap.selected.x !== undefined && currentMap.selected.y !== undefined && mouse.selected.x !== undefined && mouse.selected.y !== undefined) {
+            const moveFrom = getSelected(currentMap)
+            const moveTo = getSelected(mouse)
+            if (moveFrom !== 'empty square' && moveFrom !== 'none selected' && moveTo === 'empty square') {
+              delete currentMap.selectFrom[locationToString({x: currentMap.selected.x, y: currentMap.selected.y})];
+              currentMap.selectFrom[locationToString({x: mouse.selected.x, y: mouse.selected.y})] = {x: mouse.selected.x, y: mouse.selected.y, type: 'location'};
+            }
+
+            currentMap.selected = { x: undefined, y: undefined};
+
+          } else {
+            currentMap.selected = mouse.selected;
+          }
+
+        } else if (currentMap.tool === 'shoot' && mouse.doubleTap !== true) {
+
+          if (currentMap.selected.x !== undefined && currentMap.selected.y !== undefined && mouse.selected.x !== undefined && mouse.selected.y !== undefined) {
+            const shootFrom = getSelected(currentMap)
+            const shootTo = getSelected(mouse)
+
+            // TODO change this condition to if you include if it is your character/turn to go
+            if (shootFrom !== 'empty square' && shootFrom !== 'none selected' && shootTo !== 'empty square') {
+              delete currentMap.selectFrom[locationToString({x: mouse.selected.x, y: mouse.selected.y})];
+            }
+
+            currentMap.selected = { x: undefined, y: undefined};
+
+          } else {
+            currentMap.selected = mouse.selected;
+          }
 
         } else {
           currentMap.selected = mouse.selected;
@@ -193,6 +255,8 @@ export default function CanvasCopy (props: Props) {
 
 
       } else {
+        currentMap.selectFrom = reHashSelectFrom();
+
         currentMap.selected = { x: undefined, y: undefined };
         props.setSavedMap({...props.savedMap, currentMap});
         draw(ctx, canvas.width, canvas.height, mouse.selector, currentMap, props.savedMap);

@@ -38,10 +38,17 @@ export function draw (ctx: any, canvasWidth: number, canvasHeight: number, selec
   }
 
   // draw locations
-  for (const location of savedMap.locations) {
+  // for (const location of savedMap.locations) {
+  //   ctx.fillStyle = '#a00000';
+  //   ctx.beginPath();
+  //   ctx.arc(location.x, location.y, map_.scale*0.25, 0, Math.PI*2);
+  //   ctx.closePath();
+  //   ctx.fill();
+  // }
+  for (const key of Object.keys(savedMap.selectFrom)) {
     ctx.fillStyle = '#a00000';
     ctx.beginPath();
-    ctx.arc(location.x, location.y, map_.scale*0.25, 0, Math.PI*2);
+    ctx.arc(savedMap.selectFrom[key].x, savedMap.selectFrom[key].y, map_.scale*0.25, 0, Math.PI*2);
     ctx.closePath();
     ctx.fill();
   }
@@ -52,9 +59,9 @@ export function draw (ctx: any, canvasWidth: number, canvasHeight: number, selec
     ctx.lineWidth = 1;
 
     ctx.beginPath();
-    ctx.arc(selector.x, selector.y, map_.scale*0.25, 0, Math.PI*2);
+    ctx.strokeRect(map_.selected.x - map_.scale*0.5, map_.selected.y - map_.scale*0.5, map_.scale, map_.scale)
     ctx.closePath();
-    ctx.stroke();
+    ctx.fill();
 
     ctx.beginPath();
     ctx.arc(selector.x, selector.y, map_.scale*0.25, 0, Math.PI*2);
@@ -96,6 +103,51 @@ export function draw (ctx: any, canvasWidth: number, canvasHeight: number, selec
     ctx.strokeStyle = '#f00000';
     ctx.beginPath();
     ctx.arc(selector.x, selector.y, map_.scale*0.25, 0, Math.PI*2);
+    ctx.closePath();
+    ctx.stroke();
+
+  } else if (savedMap.tool === 'move') {
+    ctx.strokeStyle = 'gold';
+    ctx.lineWidth = 1;
+    
+    ctx.beginPath();
+    ctx.strokeRect(map_.selected.x - map_.scale*0.5, map_.selected.y - map_.scale*0.5, map_.scale, map_.scale)
+    ctx.closePath();
+    ctx.fill();
+    
+    ctx.beginPath();
+    ctx.arc(selector.x, selector.y, map_.scale*0.3, 0, Math.PI*2);
+    ctx.closePath();
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo(map_.selected.x, map_.selected.y);
+    ctx.lineTo(selector.x, selector.y);
+    ctx.moveTo(map_.selected.x, map_.selected.y);
+    ctx.closePath();
+    ctx.stroke();
+  } else if (savedMap.tool === 'shoot') {
+    ctx.strokeStyle = 'red';
+    ctx.lineWidth = 1;
+    
+    ctx.beginPath();
+    ctx.strokeRect(map_.selected.x - map_.scale*0.5, map_.selected.y - map_.scale*0.5, map_.scale, map_.scale)
+    ctx.closePath();
+    ctx.fill();
+    
+    ctx.beginPath();
+    ctx.arc(selector.x, selector.y, map_.scale*0.3, 0, Math.PI*2);
+    ctx.closePath();
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(selector.x, selector.y, map_.scale*0.2, 0, Math.PI*2);
+    ctx.closePath();
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo(map_.selected.x, map_.selected.y);
+    ctx.lineTo(selector.x, selector.y);
+    ctx.moveTo(map_.selected.x, map_.selected.y);
     ctx.closePath();
     ctx.stroke();
   }

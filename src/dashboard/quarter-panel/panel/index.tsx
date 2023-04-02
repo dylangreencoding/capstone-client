@@ -41,6 +41,8 @@ export default function Panel (props: Props) {
         /> : 
         <Current 
         current={props.current}
+        setCurrent={props.setCurrent}
+        setTab={props.setTab}
 
         savedMap={props.savedMap}
         setSavedMap={props.setSavedMap}

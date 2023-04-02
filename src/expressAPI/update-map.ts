@@ -1,5 +1,6 @@
 export async function updateMap (token: string, map: any = {}) {
-  console.log(token, map);
+  map.currentMap = {};
+  console.log(token, JSON.stringify(map));
   const response = await fetch('http://localhost:8080/auth/save-map', {
     method: 'POST',
     headers: {
