@@ -1,8 +1,8 @@
 import { useState } from "react";
 
 interface Props {
-  savedMap: any;
-  setSavedMap: Function;
+  savedGame: any;
+  setSavedGame: Function;
 }
 
 export default function GameTools (props: Props) {
@@ -11,9 +11,9 @@ export default function GameTools (props: Props) {
   const handlePickTool = (e: any) => {
     // for now this uses savedMap
     // but it needs its own state variable "saveGame"
-    const currentMap = props.savedMap;
-    currentMap.tool = e.target.value;
-    props.setSavedMap({...props.savedMap, currentMap});
+    const currentGame = props.savedGame;
+    currentGame.tool = e.target.value;
+    props.setSavedGame({...props.savedGame, currentGame});
   }
 
   const handleSubmitMap = (e: any) => {
@@ -33,8 +33,8 @@ export default function GameTools (props: Props) {
 
   const getSelected = () => {
     let selected;
-    if (props.savedMap.selected.x !== undefined && props.savedMap.selected.y !== undefined) {
-      selected = props.savedMap.selectFrom[locationToString(props.savedMap.selected)];
+    if (props.savedGame.selected.x !== undefined && props.savedGame.selected.y !== undefined) {
+      selected = props.savedGame.selectFrom[locationToString(props.savedGame.selected)];
       if (selected != undefined) {
         return selected.type
       } else {
@@ -49,7 +49,7 @@ export default function GameTools (props: Props) {
   return (
     <div className="game-tools">
       <div className='mb24 flex-space-between'>
-        <h3>{props.savedMap.name}</h3>
+        <h3>{props.savedGame.name}</h3>
       </div>
 
 
@@ -57,7 +57,7 @@ export default function GameTools (props: Props) {
         <div className='tool-box'>
 
           <div className="mb24">
-            <span>{props.savedMap.selected.x}, {props.savedMap.selected.y}</span>
+            <span>{props.savedGame.selected.x}, {props.savedGame.selected.y}</span>
           </div>
           <div className="mb24">
             <span>{getSelected()}</span>
@@ -65,7 +65,7 @@ export default function GameTools (props: Props) {
           <div className="mb24">
             <button 
               type='button'
-              className={`tool btn ${props.savedMap.tool === 'none' ? 'active' : ''}`}
+              className={`tool btn ${props.savedGame.tool === 'none' ? 'active' : ''}`}
               value='none'
               onClick={handlePickTool}
             >select</button>
@@ -73,7 +73,7 @@ export default function GameTools (props: Props) {
           <div className="flex-space-between mb24">
             <button 
               type='button'
-              className={`tool btn ${props.savedMap.tool === 'move' ? 'active' : ''}`}
+              className={`tool btn ${props.savedGame.tool === 'move' ? 'active' : ''}`}
               value='move'
               onClick={handlePickTool}
             >move</button>
@@ -87,7 +87,7 @@ export default function GameTools (props: Props) {
           <div className="flex-space-between mb24">
             <button 
               type='button'
-              className={`tool btn ${props.savedMap.tool === 'shoot' ? 'active' : ''}`}
+              className={`tool btn ${props.savedGame.tool === 'shoot' ? 'active' : ''}`}
               value='shoot'
               onClick={handlePickTool}
             >shoot</button>

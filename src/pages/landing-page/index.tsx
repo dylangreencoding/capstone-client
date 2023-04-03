@@ -12,6 +12,7 @@ export default function LandingPage () {
   // *** FOR WRITING BLOG POSTS, REMOVE BEFORE DEPLOYMENT *** \\
   const [blogTitle, setBlogTitle] = useState<string>('');
   const [blogBody, setBlogBody] = useState<string>('');
+
   const displayWritePost = () => {
     const handleSubmitPost = async (e: any) => {
       e.preventDefault();
@@ -26,7 +27,6 @@ export default function LandingPage () {
         alert('capstone-client-create-post failed');
       }
     }
-
     return (
       <form className='auth-form' onSubmit={handleSubmitPost}>
         <input type='text' placeholder='Title' value={blogTitle} onChange={(e) => {setBlogTitle(e.target.value)}}/>
@@ -34,6 +34,11 @@ export default function LandingPage () {
         <button type="submit">Submit</button>
       </form>
     )
+  }
+
+  const makeDate = (unixEpoch: any) => {
+    const date = new Date(unixEpoch)
+    return date.toLocaleString();
   }
   
 
@@ -57,7 +62,7 @@ export default function LandingPage () {
         {blogPosts.map((blogPost: any) => {
           return <li key={blogPost.id}>
             <h2>{blogPost.blogTitle}</h2>
-            <p>{blogPost.__updatedtime__}</p>
+            <p>{makeDate(blogPost.__updatedtime__)}</p>
             <p>{blogPost.blogBody}</p>
           </li>
         })}

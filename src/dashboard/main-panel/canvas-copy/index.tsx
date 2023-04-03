@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 //
 import { draw } from './draw';
 import { doIntersect } from './utilities';
@@ -6,17 +6,24 @@ import { doIntersect } from './utilities';
 interface Props {
   width: number;
   height: number;
+
+  current: string;
+  setCurrent: Function;
+
   savedMap: any;
   setSavedMap: Function;
+  savedGame: any;
+  setSavedGame: Function;
 }
 
 export default function CanvasCopy (props: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  // used for setting savedMap state variable
-  const currentMap = props.savedMap;
-  
   useEffect(() => {
+    let currentMap : any;
+    props.current === 'map' ?
+    currentMap = props.savedMap : 
+    currentMap = props.savedGame
     
     // assure typescript compiler canvasRef is not null
     const canvas = canvasRef.current!;
@@ -76,7 +83,6 @@ export default function CanvasCopy (props: Props) {
       for (const key of Object.keys(currentMap.selectFrom)) {
         newSelectFrom[locationToString({x: currentMap.selectFrom[key].x, y: currentMap.selectFrom[key].y})] = currentMap.selectFrom[key];
       }
-      console.log(newSelectFrom);
       return newSelectFrom
     }
 
@@ -97,6 +103,8 @@ export default function CanvasCopy (props: Props) {
       return xy
     }
 
+    // m_object parameter can be mouse object or map object
+    // both have m_object.selected property
     const getSelected = (m_object: any) => {
       let selected;
       if (m_object.selected.x !== undefined && m_object.selected.y !== undefined) {
@@ -112,12 +120,11 @@ export default function CanvasCopy (props: Props) {
     }
 
     // first draw
-    draw(ctx, canvas.width, canvas.height, mouse, currentMap, props.savedMap);
+    draw(ctx, canvas.width, canvas.height, mouse, currentMap, props.current === 'map' ? props.savedMap : props.savedGame);
     let hashX = getHashX();
     let hashY = getHashY();
 
-    // for constructing mouse data
-    // need to be after hashmaps are constructed
+    // this needs to be after hashmaps are constructed
     const getMousePositionXY = (e: MouseEvent) => {
       let positionX = hashX[e.clientX];
       let positionY = hashY[e.clientY];
@@ -126,6 +133,8 @@ export default function CanvasCopy (props: Props) {
         y: positionY
       }
     }
+    
+    // but this does not, it just is by coincidence
     const getMouseMovementXY = (e: MouseEvent) => {
       return {
         x: e.movementX,
@@ -163,8 +172,6 @@ export default function CanvasCopy (props: Props) {
         for (const key of Object.keys(currentMap.selectFrom)) {
           currentMap.selectFrom[key].x += mouse.movementXY.x;
           currentMap.selectFrom[key].y += mouse.movementXY.y;
-          console.log(currentMap.selectFrom[key].x)
-          console.log('hash', hashX[currentMap.selectFrom[key].x])
         }
 
       } else {
@@ -185,7 +192,6 @@ export default function CanvasCopy (props: Props) {
             }
 
             for ( const line of currentMap.lines ) {
-              console.log(line)
               if ( doIntersect ( { x: currentMap.selected.x, y: currentMap.selected.y}, { x: mouse.selector.x, y: mouse.selector.y }, {x: line.aX, y: line.aY}, {x: line.bX, y: line.bY} ) === true ) {
                 mouse.canGoHere = false;
               }
@@ -199,7 +205,7 @@ export default function CanvasCopy (props: Props) {
         }
       }
 
-      draw(ctx, canvas.width, canvas.height, mouse, currentMap, props.savedMap);
+      draw(ctx, canvas.width, canvas.height, mouse, currentMap, props.current === 'map' ? props.savedMap : props.savedGame);
     }
 
     const handleMouseUp = (e: MouseEvent) => {
@@ -272,16 +278,22 @@ export default function CanvasCopy (props: Props) {
           currentMap.selected = { x: undefined, y: undefined };
         }
 
-        props.setSavedMap({...props.savedMap, currentMap});
-        draw(ctx, canvas.width, canvas.height, mouse, currentMap, props.savedMap);
+        props.current === 'map' ?
+        props.setSavedMap({...props.savedMap, currentMap}) :
+        props.setSavedGame({...props.savedGame, currentMap})
+
+        draw(ctx, canvas.width, canvas.height, mouse, currentMap, props.current === 'map' ? props.savedMap : props.savedGame);
 
 
       } else {
         currentMap.selectFrom = reHashSelectFrom();
-
         currentMap.selected = { x: undefined, y: undefined };
-        props.setSavedMap({...props.savedMap, currentMap});
-        draw(ctx, canvas.width, canvas.height, mouse, currentMap, props.savedMap);
+
+        props.current === 'map' ?
+        props.setSavedMap({...props.savedMap, currentMap}) :
+        props.setSavedGame({...props.savedGame, currentMap})
+
+        draw(ctx, canvas.width, canvas.height, mouse, currentMap, props.current === 'map' ? props.savedMap : props.savedGame);
       }
 
       hashX = getHashX();
@@ -291,7 +303,7 @@ export default function CanvasCopy (props: Props) {
 
     const handleMouseEnter = (e: MouseEvent) => {
       canvas.classList.add('no-cursor');
-      draw(ctx, canvas.width, canvas.height, mouse, currentMap, props.savedMap);
+      draw(ctx, canvas.width, canvas.height, mouse, currentMap, props.current === 'map' ? props.savedMap : props.savedGame);
     }
 
     const handleMouseLeave = (e: MouseEvent) => {
@@ -301,13 +313,13 @@ export default function CanvasCopy (props: Props) {
       mouse.pressed = false;
       mouse.selector.x = undefined;
       mouse.selector.y = undefined;
-      draw(ctx, canvas.width, canvas.height, mouse, currentMap, props.savedMap);
+      draw(ctx, canvas.width, canvas.height, mouse, currentMap, props.current === 'map' ? props.savedMap : props.savedGame);
     }
 
     const handleResize = (e: Event) => {
       canvas.width = window.innerWidth * 0.75;
       canvas.height = window.innerHeight;
-      draw(ctx, canvas.width, canvas.height, mouse, currentMap, props.savedMap);
+      draw(ctx, canvas.width, canvas.height, mouse, currentMap, props.current === 'map' ? props.savedMap : props.savedGame);
     }
 
     canvas.addEventListener('mousedown', handleMouseDown);
@@ -325,9 +337,10 @@ export default function CanvasCopy (props: Props) {
       canvas.removeEventListener('mouseenter', handleMouseEnter);
       canvas.removeEventListener('mouseleave', handleMouseLeave);
       window.removeEventListener('resize', handleResize);
-      console.log('cleaned up')
+      console.log('useEffect returned')
     }
-  }, [props.savedMap, props.setSavedMap]);
+  // when these change the useEffect is called
+  }, [props.savedMap, props.savedGame, props.current]);
 
   return (
     <div>

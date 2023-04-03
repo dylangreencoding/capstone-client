@@ -10,7 +10,9 @@ export default function CharTools (props: Props) {
 
   const handleJoinGame = (e: any) => {
     e.preventDefault(); 
-    alert('CharTools handleJoinGame clicked')
+    
+    props.setCurrent('game');
+    props.setTab('current');
   }
 
   return (

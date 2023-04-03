@@ -51,17 +51,21 @@ export default function Dashboard () {
   // might rename these
   const [savedMap, setSavedMap] = useState<any>(blankMap);
   const [savedChar, setSavedChar] = useState<any>(blankChar);
+  const [savedGame, setSavedGame] = useState<any>(blankMap);
 
   return (
     <div className='dashboard'>
       <MainPanel 
         current={current}
+        setCurrent={setCurrent}
         tab={tab}
 
         savedMap={savedMap}
         setSavedMap={setSavedMap}
         savedChar={savedChar}
         setSavedChar={setSavedChar}
+        savedGame={savedGame}
+        setSavedGame={setSavedGame}
 
         accessToken={accessToken}
         getUserData={getUserData}
@@ -76,6 +80,8 @@ export default function Dashboard () {
         setSavedMap={setSavedMap}
         savedChar={savedChar}
         setSavedChar={setSavedChar}
+        savedGame={savedGame}
+        setSavedGame={setSavedGame}
 
         accessToken={accessToken}
         user={user}

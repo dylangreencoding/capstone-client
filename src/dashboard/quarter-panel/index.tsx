@@ -13,6 +13,8 @@ interface Props {
   setSavedMap: Function;
   savedChar: any;
   setSavedChar: Function;
+  savedGame: any;
+  setSavedGame: Function;
 
   accessToken: string;
   maps: any;
@@ -37,6 +39,8 @@ export default function QuarterPanel (props: Props) {
         setSavedMap={props.setSavedMap}
         savedChar={props.savedChar}
         setSavedChar={props.setSavedChar}
+        savedGame={props.savedGame}
+        setSavedGame={props.setSavedGame}
 
         accessToken={props.accessToken}
         user={props.user}

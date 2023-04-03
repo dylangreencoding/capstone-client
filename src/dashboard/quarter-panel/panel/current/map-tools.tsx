@@ -7,6 +7,8 @@ interface Props {
 
   savedMap: any;
   setSavedMap: Function;
+  savedGame: any;
+  setSavedGame: Function;
 
   accessToken: string;
   user: any;
@@ -21,20 +23,22 @@ export default function MapTools (props: Props) {
   let currentMap = props.savedMap;
   currentMap.name = mapName;
   
-  const handleSubmitMap = async (e: any) => {
+  const handleSaveMap = async (e: any) => {
     e.preventDefault();
-    currentMap.map = []
-    console.log(currentMap)
     await updateMap(props.accessToken, currentMap);
     await props.getUserData();
   }
 
   const handleHostGame = async (e: any) => {
     e.preventDefault();
-    currentMap.map = []
-    currentMap.tool = 'none'
-    await updateMap(props.accessToken, currentMap);
-    await props.getUserData();
+
+    // HERE: create a new game object in database
+    // set up socket.IO room and socket connection for game
+    // display room id to user so they can give it to other people
+    // to join a game you enter the room id
+
+    // TODO: setSavedGame to new game object that was just pushed to database
+    // props.setSavedGame();
     props.setCurrent('game');
     props.setTab('current');
   }
@@ -63,7 +67,6 @@ export default function MapTools (props: Props) {
     if (props.savedMap.selected.x !== undefined && props.savedMap.selected.y !== undefined) {
       selected = props.savedMap.selectFrom[locationToString(props.savedMap.selected)];
       if (selected != undefined) {
-        console.log(selected)
         return selected.type
       } else {
         return 'empty square'
@@ -145,7 +148,7 @@ export default function MapTools (props: Props) {
             value={mapName}
             onChange={ (e) => setmapName(e.target.value) }
           />
-          <button type='button' onClick={handleSubmitMap} className="tool btn">save</button>
+          <button type='button' onClick={handleSaveMap} className="tool btn">save</button>
         </form>
       </div>
     </div>

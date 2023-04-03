@@ -1,5 +1,7 @@
 export async function updateMap (token: string, map: any = {}) {
   map.currentMap = {};
+  map.selected = {};
+  map.tool = 'none';
   console.log(token, JSON.stringify(map));
   const response = await fetch('http://localhost:8080/auth/save-map', {
     method: 'POST',

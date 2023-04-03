@@ -11,6 +11,8 @@ interface Props {
   setSavedMap: Function;
   savedChar: any;
   setSavedChar: Function;
+  savedGame: any;
+  setSavedGame: Function;
 
   accessToken: string;
   user: any;
@@ -28,6 +30,8 @@ export default function Current (props: Props) {
 
         savedMap={props.savedMap}
         setSavedMap={props.setSavedMap}
+        savedGame={props.savedGame}
+        setSavedGame={props.setSavedGame}
 
         accessToken={props.accessToken}
         user={props.user}
@@ -36,8 +40,8 @@ export default function Current (props: Props) {
       />
     } else if (props.current === 'game') {
       return <GameTools 
-        savedMap={props.savedMap}
-        setSavedMap={props.setSavedMap}
+        savedGame={props.savedGame}
+        setSavedGame={props.setSavedGame}
       />
     } else if (props.current === 'char') {
       return <CharTools 

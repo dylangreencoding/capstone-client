@@ -11,6 +11,8 @@ interface Props {
   setSavedMap: Function;
   savedChar: any;
   setSavedChar: Function;
+  savedGame: any;
+  setSavedGame: Function;
 
   accessToken: string;
   user: any;
@@ -31,6 +33,8 @@ export default function Panel (props: Props) {
         setSavedMap={props.setSavedMap}
         savedChar={props.savedChar}
         setSavedChar={props.setSavedChar}
+        savedGame={props.savedGame}
+        setSavedGame={props.setSavedGame}
 
 
         accessToken={props.accessToken}
@@ -48,6 +52,8 @@ export default function Panel (props: Props) {
         setSavedMap={props.setSavedMap}
         savedChar={props.savedChar}
         setSavedChar={props.setSavedChar}
+        savedGame={props.savedGame}
+        setSavedGame={props.setSavedGame}
 
         accessToken={props.accessToken}
         user={props.user}

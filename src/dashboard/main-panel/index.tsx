@@ -5,12 +5,15 @@ import CanvasCopy from "./canvas-copy";
 
 interface Props {
   current: string;
+  setCurrent: Function;
   tab: string;
 
   savedMap: any;
   setSavedMap: Function;
   savedChar: any;
   setSavedChar: Function;
+  savedGame: any;
+  setSavedGame: Function;
 
   accessToken: string;
   getUserData: Function;
@@ -33,8 +36,14 @@ export default function MainPanel (props: Props) {
       return <CanvasCopy
         width={window.innerWidth * 0.75}
         height={window.innerHeight}
+
+        current={props.current}
+        setCurrent={props.setCurrent}
+
         savedMap={props.savedMap}
         setSavedMap={props.setSavedMap}
+        savedGame={props.savedGame}
+        setSavedGame={props.setSavedGame}
       />
     }
   }

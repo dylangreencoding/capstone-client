@@ -87,6 +87,11 @@ export function draw (ctx: any, canvasWidth: number, canvasHeight: number, mouse
   } else if (savedMap.tool === 'add location') {
     ctx.strokeStyle = 'green';
     ctx.lineWidth = 1;
+
+    ctx.beginPath();
+    ctx.strokeRect(map_.selected.x - map_.scale*0.5, map_.selected.y - map_.scale*0.5, map_.scale, map_.scale)
+    ctx.closePath();
+    ctx.fill();
     
     ctx.beginPath();
     ctx.arc(mouse.selector.x, mouse.selector.y, map_.scale*0.25, 0, Math.PI*2);
