@@ -221,4 +221,14 @@ export function draw (ctx: any, canvasWidth: number, canvasHeight: number, mouse
     }
   }
   
+    // chatmessages
+    if (savedMap.messages) {
+      ctx.font = "18px monospace";
+      ctx.fillStyle = '#e0e0e0a6';
+      let line = canvasHeight - 18;
+      for (let i = savedMap.messages.length -1; i >= 0; i--) {
+        ctx.fillText(savedMap.messages[i], 10, line);
+        line -= 18;
+      }
+    }
 }

@@ -1,26 +1,46 @@
+import { useState } from "react";
+import { joinGame } from "../../../../expressAPI/join-game";
+
 interface Props {
   setCurrent: Function;
   setTab: Function;
 
   savedChar: any;
   setSavedChar: Function;
+
+  accessToken: string;
+  getUserData: Function;
 }
 
 export default function CharTools (props: Props) {
+  const [gameId, setGameId] = useState<string>('');
 
-  const handleJoinGame = (e: any) => {
+  const handleJoinGame = async (e: any) => {
     e.preventDefault(); 
     
-    props.setCurrent('game');
-    props.setTab('current');
+
+    await joinGame(props.accessToken, {id: gameId});
+    await props.getUserData();
+
+    
+    // props.setCurrent('game');
+    // props.setTab('current');
   }
 
   return (
     <div>
       <div className='mb36 flex-space-between'>
-        <h3>{props.savedChar.name}</h3>
-        <button type='button' className="tool btn" onClick={handleJoinGame}>join game</button>
       </div>
+      <form className="text-form2" onSubmit={handleJoinGame}>
+          <input 
+            className='text-input' 
+            type='text' 
+            placeholder='Enter Game ID'
+            value={gameId}
+            onChange={ (e) => setGameId(e.target.value) }
+          />
+          <button type='submit' className="tool btn">join game as {props.savedChar.name}</button>
+        </form>
     </div>
   )
 }

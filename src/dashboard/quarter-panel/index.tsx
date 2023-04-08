@@ -54,6 +54,8 @@ export default function QuarterPanel (props: Props) {
         tab={props.tab}
         setTab={props.setTab}
         current={props.current}
+
+        getUserData={props.getUserData}
       />
     </div>
   )

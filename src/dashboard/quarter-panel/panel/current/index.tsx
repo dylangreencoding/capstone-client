@@ -44,6 +44,7 @@ export default function Current (props: Props) {
         setSavedGame={props.setSavedGame}
 
         accessToken={props.accessToken}
+        user={props.user}
         getUserData={props.getUserData}
       />
     } else if (props.current === 'char') {
@@ -53,6 +54,9 @@ export default function Current (props: Props) {
 
         savedChar={props.savedChar}
         setSavedChar={props.setSavedChar}
+
+        accessToken={props.accessToken}
+        getUserData={props.getUserData}
       />
     }
   }

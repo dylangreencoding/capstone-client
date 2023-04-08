@@ -3,15 +3,17 @@ interface Props {
   tab: string;
   setTab: Function;
   current: string;
+
+  getUserData: Function;
 }
 
 export default function Tabs (props: Props) {
 
-  const handleOptionsTab = () => {
+  const handleOptionsTab = async () => {
     props.setTab('options');
   }
 
-  const handleCurrentTab = () => {
+  const handleCurrentTab = async () => {
     props.setTab('current');
   }
 

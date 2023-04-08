@@ -47,7 +47,7 @@ export default function CharSheet (props: Props) {
             onChange={(e) => {setCharLevel(isNaN(Number(e.target.value)) ? 5 : Number(e.target.value))}}
           />
         </label>
-        <button className='btn' type="submit">SAVE</button>
+        <button className='btn' type="submit">save</button>
       </form>
     </div>
   )

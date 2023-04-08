@@ -6,6 +6,7 @@ interface Props {
   setSavedGame: Function;
 
   accessToken: string;
+  user: any;
   getUserData: Function;
 }
 
@@ -13,10 +14,14 @@ export default function GameTools (props: Props) {
   const [message, setMessage] = useState<string>('');
 
   let currentGame = props.savedGame;
+  const chatName = props.user.email;
   
   const handleSendGame = async (e: any) => {
     e.preventDefault();
-    currentGame.name = message;
+    
+    if (message.length > 0 && message.length < 20) {
+      currentGame.messages.push(`${chatName}: ${message}`)
+    }
     await updateGame(props.accessToken, currentGame);
     await props.getUserData();
   }
@@ -53,6 +58,9 @@ export default function GameTools (props: Props) {
     <div className="game-tools">
       <div className='mb24 flex-space-between'>
         <h3>{props.savedGame.name}</h3>
+      </div>
+      <div className='mb24 flex-space-between'>
+        <h3>{props.savedGame.id}</h3>
       </div>
 
 
@@ -106,7 +114,7 @@ export default function GameTools (props: Props) {
           <input 
             className='text-input' 
             type='text' 
-            placeholder='*say something*'
+            placeholder='20 character maximum'
             value={message}
             onChange={ (e) => setMessage(e.target.value) }
           />

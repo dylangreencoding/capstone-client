@@ -276,7 +276,12 @@ ul {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
+}
 
+.text-form2 {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
 }
 
 
