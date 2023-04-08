@@ -42,6 +42,9 @@ export default function Current (props: Props) {
       return <GameTools 
         savedGame={props.savedGame}
         setSavedGame={props.setSavedGame}
+
+        accessToken={props.accessToken}
+        getUserData={props.getUserData}
       />
     } else if (props.current === 'char') {
       return <CharTools 

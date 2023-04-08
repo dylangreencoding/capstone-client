@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { updateMap } from "../../../../expressAPI/update-map";
+import { createHostGame } from "../../../../expressAPI/create-host-game";
 
 interface Props {
   setCurrent: Function;
@@ -21,10 +22,10 @@ export default function MapTools (props: Props) {
   const [mapName, setmapName] = useState<string>(props.savedMap.name);
 
   let currentMap = props.savedMap;
-  currentMap.name = mapName;
   
   const handleSaveMap = async (e: any) => {
     e.preventDefault();
+    currentMap.name = mapName;
     await updateMap(props.accessToken, currentMap);
     await props.getUserData();
   }
@@ -32,13 +33,17 @@ export default function MapTools (props: Props) {
   const handleHostGame = async (e: any) => {
     e.preventDefault();
 
-    // HERE: create a new game object in database
-    // set up socket.IO room and socket connection for game
-    // display room id to user so they can give it to other people
-    // to join a game you enter the room id
+    currentMap.id = '';
+    currentMap.players = {}
+    currentMap.players[props.user.id] = 'host';
 
-    // TODO: setSavedGame to new game object that was just pushed to database
-    // props.setSavedGame();
+    const response = await createHostGame(props.accessToken, currentMap);
+    await props.getUserData();
+    console.log(response.game);
+    
+    props.setSavedGame(response.game);
+
+
     props.setCurrent('game');
     props.setTab('current');
   }

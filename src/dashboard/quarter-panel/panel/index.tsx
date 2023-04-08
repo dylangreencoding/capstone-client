@@ -18,6 +18,7 @@ interface Props {
   user: any;
   maps: any;
   chars: any;
+  games: any;
   getUserData: Function;
 }
 
@@ -41,6 +42,7 @@ export default function Panel (props: Props) {
         user={props.user}
         maps={props.maps}
         chars={props.chars}
+        games={props.games}
         getUserData={props.getUserData}
         /> : 
         <Current 

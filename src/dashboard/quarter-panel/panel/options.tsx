@@ -6,6 +6,8 @@ import { deleteMap } from "../../../expressAPI/delete-map";
 //
 import { createChar } from "../../../expressAPI/create-char";
 import { deleteChar } from "../../../expressAPI/delete-char";
+//
+import { deleteGame } from "../../../expressAPI/delete-game";
 
 
 
@@ -24,6 +26,7 @@ interface Props {
   user: any;
   maps: any;
   chars: any;
+  games: any;
   getUserData: Function;
 }
 
@@ -160,6 +163,70 @@ export default function Options (props: Props) {
 
   }
 
+  // choose game
+  const handleChooseGame = (e: any) => {
+    e.preventDefault();
+
+    let selectedGame;
+    for (const game of props.games) {
+      if (game.id === e.target.value) {
+        selectedGame = game;
+      }
+    }
+
+    props.setSavedGame(selectedGame)
+    console.log(props.savedGame)
+    props.setCurrent('game');
+    props.setTab('current');
+  }
+
+  // delete a game
+  const handleDeleteGame = async (e: any) => {
+    e.preventDefault();
+
+    let selectedGame;
+    for (const game of props.games) {
+      if (game.id === e.target.value) {
+        selectedGame = game;
+      }
+    }
+
+    await deleteGame(props.accessToken, selectedGame);
+    await props.getUserData();
+
+    // so you cannot view a map you just deleted
+    selectedGame.name = 'Please choose a game';
+    selectedGame.height = 2;
+    selectedGame.width = 2;
+    props.setSavedMap(selectedGame);
+
+  }
+
+
+  const displayGames = () => {
+    if (props.games) {
+      return (
+        <ul>
+          {props.games.map((game: any) => {
+            return <li key={game.id} className='flex-space-between'>
+              <button type="button" value={game.id} onClick={handleChooseGame} className="btn" >{game.name}</button>
+              <button type="button" value={game.id} onClick={handleDeleteGame} className="btn" >delete</button>
+            </li>
+          })}
+          <li>- </li>
+        </ul>
+      )
+    } else {
+      console.log('still undefined?')
+      return (
+        <ul>
+          <li>- </li>
+        </ul>
+      )
+    }
+  }
+
+
 
   return (
     <div className='options'>
@@ -201,9 +268,7 @@ export default function Options (props: Props) {
         <div className='flex-space-between mb12'>
           <h4>games </h4>
         </div>
-        <ul>
-          <li>- </li>
-        </ul>
+        { displayGames() }
       </div>
     </div>
   )

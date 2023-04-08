@@ -1,27 +1,30 @@
 import { useState } from "react";
+import { updateGame } from "../../../../expressAPI/update-game";
 
 interface Props {
   savedGame: any;
   setSavedGame: Function;
+
+  accessToken: string;
+  getUserData: Function;
 }
 
 export default function GameTools (props: Props) {
   const [message, setMessage] = useState<string>('');
 
+  let currentGame = props.savedGame;
+  
+  const handleSendGame = async (e: any) => {
+    e.preventDefault();
+    currentGame.name = message;
+    await updateGame(props.accessToken, currentGame);
+    await props.getUserData();
+  }
+
   const handlePickTool = (e: any) => {
-    // for now this uses savedMap
-    // but it needs its own state variable "saveGame"
     const currentGame = props.savedGame;
     currentGame.tool = e.target.value;
     props.setSavedGame({...props.savedGame, currentGame});
-  }
-
-  const handleSubmitMap = (e: any) => {
-    e.preventDefault();
-    console.log('send clicked')
-    // HERE: send game to socket server
-    // game is also saved to hosts games in database
-    // possibly on socket.disconnect
   }
 
   const locationToString = (location: any) => {
@@ -99,7 +102,7 @@ export default function GameTools (props: Props) {
             >undo</button>
           </div>
         </div>
-        <form className="text-form" onSubmit={handleSubmitMap}>
+        <form className="text-form" onSubmit={handleSendGame}>
           <input 
             className='text-input' 
             type='text' 

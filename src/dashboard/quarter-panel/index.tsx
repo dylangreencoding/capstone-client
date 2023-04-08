@@ -20,6 +20,7 @@ interface Props {
   maps: any;
   user: any;
   chars: any;
+  games: any;
   getUserData: Function;
 }
 
@@ -46,6 +47,7 @@ export default function QuarterPanel (props: Props) {
         user={props.user}
         maps={props.maps}
         chars={props.chars}
+        games={props.games}
         getUserData={props.getUserData}
       />
       <Tabs 

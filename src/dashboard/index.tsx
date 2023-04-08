@@ -5,6 +5,9 @@ import { useGetUser } from '../custom-hooks/useGetUser';
 //
 import MainPanel from './main-panel';
 import QuarterPanel from './quarter-panel';
+//
+import { io } from 'socket.io-client';
+
 
 export default function Dashboard () {
 
@@ -12,7 +15,19 @@ export default function Dashboard () {
   // call custom hook to GET user data (on component mount?)
   const location = useLocation();
   const [accessToken, setAccessToken] = useState<string>(location.state.accessToken);
-  const { user, maps, chars, getUserData } = useGetUser(accessToken);
+  const { user, maps, chars, games, getUserData } = useGetUser(accessToken);
+
+//   set up socket for each map
+// may need to rewrite this as a function that takes accessToken as argument
+//   const socket = io('http://localhost:8080', {
+//   transportOptions: {
+//     polling: {
+//       extraHeaders: {
+//         'Authorization': `${accessToken}`,
+//       },
+//     },
+//   },
+// });
   
   // sets options tab and main panel display
   const [current, setCurrent] = useState<string>('map');
@@ -87,6 +102,7 @@ export default function Dashboard () {
         user={user}
         maps={maps}
         chars={chars}
+        games={games}
         getUserData={getUserData}
       />
     </div>
