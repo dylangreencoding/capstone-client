@@ -34,15 +34,14 @@ export default function MapTools (props: Props) {
     e.preventDefault();
 
     currentMap.id = '';
-    currentMap.players = {}
     currentMap.messages = []
+    currentMap.players = {}
     currentMap.players[props.user.id] = 'host';
 
     const response = await createHostGame(props.accessToken, currentMap);
     await props.getUserData();
-    console.log(response.game);
-    
-    props.setSavedGame(response.game);
+    const currentGame = response.game;
+    props.setSavedGame(currentGame);
 
 
     props.setCurrent('game');

@@ -23,13 +23,13 @@ export default function CharTools (props: Props) {
   const handleJoinGame = async (e: any) => {
     e.preventDefault(); 
     const response = await joinGame(props.accessToken, {id: gameId});
-    let currentGame = response.game[0];
-    props.setSavedGame({...props.savedGame, currentGame});
     await props.getUserData();
-    console.log(props.savedGame);
+
+    let currentGame = response.game[0];
+    props.setSavedGame(currentGame);
 
     props.setCurrent('game');
-    props.setTab('options');
+    props.setTab('current');
 
   }
 

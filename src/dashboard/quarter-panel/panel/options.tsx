@@ -164,9 +164,8 @@ export default function Options (props: Props) {
   }
 
   // choose game
-  const handleChooseGame = (e: any) => {
+  const handleChooseGame = async (e: any) => {
     e.preventDefault();
-
     let selectedGame;
     for (const game of props.games) {
       if (game.id === e.target.value) {
@@ -205,12 +204,21 @@ export default function Options (props: Props) {
 
   const displayGames = () => {
     if (props.games) {
+      console.log(props.games)
       return (
         <ul>
           {props.games.map((game: any) => {
             return <li key={game.id} className='flex-space-between'>
-              <button type="button" value={game.id} onClick={handleChooseGame} className="btn" >{game.name}</button>
-              <button type="button" value={game.id} onClick={handleDeleteGame} className="btn" >delete</button>
+              <div>
+              <span className="hg">{game.players[props.user.id] === 'host' ? 'h ' : 'g '}</span>
+                <button type="button" value={game.id} onClick={handleChooseGame} className="btn" >
+                  {game.name}
+                </button>
+                
+              </div>
+              <button type="button" value={game.id} onClick={handleDeleteGame} className="btn" >
+                {game.players[props.user.id] === 'host' ? 'delete' : 'leave'}
+              </button>
             </li>
           })}
           <li>- </li>

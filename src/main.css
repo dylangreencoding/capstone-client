@@ -52,6 +52,11 @@ body {
   cursor: none;
 }
 
+.hg {
+  font-size: 1.2rem;
+  margin-right: 1.2rem;
+}
+
 /* *************** */
 /*  HTML elements */
 /* ************* */

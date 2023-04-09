@@ -11,6 +11,7 @@ interface Props {
 }
 
 export default function GameTools (props: Props) {
+  console.log(props.savedGame);
   const [message, setMessage] = useState<string>('');
 
   let currentGame = props.savedGame;
@@ -22,8 +23,9 @@ export default function GameTools (props: Props) {
     if (message.length > 0 && message.length < 20) {
       currentGame.messages.push(`${chatName}: ${message}`)
     }
-    await updateGame(props.accessToken, currentGame);
+    const response = await updateGame(props.accessToken, currentGame);
     await props.getUserData();
+    props.setSavedGame(response.game)
   }
 
   const handlePickTool = (e: any) => {
@@ -57,11 +59,10 @@ export default function GameTools (props: Props) {
   return (
     <div className="game-tools">
       <div className='mb24 flex-space-between'>
-        <h3>{props.savedGame.name}</h3>
+        {props.savedGame.players[props.user.id] === 'host' ? <h3>{props.savedGame.id}</h3> : <h3>{props.savedGame.name}</h3>}
       </div>
-      <div className='mb24 flex-space-between'>
-        <h3>{props.savedGame.id}</h3>
-      </div>
+      
+
 
 
       <div className='tools-body'>
