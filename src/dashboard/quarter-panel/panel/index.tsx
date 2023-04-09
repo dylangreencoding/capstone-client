@@ -60,6 +60,7 @@ export default function Panel (props: Props) {
         accessToken={props.accessToken}
         user={props.user}
         maps={props.maps}
+        games={props.games}
         getUserData={props.getUserData}
         />}
     </div>

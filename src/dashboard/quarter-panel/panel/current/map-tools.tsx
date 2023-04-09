@@ -36,7 +36,7 @@ export default function MapTools (props: Props) {
     currentMap.id = '';
     currentMap.players = {}
     currentMap.messages = []
-    // currentMap.players[props.user.id] = 'host';
+    currentMap.players[props.user.id] = 'host';
 
     const response = await createHostGame(props.accessToken, currentMap);
     await props.getUserData();

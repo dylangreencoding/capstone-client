@@ -1,14 +1,19 @@
 import { useState } from "react";
 import { joinGame } from "../../../../expressAPI/join-game";
 
+
 interface Props {
   setCurrent: Function;
   setTab: Function;
 
   savedChar: any;
   setSavedChar: Function;
+  savedGame: any;
+  setSavedGame: Function;
 
   accessToken: string;
+  user: any;
+  games: any;
   getUserData: Function;
 }
 
@@ -17,14 +22,15 @@ export default function CharTools (props: Props) {
 
   const handleJoinGame = async (e: any) => {
     e.preventDefault(); 
-    
-
-    await joinGame(props.accessToken, {id: gameId});
+    const response = await joinGame(props.accessToken, {id: gameId});
+    let currentGame = response.game[0];
+    props.setSavedGame({...props.savedGame, currentGame});
     await props.getUserData();
+    console.log(props.savedGame);
 
-    
-    // props.setCurrent('game');
-    // props.setTab('current');
+    props.setCurrent('game');
+    props.setTab('options');
+
   }
 
   return (

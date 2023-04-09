@@ -17,6 +17,7 @@ interface Props {
   accessToken: string;
   user: any;
   maps: any;
+  games: any;
   getUserData: Function;
 }
 
@@ -54,8 +55,12 @@ export default function Current (props: Props) {
 
         savedChar={props.savedChar}
         setSavedChar={props.setSavedChar}
+        savedGame={props.savedGame}
+        setSavedGame={props.setSavedGame}
 
         accessToken={props.accessToken}
+        user={props.user}
+        games={props.games}
         getUserData={props.getUserData}
       />
     }

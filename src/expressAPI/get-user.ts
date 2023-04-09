@@ -1,5 +1,4 @@
 export async function getUser (token: string) {
-  console.log(token);
   const response = await fetch('http://localhost:8080/auth/protected', {
     method: 'GET',
     headers: {
