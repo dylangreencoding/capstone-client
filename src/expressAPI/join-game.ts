@@ -1,5 +1,6 @@
 export async function joinGame (token: string, game_invitation: any = {}) {
-
+  // game_invitation consists of { id: gameId, character: props.savedChar }
+  // this is the request body on the express server
   const response = await fetch('http://localhost:8080/auth/join-game', {
     method: 'POST',
     headers: {

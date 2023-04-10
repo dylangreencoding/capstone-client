@@ -243,8 +243,17 @@ export default function CanvasCopy (props: Props) {
             const moveFrom = getSelected(currentMap)
             const moveTo = getSelected(mouse)
             if (moveFrom !== 'empty square' && moveFrom !== 'none selected' && moveTo === 'empty square' && mouse.canGoHere === true) {
+              // get replacement value
+              const replacementValue = currentMap.selectFrom[locationToString({x: currentMap.selected.x, y: currentMap.selected.y})];
+              replacementValue.x = mouse.selected.x;
+              replacementValue.y = mouse.selected.y;
+
+              // delete current entry
               delete currentMap.selectFrom[locationToString({x: currentMap.selected.x, y: currentMap.selected.y})];
-              currentMap.selectFrom[locationToString({x: mouse.selected.x, y: mouse.selected.y})] = {x: mouse.selected.x, y: mouse.selected.y, type: 'location', level: 10};
+              console.log('RP', replacementValue);
+
+              // make new entry
+              currentMap.selectFrom[locationToString({x: mouse.selected.x, y: mouse.selected.y})] = replacementValue;
             }
 
             currentMap.selected = { x: undefined, y: undefined};

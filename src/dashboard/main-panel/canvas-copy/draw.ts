@@ -26,7 +26,10 @@ export function draw (ctx: any, canvasWidth: number, canvasHeight: number, mouse
 
   // draw selectables
   for (const key of Object.keys(savedMap.selectFrom)) {
-    ctx.fillStyle = 'darkgreen';
+    savedMap.selectFrom[key].type === 'location' ? 
+    ctx.fillStyle = 'darkgreen' : 
+    ctx.fillStyle = 'blue';
+
     ctx.beginPath();
     ctx.arc(savedMap.selectFrom[key].x, savedMap.selectFrom[key].y, map_.scale*0.25, 0, Math.PI*2);
     ctx.closePath();

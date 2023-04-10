@@ -45,8 +45,10 @@ export default function GameTools (props: Props) {
     let selected;
     if (props.savedGame.selected.x !== undefined && props.savedGame.selected.y !== undefined) {
       selected = props.savedGame.selectFrom[locationToString(props.savedGame.selected)];
-      if (selected != undefined) {
+      if (selected != undefined && selected.type) {
         return selected.type
+      } else if (selected != undefined && selected.name) {
+        return selected.name
       } else {
         return 'empty square'
       }
@@ -62,9 +64,6 @@ export default function GameTools (props: Props) {
         {props.savedGame.players[props.user.id] === 'host' ? <h3>{props.savedGame.id}</h3> : <h3>{props.savedGame.name}</h3>}
       </div>
       
-
-
-
       <div className='tools-body'>
         <div className='tool-box'>
 

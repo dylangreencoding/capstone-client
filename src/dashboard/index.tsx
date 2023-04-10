@@ -18,9 +18,9 @@ export default function Dashboard () {
   const { user, maps, chars, games, getUserData } = useGetUser(accessToken);
   console.log(games)
 
-//   set up socket for each map
-// may need to rewrite this as a function that takes accessToken as argument
-//   const socket = io('http://localhost:8080', {
+// set up socket for each map
+// need to rewrite this as a function that takes accessToken as argument
+// const socket = io('http://localhost:8080', {
 //   transportOptions: {
 //     polling: {
 //       extraHeaders: {
@@ -38,7 +38,7 @@ export default function Dashboard () {
   const blankMap = {
     id: '',
     maker: '',
-    name: 'Please choose a map',
+    name: 'please choose a map',
 
     x: 0, 
     y: 0, 
@@ -56,10 +56,10 @@ export default function Dashboard () {
   const blankChar = {
     id: '',
     maker: '',
-    name: 'Please choose a character',
+    name: 'please choose a character',
 
-    x: 0, 
-    y: 0, 
+    x: undefined, 
+    y: undefined, 
     
     level: 5
   }

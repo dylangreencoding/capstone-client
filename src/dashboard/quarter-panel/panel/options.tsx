@@ -48,7 +48,7 @@ export default function Options (props: Props) {
   const blankMap = {
     id: '',
     maker: props.user.id,
-    name: 'NEW MAP',
+    name: 'new map',
 
     x: 0, 
     y: 0, 
@@ -114,10 +114,10 @@ export default function Options (props: Props) {
   const blankChar = {
     id: '',
     maker: props.user.id,
-    name: 'NEW CHAR',
+    name: 'new character',
 
-    x: 0, 
-    y: 0, 
+    x: undefined, 
+    y: undefined, 
     
     level: 5
   }
