@@ -23,6 +23,7 @@ export default function CharTools (props: Props) {
   const handleJoinGame = async (e: any) => {
     e.preventDefault(); 
 
+    console.log('HERE', props.savedChar);
     const response = await joinGame(props.accessToken, {id: gameId, character: props.savedChar});
     await props.getUserData();
 

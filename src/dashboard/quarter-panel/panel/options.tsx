@@ -116,8 +116,8 @@ export default function Options (props: Props) {
     maker: props.user.id,
     name: 'new character',
 
-    x: undefined, 
-    y: undefined, 
+    x: -100, 
+    y: -100, 
     
     level: 5
   }

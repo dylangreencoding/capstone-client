@@ -58,12 +58,37 @@ export default function GameTools (props: Props) {
   }
 
 
+  const handlePlacePlayer = () => {
+    console.log('handlePlacePlayer clicked')
+    // HERE: select player from selectFrom and set tool to 'place player'
+    // define rules for 'place player' tool in canvas event handlers and draw function 
+  }
+
+
   return (
     <div className="game-tools">
       <div className='mb24 flex-space-between'>
         {props.savedGame.players[props.user.id] === 'host' ? <h3>{props.savedGame.id}</h3> : <h3>{props.savedGame.name}</h3>}
       </div>
-      
+      <div className='mb24'>
+        {props.savedGame.players[props.user.id] === 'host' ? 
+        <ul>
+          {Object.keys(props.savedGame.players).map((playerId: any) => {
+            return <li key={playerId} className='flex-space-between'>
+              <button type="button" value={playerId} onClick={handlePlacePlayer} className="btn" >
+                {props.savedGame.players[playerId]}
+              </button>
+              {props.savedGame.players[playerId] !== 'host' ?
+              <button type="button" value={playerId} onClick={() => console.log(`remove playerId ${playerId}`)} className="btn" >
+                remove
+              </button> :
+              <span /> }
+            </li>
+          })}
+          <li>- </li>
+        </ul> : 
+        <ul></ul>}
+      </div>
       <div className='tools-body'>
         <div className='tool-box'>
 
@@ -88,12 +113,6 @@ export default function GameTools (props: Props) {
               value='move'
               onClick={handlePickTool}
             >move</button>
-            <button 
-              type='button'
-              className='tool btn'
-              value='undo'
-              onClick={() => console.log('clicked undo')}
-            >undo</button>
           </div>
           <div className="flex-space-between mb24">
             <button 
@@ -102,12 +121,6 @@ export default function GameTools (props: Props) {
               value='shoot'
               onClick={handlePickTool}
             >shoot</button>
-            <button 
-              type='button'
-              className='tool btn'
-              value='undo'
-              onClick={() => console.log('clicked undo')}
-            >undo</button>
           </div>
         </div>
         <form className="text-form" onSubmit={handleSendGame}>

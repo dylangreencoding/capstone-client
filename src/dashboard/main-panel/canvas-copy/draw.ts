@@ -30,6 +30,8 @@ export function draw (ctx: any, canvasWidth: number, canvasHeight: number, mouse
     ctx.fillStyle = 'darkgreen' : 
     ctx.fillStyle = 'blue';
 
+    console.log(savedMap.selectFrom[key].x, savedMap.selectFrom[key].y);
+    
     ctx.beginPath();
     ctx.arc(savedMap.selectFrom[key].x, savedMap.selectFrom[key].y, map_.scale*0.25, 0, Math.PI*2);
     ctx.closePath();

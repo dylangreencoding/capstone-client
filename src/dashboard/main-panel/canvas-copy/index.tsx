@@ -81,7 +81,11 @@ export default function CanvasCopy (props: Props) {
     const reHashSelectFrom = () => {
       let newSelectFrom : any = {};
       for (const key of Object.keys(currentMap.selectFrom)) {
-        newSelectFrom[locationToString({x: currentMap.selectFrom[key].x, y: currentMap.selectFrom[key].y})] = currentMap.selectFrom[key];
+        if (key.length < 11) {
+          newSelectFrom[locationToString({x: currentMap.selectFrom[key].x, y: currentMap.selectFrom[key].y})] = currentMap.selectFrom[key];
+        } else {
+          newSelectFrom[key] = currentMap.selectFrom[key];
+        }
       }
       return newSelectFrom
     }
@@ -120,6 +124,7 @@ export default function CanvasCopy (props: Props) {
     }
 
     // first draw
+    console.log('canvas first draw', props.savedGame)
     draw(ctx, canvas.width, canvas.height, mouse, currentMap, props.current === 'map' ? props.savedMap : props.savedGame);
     let hashX = getHashX();
     let hashY = getHashY();

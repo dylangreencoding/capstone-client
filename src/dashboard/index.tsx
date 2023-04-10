@@ -58,8 +58,8 @@ export default function Dashboard () {
     maker: '',
     name: 'please choose a character',
 
-    x: undefined, 
-    y: undefined, 
+    x: -100, 
+    y: -100, 
     
     level: 5
   }

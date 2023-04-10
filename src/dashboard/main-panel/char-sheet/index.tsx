@@ -21,6 +21,8 @@ export default function CharSheet (props: Props) {
     let currentChar = props.savedChar;
     currentChar.name = charName;
     currentChar.level = charLevel;
+    currentChar.x = -100;
+    currentChar.y = -100;
 
     await updateChar(props.accessToken, currentChar);
 
