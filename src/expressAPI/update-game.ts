@@ -1,5 +1,6 @@
 export async function updateGame (token: string, game_map: any = {}) {
   game_map.currentMap = {};
+  game_map.currentGame = {};
   game_map.selected = {};
   game_map.tool = 'none';
   console.log(token, JSON.stringify(game_map));

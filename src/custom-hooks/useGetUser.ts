@@ -12,6 +12,7 @@ export const useGetUser = (token: string) => {
     setUser(result.user[0]);
     setMaps(result.maps);
     setChars(result.chars);
+    
     setGames(result.games);
   }
 

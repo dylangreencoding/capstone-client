@@ -32,13 +32,13 @@ export default function MapTools (props: Props) {
 
   const handleHostGame = async (e: any) => {
     e.preventDefault();
+    let mapToHost = props.savedMap;
+    mapToHost.id = '';
+    mapToHost.messages = []
+    mapToHost.players = {}
+    mapToHost.players[props.user.id] = 'host';
 
-    currentMap.id = '';
-    currentMap.messages = []
-    currentMap.players = {}
-    currentMap.players[props.user.id] = 'host';
-
-    const response = await createHostGame(props.accessToken, currentMap);
+    const response = await createHostGame(props.accessToken, mapToHost);
     await props.getUserData();
     const currentGame = response.game;
     props.setSavedGame(currentGame);
