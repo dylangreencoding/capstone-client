@@ -19,6 +19,8 @@ interface Props {
   maps: any;
   games: any;
   getUserData: Function;
+
+  socket: any;
 }
 
 export default function Current (props: Props) {
@@ -46,7 +48,10 @@ export default function Current (props: Props) {
 
         accessToken={props.accessToken}
         user={props.user}
+        games={props.games}
         getUserData={props.getUserData}
+
+        socket={props.socket}
       />
     } else if (props.current === 'char') {
       return <CharTools 

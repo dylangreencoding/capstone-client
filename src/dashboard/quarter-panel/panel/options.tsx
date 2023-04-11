@@ -31,7 +31,8 @@ interface Props {
 }
 
 export default function Options (props: Props) {
-
+  const userId = props.user.id;
+  
   const navigate = useNavigate();
   const handleLogout = async (e: any) => {
     e.preventDefault();
@@ -192,30 +193,31 @@ export default function Options (props: Props) {
     await deleteGame(props.accessToken, selectedGame);
     await props.getUserData();
 
-    // so you cannot view a map you just deleted
+    // so you cannot view a game you just deleted
     selectedGame.name = 'Please choose a game';
     selectedGame.height = 2;
     selectedGame.width = 2;
-    props.setSavedMap(selectedGame);
+    props.setSavedGame(selectedGame);
 
   }
 
-
+  // problems displaying fetched data here, and this probably should be a child react component
   const displayGames = () => {
-    if (props.games) {
+    console.log('options.tsx displayGames() success');
+    if (props.games && props.games.length > 0) {
       return (
         <ul>
           {props.games.map((game: any) => {
             return <li key={game.id} className='flex-space-between'>
               <div>
-              <span className="hg">{game.players[props.user.id] === 'host' ? 'h ' : 'g '}</span>
+              <span className="hg">{game.players[userId] === 'host' ? 'h ' : 'g '}</span>
                 <button type="button" value={game.id} onClick={handleChooseGame} className="btn" >
                   {game.name}
                 </button>
                 
               </div>
               <button type="button" value={game.id} onClick={handleDeleteGame} className="btn" >
-                {game.players[props.user.id] === 'host' ? 'delete' : 'leave'}
+                {game.players[userId] === 'host' ? 'delete' : 'leave'}
               </button>
             </li>
           })}

@@ -20,6 +20,8 @@ interface Props {
   chars: any;
   games: any;
   getUserData: Function;
+
+  socket: any;
 }
 
 export default function Panel (props: Props) {
@@ -36,7 +38,6 @@ export default function Panel (props: Props) {
         setSavedChar={props.setSavedChar}
         savedGame={props.savedGame}
         setSavedGame={props.setSavedGame}
-
 
         accessToken={props.accessToken}
         user={props.user}
@@ -62,6 +63,8 @@ export default function Panel (props: Props) {
         maps={props.maps}
         games={props.games}
         getUserData={props.getUserData}
+
+        socket={props.socket}
         />}
     </div>
   )

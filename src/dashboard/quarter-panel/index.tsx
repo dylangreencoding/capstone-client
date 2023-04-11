@@ -22,6 +22,8 @@ interface Props {
   chars: any;
   games: any;
   getUserData: Function;
+
+  socket: any;
 }
 
 export default function QuarterPanel (props: Props) {
@@ -49,6 +51,8 @@ export default function QuarterPanel (props: Props) {
         chars={props.chars}
         games={props.games}
         getUserData={props.getUserData}
+
+        socket={props.socket}
       />
       <Tabs 
         tab={props.tab}

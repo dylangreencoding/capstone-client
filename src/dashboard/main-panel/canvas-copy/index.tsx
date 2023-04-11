@@ -28,7 +28,6 @@ export default function CanvasCopy (props: Props) {
     current = 'game';
   }
 
-  console.log(currentMap);
   useEffect(() => {
     
     // assure typescript compiler canvasRef is not null

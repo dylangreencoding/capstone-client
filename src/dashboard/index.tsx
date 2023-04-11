@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 //
 import { useGetUser } from '../custom-hooks/useGetUser';
@@ -7,27 +7,21 @@ import MainPanel from './main-panel';
 import QuarterPanel from './quarter-panel';
 //
 import { io } from 'socket.io-client';
-
+const socket = io('http://localhost:8080');
+socket.on("connect_error", (e: any) => {
+  console.log(e);
+})
+socket.on("connect", () => {
+  console.log(socket.connected); // true
+});
 
 export default function Dashboard () {
-
   // get state from useNavigate called at login
   // call custom hook to GET user data (on component mount?)
   const location = useLocation();
   const [accessToken, setAccessToken] = useState<string>(location.state.accessToken);
   const { user, maps, chars, games, getUserData } = useGetUser(accessToken);
 
-// set up socket for each map
-// need to rewrite this as a function that takes accessToken as argument
-// const socket = io('http://localhost:8080', {
-//   transportOptions: {
-//     polling: {
-//       extraHeaders: {
-//         'Authorization': `${accessToken}`,
-//       },
-//     },
-//   },
-// });
   
   // sets options tab and main panel display
   const [current, setCurrent] = useState<string>('map');
@@ -104,6 +98,8 @@ export default function Dashboard () {
         chars={chars}
         games={games}
         getUserData={getUserData}
+
+        socket={socket}
       />
     </div>
   )

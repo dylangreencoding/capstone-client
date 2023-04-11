@@ -1,5 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { updateGame } from "../../../../expressAPI/update-game";
+//
+
+
 
 interface Props {
   savedGame: any;
@@ -7,11 +10,48 @@ interface Props {
 
   accessToken: string;
   user: any;
+  games: any;
   getUserData: Function;
+
+  socket: any;
 }
 
+
 export default function GameTools (props: Props) {
+  
+
   const [message, setMessage] = useState<string>('');
+  
+
+  const gameroomId = props.savedGame.id;
+  const userEmail = props.user.email;
+  gameroomId !== '' ?
+  useEffect(() => {
+    props.socket.emit('join_gameroom', { gameroomId, userEmail});
+    props.socket.on('socket_message', (data: any) => {
+      console.log('socket_message data', data);
+    })
+
+    const justInCase = async () => {
+      await props.getUserData();
+      console.log(props.games);
+    }
+
+    props.socket.on('receive_game', (data: any) => {
+      console.log('receive_game data', data);
+      props.setSavedGame(data.game);
+      justInCase();
+    })
+
+    return () => {
+      // leave room
+      props.socket.emit('leave_gameroom', { gameroomId, userEmail });
+      // clean up socket event listeners
+      props.socket.off('socket_message')
+      props.socket.off('receive_game')
+    }
+  }, [props.socket]) :
+  console.log('no game id, no gameroom') ;
 
   let currentGame = props.savedGame;
   const chatName = props.user.email;
@@ -25,6 +65,9 @@ export default function GameTools (props: Props) {
     const response = await updateGame(props.accessToken, currentGame);
     await props.getUserData();
     props.setSavedGame(response.game)
+    const game = response.game;
+
+    props.socket.emit('send_game', { gameroomId, game })
   }
 
   const handlePickTool = (e: any) => {
@@ -87,7 +130,6 @@ export default function GameTools (props: Props) {
     playerNames[props.savedGame.selectFrom[key].maker] = props.savedGame.selectFrom[key].name;
    }
   }
-  console.log(playerNames)
 
   return (
     <div className="game-tools">
@@ -99,9 +141,7 @@ export default function GameTools (props: Props) {
         {props.savedGame.players[props.user.id] === 'host' ? 
         <ul>
           {Object.keys(props.savedGame.players).map((playerId: any) => {
-            console.log('mapping players')
 
-            
             return <li key={playerId} className='flex-space-between'>
               <button type="button" value={playerId} onClick={handlePlacePlayer} className="btn" >
                 {props.savedGame.players[playerId] === 'host' ?
