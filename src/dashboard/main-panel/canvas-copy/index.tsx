@@ -18,12 +18,18 @@ interface Props {
 
 export default function CanvasCopy (props: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  let currentMap : any;
+  let current : string = 'char';
+  if (props.current === 'map') {
+    currentMap = props.savedMap;
+    current = 'map';
+  } else if (props.current === 'game') { 
+    currentMap = props.savedGame;
+    current = 'game';
+  }
 
+  console.log(currentMap);
   useEffect(() => {
-    let currentMap : any;
-    props.current === 'map' ?
-    currentMap = props.savedMap : 
-    currentMap = props.savedGame
     
     // assure typescript compiler canvasRef is not null
     const canvas = canvasRef.current!;
@@ -116,7 +122,7 @@ export default function CanvasCopy (props: Props) {
       }
     }
 
-    draw(ctx, canvas.width, canvas.height, mouse, props.current === 'map' ? props.savedMap : props.savedGame);
+    draw(ctx, canvas.width, canvas.height, mouse, current === 'map' ? props.savedMap : props.savedGame);
     let hashX = getHashX();
     let hashY = getHashY();
     // this needs to be after hashmaps are constructed
@@ -143,6 +149,9 @@ export default function CanvasCopy (props: Props) {
     // i haven't looked into the cause of this
     // this fix is like reaching out and physically centering the game pieces on their squares
     // each time the board is drawn
+    // UPDATE: MIGHT HAVE FOUND CAUSE OF BUG THIS IS MEANT TO FIX
+    // i may have been passing too many arguments to the draw function
+    // not sure about this though
     for (const key of Object.keys(currentMap.selectFrom)) {
       if (key.length < 20) {
         const replacementValue = currentMap.selectFrom[key];
@@ -243,7 +252,7 @@ export default function CanvasCopy (props: Props) {
       }
       
 
-      draw(ctx, canvas.width, canvas.height, mouse, props.current === 'map' ? props.savedMap : props.savedGame);
+      draw(ctx, canvas.width, canvas.height, mouse, current === 'map' ? props.savedMap : props.savedGame);
     }
 
     const handleMouseUp = (e: MouseEvent) => {
@@ -346,7 +355,7 @@ export default function CanvasCopy (props: Props) {
         props.setSavedMap({...props.savedMap, currentMap}) :
         props.setSavedGame({...props.savedGame, currentMap})
 
-        draw(ctx, canvas.width, canvas.height, mouse, props.current === 'map' ? props.savedMap : props.savedGame);
+        draw(ctx, canvas.width, canvas.height, mouse, current === 'map' ? props.savedMap : props.savedGame);
 
 
       } else {
@@ -357,7 +366,7 @@ export default function CanvasCopy (props: Props) {
         props.setSavedMap({...props.savedMap, currentMap}) :
         props.setSavedGame({...props.savedGame, currentMap})
 
-        draw(ctx, canvas.width, canvas.height, mouse, props.current === 'map' ? props.savedMap : props.savedGame);
+        draw(ctx, canvas.width, canvas.height, mouse, current === 'map' ? props.savedMap : props.savedGame);
       }
 
       hashX = getHashX();
@@ -367,7 +376,7 @@ export default function CanvasCopy (props: Props) {
 
     const handleMouseEnter = (e: MouseEvent) => {
       canvas.classList.add('no-cursor');
-      draw(ctx, canvas.width, canvas.height, mouse, props.current === 'map' ? props.savedMap : props.savedGame);
+      draw(ctx, canvas.width, canvas.height, mouse, current === 'map' ? props.savedMap : props.savedGame);
     }
 
     const handleMouseLeave = (e: MouseEvent) => {
@@ -377,13 +386,13 @@ export default function CanvasCopy (props: Props) {
       mouse.pressed = false;
       mouse.selector.x = undefined;
       mouse.selector.y = undefined;
-      draw(ctx, canvas.width, canvas.height, mouse, props.current === 'map' ? props.savedMap : props.savedGame);
+      draw(ctx, canvas.width, canvas.height, mouse, current === 'map' ? props.savedMap : props.savedGame);
     }
 
     const handleResize = (e: Event) => {
       canvas.width = window.innerWidth * 0.75;
       canvas.height = window.innerHeight;
-      draw(ctx, canvas.width, canvas.height, mouse, props.current === 'map' ? props.savedMap : props.savedGame);
+      draw(ctx, canvas.width, canvas.height, mouse, current === 'map' ? props.savedMap : props.savedGame);
     }
 
     canvas.addEventListener('mousedown', handleMouseDown);

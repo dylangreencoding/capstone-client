@@ -81,7 +81,13 @@ export default function GameTools (props: Props) {
 
     props.setSavedGame({...props.savedGame, currentGame});
   }
-
+  let playerNames : any = {}
+  for (const key of Object.keys(props.savedGame.selectFrom)) {
+   if (props.savedGame.players[props.savedGame.selectFrom[key].maker]) {
+    playerNames[props.savedGame.selectFrom[key].maker] = props.savedGame.selectFrom[key].name;
+   }
+  }
+  console.log(playerNames)
 
   return (
     <div className="game-tools">
@@ -93,13 +99,16 @@ export default function GameTools (props: Props) {
         {props.savedGame.players[props.user.id] === 'host' ? 
         <ul>
           {Object.keys(props.savedGame.players).map((playerId: any) => {
+            console.log('mapping players')
+
+            
             return <li key={playerId} className='flex-space-between'>
               <button type="button" value={playerId} onClick={handlePlacePlayer} className="btn" >
-                {props.savedGame.players[playerId]}
+                {props.savedGame.players[playerId] === 'host' ?
+                props.savedGame.players[playerId] :
+                playerNames[playerId]}
               </button>
-              <button type="button" value={playerId} onClick={() => console.log(`remove playerId ${playerId}`)} className="btn" >
-                remove
-              </button>
+
             </li>
           })}
           <li>- </li>

@@ -11,6 +11,7 @@ export default function Tabs (props: Props) {
 
   const handleOptionsTab = async () => {
     props.setTab('options');
+    props.getUserData()
   }
 
   const handleCurrentTab = async () => {
