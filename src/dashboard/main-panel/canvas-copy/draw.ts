@@ -1,25 +1,25 @@
 
 
-export function draw (ctx: any, canvasWidth: number, canvasHeight: number, mouse: any, map_: any, savedMap: any) {
+export function draw (ctx: any, canvasWidth: number, canvasHeight: number, mouse: any, savedMap: any) {
 
   ctx.clearRect(0, 0, canvasWidth, canvasHeight);
   ctx.strokeStyle = "#252525";
   ctx.lineWidth = 1;
 
   // draw grid
-  for (let x = map_.x - map_.scale/2; x <= (map_.width * map_.scale) + map_.x; x += map_.scale) {
+  for (let x = savedMap.x - savedMap.scale/2; x <= (savedMap.width * savedMap.scale) + savedMap.x; x += savedMap.scale) {
     ctx.beginPath();
-    ctx.moveTo(x, map_.y - map_.scale/2);
-    ctx.lineTo(x, (map_.height * map_.scale) + map_.y - map_.scale/2);
-    ctx.moveTo(x, map_.y - map_.scale/2);
+    ctx.moveTo(x, savedMap.y - savedMap.scale/2);
+    ctx.lineTo(x, (savedMap.height * savedMap.scale) + savedMap.y - savedMap.scale/2);
+    ctx.moveTo(x, savedMap.y - savedMap.scale/2);
     ctx.closePath();
     ctx.stroke();
   }
-  for (let y = map_.y - map_.scale/2; y <= (map_.height * map_.scale) + map_.y; y += map_.scale) {
+  for (let y = savedMap.y - savedMap.scale/2; y <= (savedMap.height * savedMap.scale) + savedMap.y; y += savedMap.scale) {
     ctx.beginPath();
-    ctx.moveTo(map_.x - map_.scale/2, y);
-    ctx.lineTo((map_.width * map_.scale) - map_.scale/2 + map_.x, y);
-    ctx.moveTo(map_.x - map_.scale/2, y);
+    ctx.moveTo(savedMap.x - savedMap.scale/2, y);
+    ctx.lineTo((savedMap.width * savedMap.scale) - savedMap.scale/2 + savedMap.x, y);
+    ctx.moveTo(savedMap.x - savedMap.scale/2, y);
     ctx.closePath();
     ctx.stroke();
   }
@@ -29,11 +29,9 @@ export function draw (ctx: any, canvasWidth: number, canvasHeight: number, mouse
     savedMap.selectFrom[key].type === 'location' ? 
     ctx.fillStyle = 'darkgreen' : 
     ctx.fillStyle = 'blue';
-
-    console.log(savedMap.selectFrom[key].x, savedMap.selectFrom[key].y);
     
     ctx.beginPath();
-    ctx.arc(savedMap.selectFrom[key].x, savedMap.selectFrom[key].y, map_.scale*0.25, 0, Math.PI*2);
+    ctx.arc(savedMap.selectFrom[key].x, savedMap.selectFrom[key].y, savedMap.scale*0.25, 0, Math.PI*2);
     ctx.closePath();
     ctx.fill();
   }
@@ -57,12 +55,13 @@ export function draw (ctx: any, canvasWidth: number, canvasHeight: number, mouse
     ctx.lineWidth = 1;
 
     ctx.beginPath();
-    ctx.strokeRect(map_.selected.x - map_.scale*0.5, map_.selected.y - map_.scale*0.5, map_.scale, map_.scale)
+    ctx.strokeRect(savedMap.selected.x - savedMap.scale*0.5, savedMap.selected.y - savedMap.scale*0.5, savedMap.scale, savedMap.scale)
+
     ctx.closePath();
     ctx.fill();
 
     ctx.beginPath();
-    ctx.arc(mouse.selector.x, mouse.selector.y, map_.scale*0.25, 0, Math.PI*2);
+    ctx.arc(mouse.selector.x, mouse.selector.y, savedMap.scale*0.25, 0, Math.PI*2);
     ctx.closePath();
     ctx.stroke();
 
@@ -70,12 +69,12 @@ export function draw (ctx: any, canvasWidth: number, canvasHeight: number, mouse
     ctx.fillStyle = '#e0e0e0a6';
     
     ctx.beginPath();
-    ctx.fillRect(map_.selected.x - map_.scale*0.25, map_.selected.y - map_.scale*0.25, map_.scale*0.5, map_.scale*0.5)
+    ctx.fillRect(savedMap.selected.x - savedMap.scale*0.25, savedMap.selected.y - savedMap.scale*0.25, savedMap.scale*0.5, savedMap.scale*0.5)
     ctx.closePath();
     ctx.fill();
     
     ctx.beginPath();
-    ctx.arc(mouse.selector.x, mouse.selector.y, map_.scale*0.3, 0, Math.PI*2);
+    ctx.arc(mouse.selector.x, mouse.selector.y, savedMap.scale*0.3, 0, Math.PI*2);
     ctx.closePath();
     ctx.fill();
     
@@ -83,9 +82,9 @@ export function draw (ctx: any, canvasWidth: number, canvasHeight: number, mouse
     ctx.lineWidth = 3;
 
     ctx.beginPath();
-    ctx.moveTo(map_.selected.x, map_.selected.y);
+    ctx.moveTo(savedMap.selected.x, savedMap.selected.y);
     ctx.lineTo(mouse.selector.x, mouse.selector.y);
-    ctx.moveTo(map_.selected.x, map_.selected.y);
+    ctx.moveTo(savedMap.selected.x, savedMap.selected.y);
     ctx.closePath();
     ctx.stroke();
 
@@ -94,12 +93,12 @@ export function draw (ctx: any, canvasWidth: number, canvasHeight: number, mouse
     ctx.lineWidth = 1;
 
     ctx.beginPath();
-    ctx.strokeRect(map_.selected.x - map_.scale*0.5, map_.selected.y - map_.scale*0.5, map_.scale, map_.scale)
+    ctx.strokeRect(savedMap.selected.x - savedMap.scale*0.5, savedMap.selected.y - savedMap.scale*0.5, savedMap.scale, savedMap.scale)
     ctx.closePath();
     ctx.fill();
     
     ctx.beginPath();
-    ctx.arc(mouse.selector.x, mouse.selector.y, map_.scale*0.25, 0, Math.PI*2);
+    ctx.arc(mouse.selector.x, mouse.selector.y, savedMap.scale*0.25, 0, Math.PI*2);
     ctx.closePath();
     ctx.stroke();
 
@@ -109,29 +108,29 @@ export function draw (ctx: any, canvasWidth: number, canvasHeight: number, mouse
     if (mouse.canGoHere) {
       ctx.strokeStyle = 'gold';
       ctx.beginPath();
-      ctx.strokeRect(map_.selected.x - map_.scale*0.5, map_.selected.y - map_.scale*0.5, map_.scale, map_.scale)
+      ctx.strokeRect(savedMap.selected.x - savedMap.scale*0.5, savedMap.selected.y - savedMap.scale*0.5, savedMap.scale, savedMap.scale)
       ctx.closePath();
       ctx.fill();
 
       ctx.beginPath();
-      ctx.moveTo(map_.selected.x, map_.selected.y);
+      ctx.moveTo(savedMap.selected.x, savedMap.selected.y);
       ctx.lineTo(mouse.selector.x, mouse.selector.y);
-      ctx.moveTo(map_.selected.x, map_.selected.y);
+      ctx.moveTo(savedMap.selected.x, savedMap.selected.y);
       ctx.closePath();
       ctx.stroke();
 
       ctx.beginPath();
-      ctx.arc(mouse.selector.x, mouse.selector.y, map_.scale*0.35, 0, Math.PI*2);
+      ctx.arc(mouse.selector.x, mouse.selector.y, savedMap.scale*0.35, 0, Math.PI*2);
       ctx.closePath();
       ctx.stroke();
       ctx.beginPath();
-      ctx.moveTo(mouse.selector.x - map_.scale*0.35, mouse.selector.y);
-      ctx.lineTo(mouse.selector.x + map_.scale*0.35, mouse.selector.y);
+      ctx.moveTo(mouse.selector.x - savedMap.scale*0.35, mouse.selector.y);
+      ctx.lineTo(mouse.selector.x + savedMap.scale*0.35, mouse.selector.y);
       ctx.closePath();
       ctx.stroke();
       ctx.beginPath();
-      ctx.moveTo(mouse.selector.x, mouse.selector.y - map_.scale*0.35);
-      ctx.lineTo(mouse.selector.x, mouse.selector.y + map_.scale*0.35);
+      ctx.moveTo(mouse.selector.x, mouse.selector.y - savedMap.scale*0.35);
+      ctx.lineTo(mouse.selector.x, mouse.selector.y + savedMap.scale*0.35);
       ctx.closePath();
       ctx.stroke();
       
@@ -139,26 +138,26 @@ export function draw (ctx: any, canvasWidth: number, canvasHeight: number, mouse
 
       ctx.strokeStyle = "gold"
       ctx.beginPath();
-      ctx.strokeRect(map_.selected.x - map_.scale*0.5, map_.selected.y - map_.scale*0.5, map_.scale, map_.scale)
+      ctx.strokeRect(savedMap.selected.x - savedMap.scale*0.5, savedMap.selected.y - savedMap.scale*0.5, savedMap.scale, savedMap.scale)
       ctx.closePath();
       ctx.fill();
       
       ctx.strokeStyle = "#e0e0e0a6"
       ctx.beginPath();
-      ctx.moveTo(map_.selected.x, map_.selected.y);
+      ctx.moveTo(savedMap.selected.x, savedMap.selected.y);
       ctx.lineTo(mouse.selector.x, mouse.selector.y);
-      ctx.moveTo(map_.selected.x, map_.selected.y);
+      ctx.moveTo(savedMap.selected.x, savedMap.selected.y);
       ctx.closePath();
       ctx.stroke();
 
       ctx.strokeStyle = "#a00000"
       ctx.beginPath();
-      ctx.arc(mouse.selector.x, mouse.selector.y, map_.scale*0.3, 0, Math.PI*2);
+      ctx.arc(mouse.selector.x, mouse.selector.y, savedMap.scale*0.3, 0, Math.PI*2);
       ctx.closePath();
       ctx.stroke();
       ctx.beginPath();
-      ctx.moveTo(mouse.selector.x - map_.scale*0.3, mouse.selector.y);
-      ctx.lineTo(mouse.selector.x + map_.scale*0.3, mouse.selector.y);
+      ctx.moveTo(mouse.selector.x - savedMap.scale*0.3, mouse.selector.y);
+      ctx.lineTo(mouse.selector.x + savedMap.scale*0.3, mouse.selector.y);
       ctx.closePath();
       ctx.stroke();
     }
@@ -170,31 +169,31 @@ export function draw (ctx: any, canvasWidth: number, canvasHeight: number, mouse
       ctx.strokeStyle = "#e0e0e0a6"
       
       ctx.beginPath();
-      ctx.strokeRect(map_.selected.x - map_.scale*0.5, map_.selected.y - map_.scale*0.5, map_.scale, map_.scale)
+      ctx.strokeRect(savedMap.selected.x - savedMap.scale*0.5, savedMap.selected.y - savedMap.scale*0.5, savedMap.scale, savedMap.scale)
       ctx.closePath();
       ctx.fill();
       
       ctx.strokeStyle = "#f00000"
 
       ctx.beginPath();
-      ctx.moveTo(map_.selected.x, map_.selected.y);
+      ctx.moveTo(savedMap.selected.x, savedMap.selected.y);
       ctx.lineTo(mouse.selector.x, mouse.selector.y);
-      ctx.moveTo(map_.selected.x, map_.selected.y);
+      ctx.moveTo(savedMap.selected.x, savedMap.selected.y);
       ctx.closePath();
       ctx.stroke();
 
       ctx.beginPath();
-      ctx.arc(mouse.selector.x, mouse.selector.y, map_.scale*0.35, 0, Math.PI*2);
+      ctx.arc(mouse.selector.x, mouse.selector.y, savedMap.scale*0.35, 0, Math.PI*2);
       ctx.closePath();
       ctx.stroke();
       ctx.beginPath();
-      ctx.moveTo(mouse.selector.x - map_.scale*0.35, mouse.selector.y);
-      ctx.lineTo(mouse.selector.x + map_.scale*0.35, mouse.selector.y);
+      ctx.moveTo(mouse.selector.x - savedMap.scale*0.35, mouse.selector.y);
+      ctx.lineTo(mouse.selector.x + savedMap.scale*0.35, mouse.selector.y);
       ctx.closePath();
       ctx.stroke();
       ctx.beginPath();
-      ctx.moveTo(mouse.selector.x, mouse.selector.y - map_.scale*0.35);
-      ctx.lineTo(mouse.selector.x, mouse.selector.y + map_.scale*0.35);
+      ctx.moveTo(mouse.selector.x, mouse.selector.y - savedMap.scale*0.35);
+      ctx.lineTo(mouse.selector.x, mouse.selector.y + savedMap.scale*0.35);
       ctx.closePath();
       ctx.stroke();
 
@@ -202,28 +201,34 @@ export function draw (ctx: any, canvasWidth: number, canvasHeight: number, mouse
       ctx.strokeStyle = "#e0e0e0a6"
       
       ctx.beginPath();
-      ctx.moveTo(map_.selected.x, map_.selected.y);
+      ctx.moveTo(savedMap.selected.x, savedMap.selected.y);
       ctx.lineTo(mouse.selector.x, mouse.selector.y);
-      ctx.moveTo(map_.selected.x, map_.selected.y);
+      ctx.moveTo(savedMap.selected.x, savedMap.selected.y);
       ctx.closePath();
       ctx.stroke();
       
       ctx.beginPath();
-      ctx.strokeRect(map_.selected.x - map_.scale*0.5, map_.selected.y - map_.scale*0.5, map_.scale, map_.scale)
+      ctx.strokeRect(savedMap.selected.x - savedMap.scale*0.5, savedMap.selected.y - savedMap.scale*0.5, savedMap.scale, savedMap.scale)
       ctx.closePath();
       ctx.fill();
 
       ctx.strokeStyle = "#a00000"
       ctx.beginPath();
-      ctx.arc(mouse.selector.x, mouse.selector.y, map_.scale*0.3, 0, Math.PI*2);
+      ctx.arc(mouse.selector.x, mouse.selector.y, savedMap.scale*0.3, 0, Math.PI*2);
       ctx.closePath();
       ctx.stroke();
       ctx.beginPath();
-      ctx.moveTo(mouse.selector.x - map_.scale*0.3, mouse.selector.y);
-      ctx.lineTo(mouse.selector.x + map_.scale*0.3, mouse.selector.y);
+      ctx.moveTo(mouse.selector.x - savedMap.scale*0.3, mouse.selector.y);
+      ctx.lineTo(mouse.selector.x + savedMap.scale*0.3, mouse.selector.y);
       ctx.closePath();
       ctx.stroke();
     }
+  } else if (savedMap.tool.length > 20) {
+      ctx.strokeStyle = 'blue';
+      ctx.beginPath();
+      ctx.arc(mouse.selector.x, mouse.selector.y, savedMap.scale*0.35, 0, Math.PI*2);
+      ctx.closePath();
+      ctx.stroke();
   }
   
     // chatmessages

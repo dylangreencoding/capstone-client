@@ -11,7 +11,6 @@ interface Props {
 }
 
 export default function GameTools (props: Props) {
-  console.log(props.savedGame);
   const [message, setMessage] = useState<string>('');
 
   let currentGame = props.savedGame;
@@ -58,10 +57,29 @@ export default function GameTools (props: Props) {
   }
 
 
-  const handlePlacePlayer = () => {
-    console.log('handlePlacePlayer clicked')
-    // HERE: select player from selectFrom and set tool to 'place player'
-    // define rules for 'place player' tool in canvas event handlers and draw function 
+  const handlePlacePlayer = (e: any) => {
+    console.log('playerID', e.target.value)
+    const currentGame = props.savedGame;
+    let unplaced = false;
+    for (const key of Object.keys(currentGame.selectFrom)) {
+      if (key === e.target.value) {
+        unplaced = true;
+      }
+    }
+
+    if (unplaced === true) {
+      currentGame.tool = e.target.value
+    } else {
+      currentGame.tool = 'none';
+      for (const key of Object.keys(currentGame.selectFrom)) {
+        if (currentGame.selectFrom[key].maker === e.target.value) {
+          currentGame.selected.x = currentGame.selectFrom[key].x;
+          currentGame.selected.y = currentGame.selectFrom[key].y;
+        }
+      }
+    }
+
+    props.setSavedGame({...props.savedGame, currentGame});
   }
 
 
@@ -71,6 +89,7 @@ export default function GameTools (props: Props) {
         {props.savedGame.players[props.user.id] === 'host' ? <h3>{props.savedGame.id}</h3> : <h3>{props.savedGame.name}</h3>}
       </div>
       <div className='mb24'>
+
         {props.savedGame.players[props.user.id] === 'host' ? 
         <ul>
           {Object.keys(props.savedGame.players).map((playerId: any) => {
@@ -78,16 +97,15 @@ export default function GameTools (props: Props) {
               <button type="button" value={playerId} onClick={handlePlacePlayer} className="btn" >
                 {props.savedGame.players[playerId]}
               </button>
-              {props.savedGame.players[playerId] !== 'host' ?
               <button type="button" value={playerId} onClick={() => console.log(`remove playerId ${playerId}`)} className="btn" >
                 remove
-              </button> :
-              <span /> }
+              </button>
             </li>
           })}
           <li>- </li>
         </ul> : 
         <ul></ul>}
+        
       </div>
       <div className='tools-body'>
         <div className='tool-box'>

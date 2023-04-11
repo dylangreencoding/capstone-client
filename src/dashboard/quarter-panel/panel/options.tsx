@@ -174,7 +174,6 @@ export default function Options (props: Props) {
     }
 
     props.setSavedGame(selectedGame)
-    console.log(props.savedGame)
     props.setCurrent('game');
     props.setTab('current');
   }
@@ -204,7 +203,6 @@ export default function Options (props: Props) {
 
   const displayGames = () => {
     if (props.games) {
-      console.log(props.games)
       return (
         <ul>
           {props.games.map((game: any) => {
@@ -225,7 +223,7 @@ export default function Options (props: Props) {
         </ul>
       )
     } else {
-      console.log('still undefined?')
+      console.log('options.tsx displayGames() error')
       return (
         <ul>
           <li>- </li>

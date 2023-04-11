@@ -16,7 +16,6 @@ export default function Dashboard () {
   const location = useLocation();
   const [accessToken, setAccessToken] = useState<string>(location.state.accessToken);
   const { user, maps, chars, games, getUserData } = useGetUser(accessToken);
-  console.log(games)
 
 // set up socket for each map
 // need to rewrite this as a function that takes accessToken as argument

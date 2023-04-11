@@ -100,13 +100,6 @@ export default function CanvasCopy (props: Props) {
       }
     }
 
-    const locationToString = (location: any) => {
-      const x = location.x.toString();
-      const y = location.y.toString();
-      const xy = x.concat(' ', y);
-      return xy
-    }
-
     // m_object parameter can be mouse object or map object
     // both have m_object.selected property
     const getSelected = (m_object: any) => {
@@ -123,13 +116,54 @@ export default function CanvasCopy (props: Props) {
       }
     }
 
-    // first draw
-    console.log('canvas first draw', props.savedGame)
-    draw(ctx, canvas.width, canvas.height, mouse, currentMap, props.current === 'map' ? props.savedMap : props.savedGame);
+    draw(ctx, canvas.width, canvas.height, mouse, props.current === 'map' ? props.savedMap : props.savedGame);
     let hashX = getHashX();
     let hashY = getHashY();
-
     // this needs to be after hashmaps are constructed
+    const locationToString = (location: any) => {
+      // setting undefined character locations (selectFrom keys) to edge of map
+      // as if they fell of map and had to be picked up
+      // ultimately preferably add them to list of charcters that need to be placed
+      if (location.x === undefined) {
+        location.x = currentMap.x;
+      }
+      if (location.y === undefined) {
+        location.y = currentMap.y;
+      }
+
+      const x = location.x.toString();
+      const y = location.y.toString();
+
+      const xy = x.concat(' ', y);
+      return xy
+    }
+
+    // THIS CORRECTS A WEIRD BUG
+    // sometimes the character locations get offset relative to the grid and can not longer be selected
+    // i haven't looked into the cause of this
+    // this fix is like reaching out and physically centering the game pieces on their squares
+    // each time the board is drawn
+    for (const key of Object.keys(currentMap.selectFrom)) {
+      if (key.length < 20) {
+        const replacementValue = currentMap.selectFrom[key];
+
+        isNaN(replacementValue.x) ?
+        replacementValue.x = currentMap.x :
+        replacementValue.x = hashX[currentMap.selectFrom[key].x] ;
+        
+        isNaN(replacementValue.y) ?
+        replacementValue.y = currentMap.y :
+        replacementValue.y = hashY[currentMap.selectFrom[key].y] ;
+
+        // delete current entry
+        delete currentMap.selectFrom[key];
+
+        // make new entry
+        currentMap.selectFrom[locationToString({x: replacementValue.x, y: replacementValue.y})] = replacementValue;
+      }
+    }
+
+    // this also needs to be after hashmaps are constructed 
     const getMousePositionXY = (e: MouseEvent) => {
       let positionX = hashX[e.clientX];
       let positionY = hashY[e.clientY];
@@ -138,8 +172,6 @@ export default function CanvasCopy (props: Props) {
         y: positionY
       }
     }
-    
-    // but this does not, it just is by coincidence
     const getMouseMovementXY = (e: MouseEvent) => {
       return {
         x: e.movementX,
@@ -209,12 +241,12 @@ export default function CanvasCopy (props: Props) {
           mouse.selector.y = e.clientY;
         }
       }
+      
 
-      draw(ctx, canvas.width, canvas.height, mouse, currentMap, props.current === 'map' ? props.savedMap : props.savedGame);
+      draw(ctx, canvas.width, canvas.height, mouse, props.current === 'map' ? props.savedMap : props.savedGame);
     }
 
     const handleMouseUp = (e: MouseEvent) => {
-      
       mouse.pressed = false;
       mouse.selected = getMousePositionXY(e)
 
@@ -240,7 +272,7 @@ export default function CanvasCopy (props: Props) {
 
           currentMap.selectFrom[locationToString(mouse.selected)] = {x: mouse.selected.x, y: mouse.selected.y, type: 'location', level: 10 };
 
-          currentMap.selected = mouse.selected;
+          currentMap.selected = { x: undefined, y: undefined};
 
         } else if (currentMap.tool === 'move' && mouse.doubleTap !== true) {
 
@@ -282,10 +314,28 @@ export default function CanvasCopy (props: Props) {
 
           } else {
             currentMap.selected = mouse.selected;
-          }
+          } 
 
+        } else if (currentMap.tool.length > 20) {
+          const moveTo = getSelected(mouse);
+          if (moveTo === 'empty square') {
+            const replacementValue = currentMap.selectFrom[currentMap.tool];
+            replacementValue.x = mouse.selected.x;
+            replacementValue.y = mouse.selected.y;
+            
+            // delete current entry
+            delete currentMap.selectFrom[currentMap.tool];
+            console.log('place char replacement value', replacementValue);
+
+            // make new entry
+            currentMap.selectFrom[locationToString({x: mouse.selected.x, y: mouse.selected.y})] = replacementValue;
+
+            // reset tool
+            currentMap.tool = 'none';
+          }
         } else {
           currentMap.selected = mouse.selected;
+
         }
 
         if (mouse.doubleTap === true) {
@@ -296,7 +346,7 @@ export default function CanvasCopy (props: Props) {
         props.setSavedMap({...props.savedMap, currentMap}) :
         props.setSavedGame({...props.savedGame, currentMap})
 
-        draw(ctx, canvas.width, canvas.height, mouse, currentMap, props.current === 'map' ? props.savedMap : props.savedGame);
+        draw(ctx, canvas.width, canvas.height, mouse, props.current === 'map' ? props.savedMap : props.savedGame);
 
 
       } else {
@@ -307,7 +357,7 @@ export default function CanvasCopy (props: Props) {
         props.setSavedMap({...props.savedMap, currentMap}) :
         props.setSavedGame({...props.savedGame, currentMap})
 
-        draw(ctx, canvas.width, canvas.height, mouse, currentMap, props.current === 'map' ? props.savedMap : props.savedGame);
+        draw(ctx, canvas.width, canvas.height, mouse, props.current === 'map' ? props.savedMap : props.savedGame);
       }
 
       hashX = getHashX();
@@ -317,7 +367,7 @@ export default function CanvasCopy (props: Props) {
 
     const handleMouseEnter = (e: MouseEvent) => {
       canvas.classList.add('no-cursor');
-      draw(ctx, canvas.width, canvas.height, mouse, currentMap, props.current === 'map' ? props.savedMap : props.savedGame);
+      draw(ctx, canvas.width, canvas.height, mouse, props.current === 'map' ? props.savedMap : props.savedGame);
     }
 
     const handleMouseLeave = (e: MouseEvent) => {
@@ -327,13 +377,13 @@ export default function CanvasCopy (props: Props) {
       mouse.pressed = false;
       mouse.selector.x = undefined;
       mouse.selector.y = undefined;
-      draw(ctx, canvas.width, canvas.height, mouse, currentMap, props.current === 'map' ? props.savedMap : props.savedGame);
+      draw(ctx, canvas.width, canvas.height, mouse, props.current === 'map' ? props.savedMap : props.savedGame);
     }
 
     const handleResize = (e: Event) => {
       canvas.width = window.innerWidth * 0.75;
       canvas.height = window.innerHeight;
-      draw(ctx, canvas.width, canvas.height, mouse, currentMap, props.current === 'map' ? props.savedMap : props.savedGame);
+      draw(ctx, canvas.width, canvas.height, mouse, props.current === 'map' ? props.savedMap : props.savedGame);
     }
 
     canvas.addEventListener('mousedown', handleMouseDown);
@@ -351,7 +401,7 @@ export default function CanvasCopy (props: Props) {
       canvas.removeEventListener('mouseenter', handleMouseEnter);
       canvas.removeEventListener('mouseleave', handleMouseLeave);
       window.removeEventListener('resize', handleResize);
-      console.log('useEffect returned')
+      console.log('canvas')
     }
   // when these change the useEffect is called
   }, [props.savedMap, props.savedGame, props.current]);
