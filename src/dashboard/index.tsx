@@ -6,6 +6,8 @@ import { useGetUser } from '../custom-hooks/useGetUser';
 import MainPanel from './main-panel';
 import QuarterPanel from './quarter-panel';
 //
+import { refreshToken } from '../expressAPI/refresh-token';
+//
 import { io } from 'socket.io-client';
 const socket = io('http://localhost:8080');
 socket.on("connect_error", (e: any) => {
@@ -62,8 +64,25 @@ export default function Dashboard () {
   const [savedChar, setSavedChar] = useState<any>(blankChar);
   const [savedGame, setSavedGame] = useState<any>(blankMap);
 
+
+  // this needs to be called automatically before access token expires
+  const handleRefreshToken = async (e: any) => {
+    e.preventDefault();
+    const response = await refreshToken();
+    console.log('handleRefreshToken', response)
+    // HERE: set new access token from response somewhat like this:
+    // setAccessToken(response.accessToken);
+  }
+
   return (
     <div className='dashboard'>
+      {/* FOR TESTING REFRESH */}
+      {/* <div>
+        <button className='btn' type="button" onClick={handleRefreshToken}>
+          REFRESH TOKEN
+        </button>
+      </div> */}
+      
       <MainPanel 
         current={current}
         setCurrent={setCurrent}

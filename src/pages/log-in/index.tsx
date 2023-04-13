@@ -16,6 +16,7 @@ export default function LogIn () {
     }
     try {
       const response = await logIn(data);
+      console.log(response)
       alert(response.message)
       navigate('/capstone_user_account', {state: response, replace: true});
     } catch (error) {

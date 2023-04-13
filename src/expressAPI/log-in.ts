@@ -3,9 +3,11 @@
 export async function logIn (data: any = {}) {
   const response = await fetch('http://localhost:8080/auth/login', {
     method: 'POST',
+    credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': 'http://localhost:8080/auth/login',
+      
     },
     body: JSON.stringify(data)
   });

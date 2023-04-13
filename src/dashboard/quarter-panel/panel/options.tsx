@@ -11,6 +11,7 @@ import { deleteGame } from "../../../expressAPI/delete-game";
 
 
 
+
 interface Props {
   setCurrent: Function;
   setTab: Function;
@@ -32,7 +33,7 @@ interface Props {
 
 export default function Options (props: Props) {
   const userId = props.user.id;
-  
+
   const navigate = useNavigate();
   const handleLogout = async (e: any) => {
     e.preventDefault();
@@ -233,7 +234,6 @@ export default function Options (props: Props) {
       )
     }
   }
-
 
 
   return (
