@@ -7,23 +7,16 @@ import MainPanel from './main-panel';
 import QuarterPanel from './quarter-panel';
 //
 import { refreshToken } from '../expressAPI/refresh-token';
-//
-import { io } from 'socket.io-client';
-const socket = io('http://localhost:8080');
-socket.on("connect_error", (e: any) => {
-  console.log(e);
-})
-socket.on("connect", () => {
-  console.log(socket.connected); // true
-});
 
-export default function Dashboard () {
-  // get state from useNavigate called at login
-  // call custom hook to GET user data (on component mount?)
-  const location = useLocation();
-  const [accessToken, setAccessToken] = useState<string>(location.state.accessToken);
-  const { user, maps, chars, games, getUserData } = useGetUser(accessToken);
+interface Props {
+  accessToken: string;
+  socket: any;
+}
 
+export default function Dashboard (props: Props) {
+  console.log('dash rendered')
+  
+  const { user, maps, chars, games, getUserData } = useGetUser(props.accessToken);
   
   // sets options tab and main panel display
   const [current, setCurrent] = useState<string>('map');
@@ -65,23 +58,8 @@ export default function Dashboard () {
   const [savedGame, setSavedGame] = useState<any>(blankMap);
 
 
-  // this needs to be called automatically before access token expires
-  const handleRefreshToken = async (e: any) => {
-    e.preventDefault();
-    const response = await refreshToken();
-    console.log('handleRefreshToken', response)
-    // HERE: set new access token from response somewhat like this:
-    // setAccessToken(response.accessToken);
-  }
-
   return (
     <div className='dashboard'>
-      {/* FOR TESTING REFRESH */}
-      {/* <div>
-        <button className='btn' type="button" onClick={handleRefreshToken}>
-          REFRESH TOKEN
-        </button>
-      </div> */}
       
       <MainPanel 
         current={current}
@@ -95,7 +73,7 @@ export default function Dashboard () {
         savedGame={savedGame}
         setSavedGame={setSavedGame}
 
-        accessToken={accessToken}
+        accessToken={props.accessToken}
         getUserData={getUserData}
       />
       <QuarterPanel 
@@ -111,14 +89,14 @@ export default function Dashboard () {
         savedGame={savedGame}
         setSavedGame={setSavedGame}
 
-        accessToken={accessToken}
+        accessToken={props.accessToken}
         user={user}
         maps={maps}
         chars={chars}
         games={games}
         getUserData={getUserData}
 
-        socket={socket}
+        socket={props.socket}
       />
     </div>
   )

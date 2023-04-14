@@ -131,6 +131,10 @@ export default function GameTools (props: Props) {
    }
   }
 
+  const handleRemovePlayer = (e: any) => {
+    console.log('GameTools handleRemovePlayer', e.target.value)
+  }
+
   return (
     <div className="game-tools">
       <div className='mb24 flex-space-between'>
@@ -143,11 +147,16 @@ export default function GameTools (props: Props) {
           {Object.keys(props.savedGame.players).map((playerId: any) => {
 
             return <li key={playerId} className='flex-space-between'>
+
               <button type="button" value={playerId} onClick={handlePlacePlayer} className="btn" >
                 {props.savedGame.players[playerId] === 'host' ?
                 props.savedGame.players[playerId] :
                 playerNames[playerId]}
               </button>
+
+              {props.savedGame.players[playerId] === 'host' ?
+              <span /> :
+              <button className='btn' type="button" value={playerId} onClick={handleRemovePlayer}>remove</button>}
 
             </li>
           })}

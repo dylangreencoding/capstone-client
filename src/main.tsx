@@ -7,8 +7,8 @@ import LandingPage from './pages/landing-page'
 import ErrorPage from './pages/error-page'
 import CreateAccount from './pages/create-account'
 import LogIn from './pages/log-in'
-//
-import Dashboard from './dashboard'
+import App from './pages/app/app'
+
 
 const router = createBrowserRouter([
   {
@@ -26,7 +26,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/capstone_user_account',
-    element: <Dashboard />,
+    element: <App />,
   },
 ])
 
