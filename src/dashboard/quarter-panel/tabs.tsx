@@ -10,7 +10,6 @@ interface Props {
 export default function Tabs (props: Props) {
 
   const handleOptionsTab = async () => {
-    await props.getUserData()
     props.setTab('options');
   }
 

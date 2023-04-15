@@ -19,11 +19,8 @@ interface Props {
 
 
 export default function GameTools (props: Props) {
-  
-
   const [message, setMessage] = useState<string>('');
   
-
   const gameroomId = props.savedGame.id;
   const userEmail = props.user.email;
   gameroomId !== '' ?
@@ -54,14 +51,12 @@ export default function GameTools (props: Props) {
   }, [props.socket]) :
   console.log('no game id, no gameroom') ;
 
-  let currentGame = props.savedGame;
-  const chatName = props.user.email;
   
   const handleSendGame = async (e: any) => {
     e.preventDefault();
-    
+    let currentGame = props.savedGame;
     if (message.length > 0 && message.length < 20) {
-      currentGame.messages.push(`${chatName}: ${message}`)
+      currentGame.messages.push(`${props.user.email}: ${message}`)
     }
     const response = await updateGame(props.accessToken, currentGame);
     await props.getUserData();
