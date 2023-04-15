@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { updateGame } from "../../../../expressAPI/update-game";
+import { removePlayer } from "../../../../expressAPI/remove-player-from-game";
 //
 
 
@@ -131,8 +132,15 @@ export default function GameTools (props: Props) {
    }
   }
 
-  const handleRemovePlayer = (e: any) => {
+  const handleRemovePlayer = async (e: any) => {
     console.log('GameTools handleRemovePlayer', e.target.value)
+
+    // removes player from game,
+    // effectively as if the player had left
+    // this (along with player leave game button should trigger socket event)
+    const response = await removePlayer(props.accessToken, props.savedGame, e.target.value);
+    props.setSavedGame(response.game);
+    await props.getUserData();
   }
 
   return (

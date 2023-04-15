@@ -30,7 +30,7 @@ export default function CanvasCopy (props: Props) {
 
   useEffect(() => {
     
-    // assure typescript compiler canvasRef is not null
+    // must assure typescript compiler canvasRef is not null
     const canvas = canvasRef.current!;
     const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth * 0.75;
@@ -46,7 +46,6 @@ export default function CanvasCopy (props: Props) {
       position: { x: any, y: any };
       selected: { x: any, y: any };
       selector: { x: any, y: any };
-
     }
     let mouse : Mouse = { pressed: false, movedMap: false, movementXY: { x: undefined, y: undefined }, position: { x: undefined, y: undefined }, selected: { x: undefined, y: undefined }, selector: { x: undefined, y: undefined }, doubleTap: false, canGoHere: false };
 
@@ -86,6 +85,7 @@ export default function CanvasCopy (props: Props) {
     const reHashSelectFrom = () => {
       let newSelectFrom : any = {};
       for (const key of Object.keys(currentMap.selectFrom)) {
+        // make sure piece is on board
         if (key.length < 11) {
           newSelectFrom[locationToString({x: currentMap.selectFrom[key].x, y: currentMap.selectFrom[key].y})] = currentMap.selectFrom[key];
         } else {

@@ -1,5 +1,5 @@
 export async function deleteGame (token: string, game: any = {}) {
-  console.log(token);
+
   const response = await fetch('http://localhost:8080/auth/delete-game', {
     method: 'POST',
     headers: {
