@@ -40,23 +40,18 @@ body {
   font-size: inherit;
   color: hsl(0, 0%, 88%);
   width: fit-content;
-
-  border-top: solid #141414 1px;
-  border-right: solid #141414 1px;
-  border-bottom: solid hsl(0, 0%, 88%) 1px;
-  border-left: solid #141414 1px;
+  padding: 0 1rem 0 1rem;
+  
+  border: solid #141414 1px;
+  background-color: black;
 }
 
 .btn:hover {
   cursor: pointer;
   color: rgba(255, 217, 0, 0.88);
-
-  border-top: solid #141414 1px;
-  border-right: solid #141414 1px;
-  border-bottom: solid #141414 1px;
-  border-left: solid #141414 1px;
-
   
+  border: solid rgba(83, 70, 0, 0.88) 1px;
+
 }
 
 .no-cursor {
@@ -242,31 +237,14 @@ ul {
 }
 
 
-/* tools (pseudo-links) */
+/* button grouping */
 .tool-box {
   display: flex;
   flex-direction: column;
+  gap: 0.6rem;
 }
 
-.tool {
-  max-width: fit-content;
-  padding: 0.2rem;
-}
-
-.tool:hover {
-  /* cursor: pointer;
-  color: #FFF; */
-  background-color: black;
-}
-
-.tools-body {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 80vh;
-  margin-bottom: 1.2rem;
-}
-
+/* button selecting */
 .active {
   background-color: #600000;
 }
@@ -290,21 +268,15 @@ ul {
 
 .text-form {
   display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-}
-
-.text-form2 {
-  display: flex;
   flex-direction: column;
-  gap: 0.8rem;
-}
-
-
-.capstone-info {
-  border: none;
 }
 
 .char-sheet {
   padding: 1.2rem;
+  max-width: 40rem;
+  margin: 10rem auto 0 auto;
+}
+
+.capstone-info {
+  border: none;
 }

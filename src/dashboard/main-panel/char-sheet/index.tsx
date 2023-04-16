@@ -32,9 +32,11 @@ export default function CharSheet (props: Props) {
 
   return (
     <div className='char-sheet'>
-      <form className="auth-form" onSubmit={handleSubmitChar}>
+      <form className="text-form" onSubmit={handleSubmitChar}>
         <label className="mb24">
+          Name
           <input 
+          className="text-input"
             type="text"
             placeholder={charName}
             value={charName}
@@ -42,8 +44,9 @@ export default function CharSheet (props: Props) {
           />
         </label>
         <label className="mb24">
-          Level |
+          Level
           <input 
+            className="text-input"
             type="text"
             value={charLevel}
             onChange={(e) => {setCharLevel(isNaN(Number(e.target.value)) ? 5 : Number(e.target.value))}}

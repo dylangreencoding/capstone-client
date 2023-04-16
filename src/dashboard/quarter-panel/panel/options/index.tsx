@@ -180,12 +180,12 @@ export default function Options (props: Props) {
     <div className='options'>
       <div className='flex-space-between mb36'>
         <h3>{props.user.email}</h3>
-        <button type="button" className='tool btn' onClick={handleLogout}>log out</button>
+        <button type="button" className='btn' onClick={handleLogout}>log out</button>
       </div>
       <div className="mb36">
         <div className='flex-space-between mb12'>
           <h4>maps </h4>
-          <button type='button' className="tool btn" onClick={handleNewMap}>create</button>
+          <button type='button' className="btn" onClick={handleNewMap}>create</button>
         </div>
         <ul>
           {props.maps.map((map: any) => {
@@ -200,7 +200,7 @@ export default function Options (props: Props) {
       <div className="mb36">
         <div className='flex-space-between mb12'>
           <h4>characters </h4>
-          <button type='button' className="tool btn" onClick={handleNewChar}>create</button>
+          <button type='button' className="btn" onClick={handleNewChar}>create</button>
         </div>
         <ul>
           {props.chars.map((char: any) => {

@@ -164,73 +164,71 @@ export default function GameTools (props: Props) {
   return (
     <div className="game-tools">
       
-      <div className='mb24'>
+      <div className='mb24 tool-box'>
         {props.savedGame.players[props.user.id] === 'host' ? <h3>{props.savedGame.id}</h3> : <h3>{props.savedGame.name}</h3>}
         <button type="button" value={props.savedGame.id} onClick={handleDeleteGame} className="btn" >
           {props.savedGame.players[props.user.id] === 'host' ? 'delete game' : 'leave game'}
         </button>
       </div>
 
-      <div className='mb24'>
+      
+      <div>
+        <div>
 
-        {props.savedGame.players[props.user.id] === 'host' ? 
-        <ul>
-          {Object.keys(props.savedGame.players).map((playerId: any) => {
+          {props.savedGame.players[props.user.id] === 'host' ? 
 
-            return <li key={playerId} className='flex-space-between'>
+            <ul className="mb24 tool-box">
+              {Object.keys(props.savedGame.players).map((playerId: any) => {
+                return <li key={playerId} className='flex-space-between'>
+                  <button type="button" value={playerId} onClick={handlePlacePlayer} className="btn" >
+                    {props.savedGame.players[playerId] === 'host' ?
+                    props.savedGame.players[playerId] :
+                    playerNames[playerId]}
+                  </button>
+                  {props.savedGame.players[playerId] === 'host' ?
+                  <span /> :
+                  <button className='btn' type="button" value={playerId} onClick={handleRemovePlayer}>remove</button>}
+                </li>
+              })}
+              <li>- </li>
+            </ul> : 
 
-              <button type="button" value={playerId} onClick={handlePlacePlayer} className="btn" >
-                {props.savedGame.players[playerId] === 'host' ?
-                props.savedGame.players[playerId] :
-                playerNames[playerId]}
-              </button>
-
-              {props.savedGame.players[playerId] === 'host' ?
-              <span /> :
-              <button className='btn' type="button" value={playerId} onClick={handleRemovePlayer}>remove</button>}
-
-            </li>
-          })}
-          <li>- </li>
-        </ul> : 
-        <ul></ul>}
-        
-      </div>
-      <div className='tools-body'>
-        <div className='tool-box'>
+            <ul className="mb24"></ul>
+          }
 
           <div className="mb24">
-            <span>{props.savedGame.selected.x}, {props.savedGame.selected.y}</span>
+            <div>{props.savedGame.selected.x}, {props.savedGame.selected.y}</div>
+            <div>{getSelected()}</div>
           </div>
-          <div className="mb24">
-            <span>{getSelected()}</span>
-          </div>
-          <div className="mb24">
-            <button 
-              type='button'
-              className={`tool btn ${props.savedGame.tool === 'none' ? 'active' : ''}`}
-              value='none'
-              onClick={handlePickTool}
-            >select</button>
-          </div>
-          <div className="flex-space-between mb24">
-            <button 
-              type='button'
-              className={`tool btn ${props.savedGame.tool === 'move' ? 'active' : ''}`}
-              value='move'
-              onClick={handlePickTool}
-            >move</button>
-          </div>
-          <div className="flex-space-between mb24">
-            <button 
-              type='button'
-              className={`tool btn ${props.savedGame.tool === 'shoot' ? 'active' : ''}`}
-              value='shoot'
-              onClick={handlePickTool}
-            >shoot</button>
+
+          <div className="mb24 tool-box">
+            <div>
+              <button 
+                type='button'
+                className={`btn ${props.savedGame.tool === 'none' ? 'active' : ''}`}
+                value='none'
+                onClick={handlePickTool}
+              >select</button>
+            </div>
+            <div>
+              <button 
+                type='button'
+                className={`btn ${props.savedGame.tool === 'move' ? 'active' : ''}`}
+                value='move'
+                onClick={handlePickTool}
+              >move</button>
+            </div>
+            <div>
+              <button 
+                type='button'
+                className={`btn ${props.savedGame.tool === 'shoot' ? 'active' : ''}`}
+                value='shoot'
+                onClick={handlePickTool}
+              >shoot</button>
+            </div>
           </div>
         </div>
-        <form className="text-form" onSubmit={handleSendGame}>
+        <form className="text-form tool-box" onSubmit={handleSendGame}>
           <input 
             className='text-input' 
             type='text' 
@@ -238,7 +236,7 @@ export default function GameTools (props: Props) {
             value={message}
             onChange={ (e) => setMessage(e.target.value) }
           />
-          <button type='submit' className="tool btn">send</button>
+          <button type='submit' className="btn">send</button>
         </form>
       </div>
     </div>

@@ -41,9 +41,15 @@ export default function CharTools (props: Props) {
 
   return (
     <div>
-      <div className='mb36 flex-space-between'>
+      <div className='mb36'>
+        <div>
+          <h3>{props.savedChar.name}</h3>
+        </div>
+        <div>
+          Level {props.savedChar.level}
+        </div>
       </div>
-      <form className="text-form2" onSubmit={handleJoinGame}>
+      <form className="text-form" onSubmit={handleJoinGame}>
           <input 
             className='text-input' 
             type='text' 
@@ -51,7 +57,7 @@ export default function CharTools (props: Props) {
             value={gameId}
             onChange={ (e) => setGameId(e.target.value) }
           />
-          <button type='submit' className="tool btn">join game as {props.savedChar.name}</button>
+          <button type='submit' className="btn">join game as {props.savedChar.name}</button>
         </form>
     </div>
   )
