@@ -1,16 +1,15 @@
 import { useNavigate } from "react-router-dom";
-import { logOut } from "../../../expressAPI/log-out";
+import { logOut } from "../../../../expressAPI/log-out";
 //
-import { createMap } from "../../../expressAPI/create-map";
-import { deleteMap } from "../../../expressAPI/delete-map";
+import { createMap } from "../../../../expressAPI/create-map";
+import { deleteMap } from "../../../../expressAPI/delete-map";
 //
-import { createChar } from "../../../expressAPI/create-char";
-import { deleteChar } from "../../../expressAPI/delete-char";
+import { createChar } from "../../../../expressAPI/create-char";
+import { deleteChar } from "../../../../expressAPI/delete-char";
 //
-import { deleteGame } from "../../../expressAPI/delete-game";
 import { useEffect } from "react";
-
-
+//
+import DisplayGames from "./displayGames";
 
 
 interface Props {
@@ -30,11 +29,16 @@ interface Props {
   chars: any;
   games: any;
   getUserData: Function;
+
+  socket: any;
 }
 
 export default function Options (props: Props) {
   useEffect(() => {
-    console.log('OPTIONS USEFFECT')
+    // any time props.getUserData() is called it re-renders the dashboard
+    // this props.userData() ensures the list of displayed games is up to date on options component mount
+    // this used to be called in the options tab button
+    // this is better
     props.getUserData();
   }, [])
 
@@ -45,6 +49,7 @@ export default function Options (props: Props) {
     e.preventDefault();
     try {
       const response = await logOut();
+      sessionStorage.removeItem('accessToken')
       alert(response.message);
       navigate('/', {replace: true});
     } catch (error) {
@@ -170,77 +175,6 @@ export default function Options (props: Props) {
 
   }
 
-  // choose game
-  const handleChooseGame = async (e: any) => {
-    e.preventDefault();
-    let selectedGame;
-    for (const game of props.games) {
-      if (game.id === e.target.value) {
-        selectedGame = game;
-      }
-    }
-
-    props.setSavedGame(selectedGame)
-    props.setCurrent('game');
-    props.setTab('current');
-  }
-
-  // delete a game
-  const handleDeleteGame = async (e: any) => {
-    e.preventDefault();
-
-    let selectedGame;
-    for (const game of props.games) {
-      if (game.id === e.target.value) {
-        selectedGame = game;
-      }
-    }
-
-    await deleteGame(props.accessToken, selectedGame);
-    await props.getUserData();
-
-    // so you cannot view a game you just deleted
-    selectedGame.name = 'Please choose a game';
-    selectedGame.height = 2;
-    selectedGame.width = 2;
-    props.setSavedGame(selectedGame);
-
-  }
-
-  // had problems displaying fetched data here
-  // this should probably be a child react component
-  const displayGames = () => {
-    console.log('options.tsx displayGames() success');
-    if (props.games && props.games.length > 0) {
-      return (
-        <ul>
-          {props.games.map((game: any) => {
-            return <li key={game.id} className='flex-space-between'>
-              <div>
-              <span className="hg">{game.players[props.user.id] === 'host' ? 'h ' : 'g '}</span>
-                <button type="button" value={game.id} onClick={handleChooseGame} className="btn" >
-                  {game.name}
-                </button>
-                
-              </div>
-              <button type="button" value={game.id} onClick={handleDeleteGame} className="btn" >
-                {game.players[props.user.id] === 'host' ? 'delete' : 'leave'}
-              </button>
-            </li>
-          })}
-          <li>- </li>
-        </ul>
-      )
-    } else {
-      console.log('options.tsx displayGames() error')
-      return (
-        <ul>
-          <li>- </li>
-        </ul>
-      )
-    }
-  }
-
 
   return (
     <div className='options'>
@@ -282,7 +216,24 @@ export default function Options (props: Props) {
         <div className='flex-space-between mb12'>
           <h4>games </h4>
         </div>
-        { displayGames() }
+        {props.games && props.games.length > 0 ?
+          <DisplayGames 
+            setTab={props.setTab}
+            setCurrent={props.setCurrent}
+          
+            setSavedGame={props.setSavedGame}
+          
+            accessToken={props.accessToken}
+            user={props.user}
+            games={props.games}
+            getUserData={props.getUserData}
+
+            socket={props.socket}
+          /> :
+          <ul>
+            <li>- </li>
+          </ul>
+        }
       </div>
     </div>
   )

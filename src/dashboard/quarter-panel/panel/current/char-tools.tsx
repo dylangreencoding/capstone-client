@@ -15,6 +15,8 @@ interface Props {
   user: any;
   games: any;
   getUserData: Function;
+
+  socket: any;
 }
 
 export default function CharTools (props: Props) {
@@ -27,9 +29,10 @@ export default function CharTools (props: Props) {
     const response = await joinGame(props.accessToken, {id: gameId, character: props.savedChar});
     await props.getUserData();
 
-    let currentGame = response.game[0];
+    let game = response.game[0];
 
-    props.setSavedGame(currentGame);
+    props.setSavedGame(game);
+    props.socket.emit('send_game', { game });
 
     props.setCurrent('game');
     props.setTab('current');

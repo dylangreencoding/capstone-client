@@ -1,11 +1,15 @@
 import { useState, useEffect } from "react";
 import { updateGame } from "../../../../expressAPI/update-game";
 import { removePlayer } from "../../../../expressAPI/remove-player-from-game";
+import { deleteGame } from "../../../../expressAPI/delete-game";
 //
 
 
 
 interface Props {
+  setTab: Function;
+  setCurrent: Function;
+
   savedGame: any;
   setSavedGame: Function;
 
@@ -30,15 +34,15 @@ export default function GameTools (props: Props) {
       console.log('socket_message data', data);
     })
 
-    const justInCase = async () => {
-      await props.getUserData();
-      console.log(props.games);
-    }
-
     props.socket.on('receive_game', (data: any) => {
       console.log('receive_game data', data);
-      props.setSavedGame(data.game);
-      justInCase();
+      if (Object.keys(data.game.players).includes(props.user.id)) {
+        props.setSavedGame(data.game);
+      } else {
+        props.setSavedGame({});
+        props.setTab('options');
+        props.setCurrent('map');
+      }
     })
 
     return () => {
@@ -60,10 +64,10 @@ export default function GameTools (props: Props) {
     }
     const response = await updateGame(props.accessToken, currentGame);
     await props.getUserData();
-    props.setSavedGame(response.game)
+    props.setSavedGame(response.game);
     const game = response.game;
 
-    props.socket.emit('send_game', { gameroomId, game })
+    props.socket.emit('send_game', { game });
   }
 
   const handlePickTool = (e: any) => {
@@ -135,14 +139,38 @@ export default function GameTools (props: Props) {
     // this (along with player leave game button should trigger socket event)
     const response = await removePlayer(props.accessToken, props.savedGame, e.target.value);
     props.setSavedGame(response.game);
+    const game = response.game;
+    props.socket.emit('send_game', { game });
     await props.getUserData();
   }
 
+    // delete a game
+    const handleDeleteGame = async (e: any) => {
+      e.preventDefault();
+      let game = props.savedGame;
+      const response = await deleteGame(props.accessToken, game);
+      game = response.game[0];
+      props.socket.emit('send_game', { game });
+
+      // i believe this is unnecessary due to options useeffect
+      // await props.getUserData();
+
+      // so you cannot view a game you just left/deleted
+      props.setSavedGame({});
+      props.setTab('options');
+      props.setCurrent('map');
+    }
+
   return (
     <div className="game-tools">
-      <div className='mb24 flex-space-between'>
+      
+      <div className='mb24'>
         {props.savedGame.players[props.user.id] === 'host' ? <h3>{props.savedGame.id}</h3> : <h3>{props.savedGame.name}</h3>}
+        <button type="button" value={props.savedGame.id} onClick={handleDeleteGame} className="btn" >
+          {props.savedGame.players[props.user.id] === 'host' ? 'delete game' : 'leave game'}
+        </button>
       </div>
+
       <div className='mb24'>
 
         {props.savedGame.players[props.user.id] === 'host' ? 

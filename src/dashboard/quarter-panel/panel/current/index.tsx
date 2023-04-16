@@ -40,9 +40,13 @@ export default function Current (props: Props) {
         user={props.user}
         maps={props.maps}
         getUserData={props.getUserData}
+
       />
     } else if (props.current === 'game') {
       return <GameTools 
+        setTab={props.setTab}
+        setCurrent={props.setCurrent}
+
         savedGame={props.savedGame}
         setSavedGame={props.setSavedGame}
 
@@ -67,6 +71,8 @@ export default function Current (props: Props) {
         user={props.user}
         games={props.games}
         getUserData={props.getUserData}
+
+        socket={props.socket}
       />
     }
   }

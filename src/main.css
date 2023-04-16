@@ -35,17 +35,28 @@ body {
 }
 
 .btn {
-  border: none;
   background: none;
   font-family: inherit;
   font-size: inherit;
   color: hsl(0, 0%, 88%);
   width: fit-content;
+
+  border-top: solid #141414 1px;
+  border-right: solid #141414 1px;
+  border-bottom: solid hsl(0, 0%, 88%) 1px;
+  border-left: solid #141414 1px;
 }
 
 .btn:hover {
   cursor: pointer;
   color: rgba(255, 217, 0, 0.88);
+
+  border-top: solid #141414 1px;
+  border-right: solid #141414 1px;
+  border-bottom: solid #141414 1px;
+  border-left: solid #141414 1px;
+
+  
 }
 
 .no-cursor {

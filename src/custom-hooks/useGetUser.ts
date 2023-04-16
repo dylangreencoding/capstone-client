@@ -16,9 +16,10 @@ export const useGetUser = (token: string) => {
     setGames(result.games);
   }
 
-  useEffect(() => {
-    handleDataFetch();
-  }, [])
+  // this was necessary before utilizing session storage
+  // useEffect(() => { 
+  //   handleDataFetch(); 
+  // }, []) 
   
   return {user, maps, chars, games, getUserData: handleDataFetch}
 }

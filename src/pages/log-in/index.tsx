@@ -17,8 +17,9 @@ export default function LogIn () {
     try {
       const response = await logIn(data);
       console.log(response)
+      sessionStorage.setItem('accessToken', JSON.stringify(response.accessToken));
       alert(response.message)
-      navigate('/capstone_user_account', {state: response, replace: true});
+      navigate('/capstone_user_account', {replace: true});
     } catch (error) {
       alert(error);
     }

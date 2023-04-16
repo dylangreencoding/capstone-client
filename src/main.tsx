@@ -7,7 +7,7 @@ import LandingPage from './pages/landing-page'
 import ErrorPage from './pages/error-page'
 import CreateAccount from './pages/create-account'
 import LogIn from './pages/log-in'
-import App from './pages/app/app'
+import App from './pages/app'
 
 
 const router = createBrowserRouter([

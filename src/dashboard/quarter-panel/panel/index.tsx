@@ -45,6 +45,8 @@ export default function Panel (props: Props) {
         chars={props.chars}
         games={props.games}
         getUserData={props.getUserData}
+
+        socket={props.socket}
         /> : 
         <Current 
         current={props.current}
