@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { joinGame } from "../../../../expressAPI/join-game";
+import { userRoute } from "../../../../expressAPI/user-route";
 
 
 interface Props {
@@ -13,7 +13,6 @@ interface Props {
 
   accessToken: string;
   user: any;
-  games: any;
   getUserData: Function;
 
   socket: any;
@@ -25,8 +24,8 @@ export default function CharTools (props: Props) {
   const handleJoinGame = async (e: any) => {
     e.preventDefault(); 
 
-    console.log('HERE', props.savedChar);
-    const response = await joinGame(props.accessToken, {id: gameId, character: props.savedChar});
+    const route = 'join-game'
+    const response = await userRoute(route, props.accessToken, {id: gameId, character: props.savedChar});
     await props.getUserData();
 
     let game = response.game[0];

@@ -16,8 +16,6 @@ interface Props {
 
   accessToken: string;
   user: any;
-  maps: any;
-  games: any;
   getUserData: Function;
 
   socket: any;
@@ -38,7 +36,6 @@ export default function Current (props: Props) {
 
         accessToken={props.accessToken}
         user={props.user}
-        maps={props.maps}
         getUserData={props.getUserData}
 
       />
@@ -52,7 +49,6 @@ export default function Current (props: Props) {
 
         accessToken={props.accessToken}
         user={props.user}
-        games={props.games}
         getUserData={props.getUserData}
 
         socket={props.socket}
@@ -69,7 +65,6 @@ export default function Current (props: Props) {
 
         accessToken={props.accessToken}
         user={props.user}
-        games={props.games}
         getUserData={props.getUserData}
 
         socket={props.socket}

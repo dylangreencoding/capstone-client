@@ -1,25 +1,40 @@
 import { useState, useEffect } from 'react';
 import { getUser } from '../expressAPI/get-user'
+import { refreshToken } from '../expressAPI/refresh-token';
+import { isExpired } from '../expressAPI/decode-token';
 
-export const useGetUser = (token: string) => {
-  const [user, setUser] = useState<any>([]);
-  const [maps, setMaps] = useState<any>([]);
-  const [chars, setChars] = useState<any>([]);
-  const [games, setGames] = useState<any>([]);
+export const useGetUser = () => {
+  const getToken = () => {
+    const tokenJSON : any = sessionStorage.getItem('accessToken');
+    const token = JSON.parse(tokenJSON);
+
+    return token
+  }
+  const [accessToken, setAccessToken]  = useState<string>(getToken());
+  const [user, setUser] = useState<any>({ user: {}, maps: [], chars: [], games: [] });
 
   async function handleDataFetch () {
-    const result = await getUser(token);
-    setUser(result.user[0]);
-    setMaps(result.maps);
-    setChars(result.chars);
+    const expired = isExpired(accessToken);
+    console.log('token expired?', expired, accessToken);
     
-    setGames(result.games);
+    let result;
+    if (expired) {
+      console.log('token expired')
+      const refresh = await refreshToken();
+      sessionStorage.setItem('accessToken', JSON.stringify(refresh.accessToken));
+      setAccessToken(refresh.accessToken);
+      result = await getUser(refresh.accessToken)
+    } else {
+      console.log('token valid')
+      result = await getUser(accessToken)
+    }
+    console.log(result);
+    setUser({ user: result.user[0], maps: result.maps, chars: result.chars, games: result.games });
   }
 
-  // this was necessary before utilizing session storage
-  // useEffect(() => { 
-  //   handleDataFetch(); 
-  // }, []) 
+  useEffect(() => {
+    handleDataFetch();
+  }, [])
   
-  return {user, maps, chars, games, getUserData: handleDataFetch}
+  return {accessToken, user, getUserData: handleDataFetch}
 }

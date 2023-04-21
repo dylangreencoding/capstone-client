@@ -1,6 +1,6 @@
 import { useState } from "react"
 //
-import { updateChar } from "../../../expressAPI/update-char";
+import { userRoute } from "../../../expressAPI/user-route";
 
 interface Props {
   savedChar: any;
@@ -24,7 +24,8 @@ export default function CharSheet (props: Props) {
     currentChar.x = -100;
     currentChar.y = -100;
 
-    await updateChar(props.accessToken, currentChar);
+    const route = 'save-char'
+    await userRoute(route, props.accessToken, currentChar);
 
     await props.getUserData();
   }

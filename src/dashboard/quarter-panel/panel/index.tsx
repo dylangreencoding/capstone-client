@@ -16,9 +16,6 @@ interface Props {
 
   accessToken: string;
   user: any;
-  maps: any;
-  chars: any;
-  games: any;
   getUserData: Function;
 
   socket: any;
@@ -41,9 +38,6 @@ export default function Panel (props: Props) {
 
         accessToken={props.accessToken}
         user={props.user}
-        maps={props.maps}
-        chars={props.chars}
-        games={props.games}
         getUserData={props.getUserData}
 
         socket={props.socket}
@@ -62,8 +56,6 @@ export default function Panel (props: Props) {
 
         accessToken={props.accessToken}
         user={props.user}
-        maps={props.maps}
-        games={props.games}
         getUserData={props.getUserData}
 
         socket={props.socket}

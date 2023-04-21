@@ -19,6 +19,9 @@ export default function LogIn () {
       console.log(response)
       sessionStorage.setItem('accessToken', JSON.stringify(response.accessToken));
       alert(response.message)
+      // setTimeout(() => {
+      //   console.log('0 timeout')
+      // }, 0)
       navigate('/capstone_user_account', {replace: true});
     } catch (error) {
       alert(error);

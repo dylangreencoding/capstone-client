@@ -1,4 +1,3 @@
-import { deleteGame } from "../../../../expressAPI/delete-game";
 
 interface Props {
   setTab: Function;
@@ -8,7 +7,6 @@ interface Props {
 
   accessToken: string;
   user: any;
-  games: any;
   getUserData: Function;
 
   socket: any;
@@ -21,7 +19,7 @@ export default function DisplayGames (props: Props) {
   const handleChooseGame = async (e: any) => {
     e.preventDefault();
     let selectedGame;
-    for (const game of props.games) {
+    for (const game of props.user.games) {
       if (game.id === e.target.value) {
         selectedGame = game;
       }
@@ -34,10 +32,10 @@ export default function DisplayGames (props: Props) {
 
   return (
     <ul>
-      {props.games.map((game: any) => {
+      {props.user.games.map((game: any) => {
         return <li key={game.id} className='flex-space-between'>
           <div>
-            <span className="hg">{game.players[props.user.id] === 'host' ? 'h ' : 'g '}</span>
+            <span className="hg">{game.players[props.user.user.id] === 'host' ? 'h ' : 'g '}</span>
             <button type="button" value={game.id} onClick={handleChooseGame} className="btn" >
               {game.name}
             </button>

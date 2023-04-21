@@ -1,15 +1,8 @@
 import { useNavigate } from "react-router-dom";
+//
 import { logOut } from "../../../../expressAPI/log-out";
-//
-import { createMap } from "../../../../expressAPI/create-map";
-import { deleteMap } from "../../../../expressAPI/delete-map";
-//
-import { createChar } from "../../../../expressAPI/create-char";
-import { deleteChar } from "../../../../expressAPI/delete-char";
-//
-import { useEffect } from "react";
-//
 import DisplayGames from "./displayGames";
+import { userRoute } from "../../../../expressAPI/user-route";
 
 
 interface Props {
@@ -25,23 +18,12 @@ interface Props {
 
   accessToken: string;
   user: any;
-  maps: any;
-  chars: any;
-  games: any;
   getUserData: Function;
 
   socket: any;
 }
 
 export default function Options (props: Props) {
-  useEffect(() => {
-    // any time props.getUserData() is called it re-renders the dashboard
-    // this props.userData() ensures the list of displayed games is up to date on options component mount
-    // this used to be called in the options tab button
-    // this is better
-    props.getUserData();
-  }, [])
-
 
   // logout button
   const navigate = useNavigate();
@@ -60,7 +42,7 @@ export default function Options (props: Props) {
   // for handleNewMap
   const blankMap = {
     id: '',
-    maker: props.user.id,
+    maker: props.user.user.id,
     name: 'new map',
 
     x: 0, 
@@ -79,8 +61,8 @@ export default function Options (props: Props) {
   // create blank map in database
   const handleNewMap = async (e: any) => {
     e.preventDefault();
-    await createMap(props.accessToken, blankMap);
-
+    const route = 'save-map'
+    await userRoute(route, props.accessToken, blankMap);
     await props.getUserData();
   }
 
@@ -88,7 +70,7 @@ export default function Options (props: Props) {
     e.preventDefault();
 
     let selectedMap;
-    for (const map of props.maps) {
+    for (const map of props.user.maps) {
       if (map.id === e.target.value) {
         selectedMap = map;
       }
@@ -106,13 +88,14 @@ export default function Options (props: Props) {
     e.preventDefault();
 
     let selectedMap;
-    for (const map of props.maps) {
+    for (const map of props.user.maps) {
       if (map.id === e.target.value) {
         selectedMap = map;
       }
     }
 
-    await deleteMap(props.accessToken, selectedMap);
+    const route = 'delete-map'
+    await userRoute(route, props.accessToken, selectedMap);
     await props.getUserData();
 
     // so you cannot view a map you just deleted
@@ -125,7 +108,7 @@ export default function Options (props: Props) {
 
   const blankChar = {
     id: '',
-    maker: props.user.id,
+    maker: props.user.user.id,
     name: 'new character',
 
     x: -100, 
@@ -135,7 +118,8 @@ export default function Options (props: Props) {
   }
 
   const handleNewChar = async (e: any) => {
-    await createChar(props.accessToken, blankChar);
+    const route = 'save-char';
+    await userRoute(route, props.accessToken, blankChar);
     await props.getUserData();
 
   }
@@ -144,7 +128,7 @@ export default function Options (props: Props) {
     e.preventDefault();
 
     let selectedChar;
-    for (const char of props.chars) {
+    for (const char of props.user.chars) {
       if (char.id === e.target.value) {
         selectedChar = char;
       }
@@ -159,13 +143,14 @@ export default function Options (props: Props) {
     e.preventDefault();
 
     let selectedChar;
-    for (const char of props.chars) {
+    for (const char of props.user.chars) {
       if (char.id === e.target.value) {
         selectedChar = char;
       }
     }
 
-    await deleteChar(props.accessToken, selectedChar);
+    const route = 'delete-char';
+    await userRoute(route, props.accessToken, selectedChar);
     await props.getUserData();
 
     // so you cannot view a character you just deleted
@@ -179,7 +164,7 @@ export default function Options (props: Props) {
   return (
     <div className='options'>
       <div className='flex-space-between mb36'>
-        <h3>{props.user.email}</h3>
+        <h3>{props.user.user.email}</h3>
         <button type="button" className='btn' onClick={handleLogout}>log out</button>
       </div>
       <div className="mb36">
@@ -188,7 +173,7 @@ export default function Options (props: Props) {
           <button type='button' className="btn" onClick={handleNewMap}>create</button>
         </div>
         <ul>
-          {props.maps.map((map: any) => {
+          {props.user.maps.map((map: any) => {
             return <li key={map.id} className='flex-space-between'>
               <button type="button" value={map.id} onClick={handleChooseMap} className="btn" >{map.name}</button>
               <button type="button" value={map.id} onClick={handleDeleteMap} className="btn" >delete</button>
@@ -203,7 +188,7 @@ export default function Options (props: Props) {
           <button type='button' className="btn" onClick={handleNewChar}>create</button>
         </div>
         <ul>
-          {props.chars.map((char: any) => {
+          {props.user.chars.map((char: any) => {
             return <li key={char.id} className='flex-space-between'>
               <button type="button" value={char.id} onClick={handleChooseChar} className="btn" >{char.name}</button>
               <button type="button" value={char.id} onClick={handleDeleteChar} className="btn" >delete</button>
@@ -216,7 +201,7 @@ export default function Options (props: Props) {
         <div className='flex-space-between mb12'>
           <h4>games </h4>
         </div>
-        {props.games && props.games.length > 0 ?
+        {props.user.games && props.user.games.length > 0 ?
           <DisplayGames 
             setTab={props.setTab}
             setCurrent={props.setCurrent}
@@ -225,7 +210,6 @@ export default function Options (props: Props) {
           
             accessToken={props.accessToken}
             user={props.user}
-            games={props.games}
             getUserData={props.getUserData}
 
             socket={props.socket}

@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import { updateGame } from "../../../../expressAPI/update-game";
-import { removePlayer } from "../../../../expressAPI/remove-player-from-game";
-import { deleteGame } from "../../../../expressAPI/delete-game";
-//
+import { userRoute } from "../../../../expressAPI/user-route";
+
+// import { removePlayer } from "../../../../expressAPI/remove-player-from-game";
+
 
 
 
@@ -15,7 +15,6 @@ interface Props {
 
   accessToken: string;
   user: any;
-  games: any;
   getUserData: Function;
 
   socket: any;
@@ -26,7 +25,7 @@ export default function GameTools (props: Props) {
   const [message, setMessage] = useState<string>('');
   
   const gameroomId = props.savedGame.id;
-  const userEmail = props.user.email;
+  const userEmail = props.user.user.email;
   gameroomId !== '' ?
   useEffect(() => {
     props.socket.emit('join_gameroom', { gameroomId, userEmail});
@@ -36,7 +35,7 @@ export default function GameTools (props: Props) {
 
     props.socket.on('receive_game', (data: any) => {
       console.log('receive_game data', data);
-      if (Object.keys(data.game.players).includes(props.user.id)) {
+      if (Object.keys(data.game.players).includes(props.user.user.id)) {
         props.setSavedGame(data.game);
       } else {
         props.setSavedGame({});
@@ -58,11 +57,17 @@ export default function GameTools (props: Props) {
   
   const handleSendGame = async (e: any) => {
     e.preventDefault();
-    let currentGame = props.savedGame;
+    let currentGameMap = props.savedGame;
+    currentGameMap.currentMap = {};
+    currentGameMap.currentGame = {};
+    currentGameMap.selected = {};
+    currentGameMap.tool = 'none';
     if (message.length > 0 && message.length < 20) {
-      currentGame.messages.push(`${props.user.email}: ${message}`)
+      currentGameMap.messages.push(`${props.user.user.email}: ${message}`)
     }
-    const response = await updateGame(props.accessToken, currentGame);
+    console.log('GAMEMAP', currentGameMap)
+    const route = 'save-game';
+    const response = await userRoute(route, props.accessToken, currentGameMap);
     await props.getUserData();
     props.setSavedGame(response.game);
     const game = response.game;
@@ -136,8 +141,8 @@ export default function GameTools (props: Props) {
 
     // removes player from game,
     // effectively as if the player had left
-    // this (along with player leave game button should trigger socket event)
-    const response = await removePlayer(props.accessToken, props.savedGame, e.target.value);
+    const route = 'remove-player';
+    const response = await userRoute(route, props.accessToken, props.savedGame, e.target.value);
     props.setSavedGame(response.game);
     const game = response.game;
     props.socket.emit('send_game', { game });
@@ -148,12 +153,13 @@ export default function GameTools (props: Props) {
     const handleDeleteGame = async (e: any) => {
       e.preventDefault();
       let game = props.savedGame;
-      const response = await deleteGame(props.accessToken, game);
+      const route = 'delete-game';
+      const response = await userRoute(route, props.accessToken, game);
       game = response.game[0];
       props.socket.emit('send_game', { game });
 
-      // i believe this is unnecessary due to options useeffect
-      // await props.getUserData();
+      // ...updates display...
+      await props.getUserData();
 
       // so you cannot view a game you just left/deleted
       props.setSavedGame({});
@@ -165,9 +171,9 @@ export default function GameTools (props: Props) {
     <div className="game-tools">
       
       <div className='mb24 tool-box'>
-        {props.savedGame.players[props.user.id] === 'host' ? <h3>{props.savedGame.id}</h3> : <h3>{props.savedGame.name}</h3>}
+        {props.savedGame.players[props.user.user.id] === 'host' ? <h3>{props.savedGame.id}</h3> : <h3>{props.savedGame.name}</h3>}
         <button type="button" value={props.savedGame.id} onClick={handleDeleteGame} className="btn" >
-          {props.savedGame.players[props.user.id] === 'host' ? 'delete game' : 'leave game'}
+          {props.savedGame.players[props.user.user.id] === 'host' ? 'delete game' : 'leave game'}
         </button>
       </div>
 
@@ -175,7 +181,7 @@ export default function GameTools (props: Props) {
       <div>
         <div>
 
-          {props.savedGame.players[props.user.id] === 'host' ? 
+          {props.savedGame.players[props.user.user.id] === 'host' ? 
 
             <ul className="mb24 tool-box">
               {Object.keys(props.savedGame.players).map((playerId: any) => {

@@ -6,17 +6,17 @@ import { useGetUser } from '../custom-hooks/useGetUser';
 import MainPanel from './main-panel';
 import QuarterPanel from './quarter-panel';
 //
-import { refreshToken } from '../expressAPI/refresh-token';
 
 interface Props {
   accessToken: string;
   socket: any;
+
+  user: any;
+  getUserData: any;
 }
 
 export default function Dashboard (props: Props) {
   console.log('dash rendered')
-  
-  const { user, maps, chars, games, getUserData } = useGetUser(props.accessToken);
   
   // sets options tab and main panel display
   const [current, setCurrent] = useState<string>('map');
@@ -74,7 +74,7 @@ export default function Dashboard (props: Props) {
         setSavedGame={setSavedGame}
 
         accessToken={props.accessToken}
-        getUserData={getUserData}
+        getUserData={props.getUserData}
       />
       <QuarterPanel 
         current={current}
@@ -90,11 +90,8 @@ export default function Dashboard (props: Props) {
         setSavedGame={setSavedGame}
 
         accessToken={props.accessToken}
-        user={user}
-        maps={maps}
-        chars={chars}
-        games={games}
-        getUserData={getUserData}
+        user={props.user}
+        getUserData={props.getUserData}
 
         socket={props.socket}
       />

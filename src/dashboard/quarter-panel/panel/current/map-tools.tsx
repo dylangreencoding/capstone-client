@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { updateMap } from "../../../../expressAPI/update-map";
-import { createHostGame } from "../../../../expressAPI/create-host-game";
+import { userRoute } from "../../../../expressAPI/user-route";
+
 
 interface Props {
   setCurrent: Function;
@@ -13,7 +13,6 @@ interface Props {
 
   accessToken: string;
   user: any;
-  maps: any;
   getUserData: Function;
 }
 
@@ -26,19 +25,26 @@ export default function MapTools (props: Props) {
   const handleSaveMap = async (e: any) => {
     e.preventDefault();
     currentMap.name = mapName;
-    await updateMap(props.accessToken, currentMap);
+    currentMap.currentMap = {};
+
+    const route = 'save-map';
+    await userRoute(route, props.accessToken, currentMap);
     await props.getUserData();
   }
 
   const handleHostGame = async (e: any) => {
     e.preventDefault();
-    let mapToHost = props.savedMap;
-    mapToHost.id = '';
-    mapToHost.messages = []
-    mapToHost.players = {}
-    mapToHost.players[props.user.id] = 'host';
+    let gameMap = props.savedMap;
+    gameMap.id = '';
+    gameMap.messages = []
+    gameMap.players = {}
+    gameMap.players[props.user.user.id] = 'host';
+    gameMap.currentMap = {};
+    gameMap.selected = {};
+    gameMap.tool = 'none';
 
-    const response = await createHostGame(props.accessToken, mapToHost);
+    const route = 'save-game';
+    const response = await userRoute(route, props.accessToken, gameMap);
     await props.getUserData();
     const currentGame = response.game;
     props.setSavedGame(currentGame);
@@ -147,7 +153,7 @@ export default function MapTools (props: Props) {
             </div>
           </div>
         </div>
-        <form className="text-form tool-box" >
+        <form className="text-form tool-box" onSubmit={handleSaveMap} >
           <input 
             className='text-input' 
             type='text' 
@@ -155,7 +161,7 @@ export default function MapTools (props: Props) {
             value={mapName}
             onChange={ (e) => setmapName(e.target.value) }
           />
-          <button type='button' onClick={handleSaveMap} className="btn">save</button>
+          <button type='submit' className="btn">save</button>
         </form>
       </div>
     </div>
