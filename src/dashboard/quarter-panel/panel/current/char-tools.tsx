@@ -1,4 +1,5 @@
 import { useState } from "react";
+//
 import { userRoute } from "../../../../expressAPI/user-route";
 
 
@@ -28,7 +29,7 @@ export default function CharTools (props: Props) {
     const response = await userRoute(route, props.accessToken, {id: gameId, character: props.savedChar});
     await props.getUserData();
 
-    let game = response.game[0];
+    const game = response.game[0];
 
     props.setSavedGame(game);
     props.socket.emit('send_game', { game });

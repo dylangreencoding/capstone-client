@@ -3,8 +3,6 @@ interface Props {
   tab: string;
   setTab: Function;
   current: string;
-
-  getUserData: Function;
 }
 
 export default function Tabs (props: Props) {

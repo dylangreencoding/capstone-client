@@ -8,16 +8,16 @@ interface Props {
   accessToken: string;
   user: any;
   getUserData: Function;
-
-  socket: any;
 }
 
 export default function DisplayGames (props: Props) {
-
   
   // choose game
   const handleChooseGame = async (e: any) => {
     e.preventDefault();
+    // see useGetUser.ts for comment
+    const actualUserGames = await props.getUserData();
+
     let selectedGame;
     for (const game of props.user.games) {
       if (game.id === e.target.value) {
@@ -25,9 +25,12 @@ export default function DisplayGames (props: Props) {
       }
     }
 
-    props.setSavedGame(selectedGame)
-    props.setCurrent('game');
-    props.setTab('current');
+    // prevents you from clicking into a game you have been removed from
+    if (actualUserGames.includes(e.target.value)) {
+      props.setSavedGame(selectedGame)
+      props.setCurrent('game');
+      props.setTab('current');
+    }
   }
 
   return (

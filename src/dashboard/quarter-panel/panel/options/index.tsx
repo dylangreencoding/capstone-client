@@ -1,8 +1,9 @@
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 //
 import { logOut } from "../../../../expressAPI/log-out";
-import DisplayGames from "./displayGames";
 import { userRoute } from "../../../../expressAPI/user-route";
+import DisplayGames from "./displayGames";
 
 
 interface Props {
@@ -19,11 +20,16 @@ interface Props {
   accessToken: string;
   user: any;
   getUserData: Function;
-
-  socket: any;
 }
 
 export default function Options (props: Props) {
+
+  // This is the initial data fetch at login
+  // It is here so that when a player is removed from a game,
+  // their list of displayed games is up to date
+  useEffect(() => {
+    props.getUserData();
+  }, [])
 
   // logout button
   const navigate = useNavigate();
@@ -57,7 +63,6 @@ export default function Options (props: Props) {
     
     lines: []
   }
-
   // create blank map in database
   const handleNewMap = async (e: any) => {
     e.preventDefault();
@@ -68,7 +73,7 @@ export default function Options (props: Props) {
 
   const handleChooseMap = (e: any) => {
     e.preventDefault();
-
+    
     let selectedMap;
     for (const map of props.user.maps) {
       if (map.id === e.target.value) {
@@ -76,8 +81,6 @@ export default function Options (props: Props) {
       }
     }
 
-    // not sure why i have to setState like this here
-    // props.setSavedMap({...props.savedMap, selectedMap});
     props.setSavedMap(selectedMap)
     props.setCurrent('map');
     props.setTab('current');
@@ -211,8 +214,6 @@ export default function Options (props: Props) {
             accessToken={props.accessToken}
             user={props.user}
             getUserData={props.getUserData}
-
-            socket={props.socket}
           /> :
           <ul>
             <li>- </li>

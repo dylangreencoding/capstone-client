@@ -22,6 +22,7 @@ interface Props {
 }
 
 export default function Panel (props: Props) {
+  
   return (
     <div className="panel">
       {props.tab === 'options' ? 
@@ -39,8 +40,6 @@ export default function Panel (props: Props) {
         accessToken={props.accessToken}
         user={props.user}
         getUserData={props.getUserData}
-
-        socket={props.socket}
         /> : 
         <Current 
         current={props.current}

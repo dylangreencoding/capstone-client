@@ -7,9 +7,9 @@ export const useGetUser = () => {
   const getToken = () => {
     const tokenJSON : any = sessionStorage.getItem('accessToken');
     const token = JSON.parse(tokenJSON);
-
     return token
   }
+  
   const [accessToken, setAccessToken]  = useState<string>(getToken());
   const [user, setUser] = useState<any>({ user: {}, maps: [], chars: [], games: [] });
 
@@ -30,11 +30,13 @@ export const useGetUser = () => {
     }
     console.log(result);
     setUser({ user: result.user[0], maps: result.maps, chars: result.chars, games: result.games });
-  }
 
-  useEffect(() => {
-    handleDataFetch();
-  }, [])
+    // this is for making sure you can't click into a game you were removed from
+    // it is a way of getting around an unfinished socket server
+    // necessary due to the asynchronous nature of setting state
+    // it is used in options/index.tsx handleChooseGame
+    return result.user[0].games
+  }
   
   return {accessToken, user, getUserData: handleDataFetch}
 }

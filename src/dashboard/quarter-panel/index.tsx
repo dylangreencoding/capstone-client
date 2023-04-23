@@ -1,5 +1,3 @@
-import { useState } from "react";
-//
 import Tabs from "./tabs";
 import Panel from "./panel";
 
@@ -23,10 +21,10 @@ interface Props {
   socket: any;
 }
 
+
+
 export default function QuarterPanel (props: Props) {
   
-  
-
   return (
     <div className='quarter-panel'>
       <Panel 
@@ -52,8 +50,6 @@ export default function QuarterPanel (props: Props) {
         tab={props.tab}
         setTab={props.setTab}
         current={props.current}
-
-        getUserData={props.getUserData}
       />
     </div>
   )

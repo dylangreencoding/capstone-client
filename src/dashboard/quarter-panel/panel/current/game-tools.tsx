@@ -1,11 +1,6 @@
 import { useState, useEffect } from "react";
 import { userRoute } from "../../../../expressAPI/user-route";
 
-// import { removePlayer } from "../../../../expressAPI/remove-player-from-game";
-
-
-
-
 interface Props {
   setTab: Function;
   setCurrent: Function;
@@ -29,6 +24,7 @@ export default function GameTools (props: Props) {
   gameroomId !== '' ?
   useEffect(() => {
     props.socket.emit('join_gameroom', { gameroomId, userEmail});
+    
     props.socket.on('socket_message', (data: any) => {
       console.log('socket_message data', data);
     })
@@ -57,9 +53,8 @@ export default function GameTools (props: Props) {
   
   const handleSendGame = async (e: any) => {
     e.preventDefault();
-    let currentGameMap = props.savedGame;
+    const currentGameMap = props.savedGame;
     currentGameMap.currentMap = {};
-    currentGameMap.currentGame = {};
     currentGameMap.selected = {};
     currentGameMap.tool = 'none';
     if (message.length > 0 && message.length < 20) {
@@ -81,14 +76,14 @@ export default function GameTools (props: Props) {
     props.setSavedGame({...props.savedGame, currentGame});
   }
 
-  const locationToString = (location: any) => {
-    const x = location.x.toString();
-    const y = location.y.toString();
-    const xy = x.concat(' ', y);
-    return xy
-  }
-
   const getSelected = () => {
+    const locationToString = (location: any) => {
+      const x = location.x.toString();
+      const y = location.y.toString();
+      const xy = x.concat(' ', y);
+      return xy
+    }
+
     let selected;
     if (props.savedGame.selected.x !== undefined && props.savedGame.selected.y !== undefined) {
       selected = props.savedGame.selectFrom[locationToString(props.savedGame.selected)];
@@ -106,7 +101,7 @@ export default function GameTools (props: Props) {
 
 
   const handlePlacePlayer = (e: any) => {
-    console.log('playerID', e.target.value)
+    // console.log(`playerID: ${e.target.value}`);
     const currentGame = props.savedGame;
     let unplaced = false;
     for (const key of Object.keys(currentGame.selectFrom)) {
@@ -129,7 +124,7 @@ export default function GameTools (props: Props) {
 
     props.setSavedGame({...props.savedGame, currentGame});
   }
-  let playerNames : any = {}
+  let playerNames : any = {};
   for (const key of Object.keys(props.savedGame.selectFrom)) {
    if (props.savedGame.players[props.savedGame.selectFrom[key].maker]) {
     playerNames[props.savedGame.selectFrom[key].maker] = props.savedGame.selectFrom[key].name;
@@ -137,12 +132,11 @@ export default function GameTools (props: Props) {
   }
 
   const handleRemovePlayer = async (e: any) => {
-    console.log('GameTools handleRemovePlayer', e.target.value)
-
+    const playerId = e.target.value;
     // removes player from game,
     // effectively as if the player had left
     const route = 'remove-player';
-    const response = await userRoute(route, props.accessToken, props.savedGame, e.target.value);
+    const response = await userRoute(route, props.accessToken, props.savedGame, playerId);
     props.setSavedGame(response.game);
     const game = response.game;
     props.socket.emit('send_game', { game });

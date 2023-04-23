@@ -1,5 +1,6 @@
 export async function getUser (accessToken: string) {
-  
+  // access token expiration is checked inside useGetUser.ts custom-react-hook
+  // that way the new access token can be put saved to react state variable
 
   const response = await fetch('http://localhost:8080/auth/protected', {
     method: 'GET',
@@ -11,14 +12,7 @@ export async function getUser (accessToken: string) {
   });
 
   if (!response.ok) {
-    console.log(response)
-    // this message needs to be drawn from the protected middleware
-    try {
-      alert('capstone-client-get-user failed, probably because the accessToken expired')
-      // HERE possibly call refresh token ?
-    } catch {
-      throw new Error('capstone-client-get-user failed')
-    }
+    throw new Error(`client getUser failed, ${accessToken}`)
   }
   
   return await response.json()

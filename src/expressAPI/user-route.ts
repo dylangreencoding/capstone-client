@@ -22,7 +22,7 @@ export async function userRoute (route: string, accessToken: string, data_: any 
     data = JSON.stringify(data_) ;
 
 
-  console.log('ROUTE', route, accessToken, JSON.stringify(data));
+  console.log('user-route.ts', route, accessToken)
   const url = `http://localhost:8080/auth/${route}`;
   const config = {
     method: 'POST',
@@ -34,12 +34,12 @@ export async function userRoute (route: string, accessToken: string, data_: any 
     body: data,
   }
 
+  // check access token expiration, refresh if necessary
   const expired = isExpired(accessToken);
   let response;
   if (expired) {
-    console.log('token expired')
     const refresh = await refreshToken();
-    console.log('REFRESHED, new token:', refresh.accessToken)
+    console.log('expired token refreshed, new token:', refresh.accessToken)
     sessionStorage.setItem('accessToken', JSON.stringify(refresh.accessToken));
     const refreshedConfig = {
       method: 'POST',
@@ -57,7 +57,7 @@ export async function userRoute (route: string, accessToken: string, data_: any 
   }
 
   if (!response.ok) {
-    throw new Error(`client userRoute "${route}" failed`)
+    throw new Error(`client userRoute "${route}" failed, ${accessToken}`)
   }
   
   return await response.json()

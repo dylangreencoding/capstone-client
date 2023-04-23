@@ -34,7 +34,7 @@ export default function MapTools (props: Props) {
 
   const handleHostGame = async (e: any) => {
     e.preventDefault();
-    let gameMap = props.savedMap;
+    const gameMap = props.savedMap;
     gameMap.id = '';
     gameMap.messages = []
     gameMap.players = {}
@@ -66,14 +66,14 @@ export default function MapTools (props: Props) {
     props.setSavedMap({...props.savedMap, currentMap});
   }
 
-  const locationToString = (location: any) => {
-    const x = location.x.toString();
-    const y = location.y.toString();
-    const xy = x.concat(' ', y);
-    return xy
-  }
-
   const getSelected = () => {
+    const locationToString = (location: any) => {
+      const x = location.x.toString();
+      const y = location.y.toString();
+      const xy = x.concat(' ', y);
+      return xy
+    }
+    
     let selected;
     if (props.savedMap.selected.x !== undefined && props.savedMap.selected.y !== undefined) {
       selected = props.savedMap.selectFrom[locationToString(props.savedMap.selected)];
