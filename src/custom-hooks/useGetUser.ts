@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { getUser } from '../expressAPI/get-user'
 import { refreshToken } from '../expressAPI/refresh-token';
-import { isExpired } from '../expressAPI/decode-token';
+import { isExpired } from '../expressAPI/utilities/decode-token';
 
 export const useGetUser = () => {
   const getToken = () => {

@@ -1,6 +1,8 @@
+import { serverUrl } from "./utilities/server-url";
+
 export async function getBlogPosts () {
 
-  const response = await fetch('http://localhost:8080/blog/get-posts', {
+  const response = await fetch(`${serverUrl}blog/get-posts`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',

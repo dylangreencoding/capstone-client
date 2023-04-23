@@ -1,10 +1,12 @@
+import { serverUrl } from "./utilities/server-url";
+
 export async function logOut () {
-  const response = await fetch('http://localhost:8080/auth/logout', {
+  const response = await fetch(`${serverUrl}auth/logout`, {
     method: 'POST',
     credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': 'http://localhost:8080/auth/logout',
+      'Access-Control-Allow-Origin': '*',
     }
   });
 

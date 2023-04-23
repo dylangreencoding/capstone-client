@@ -1,6 +1,8 @@
+import { serverUrl } from "./utilities/server-url";
+
 export async function createBlogPost (data: any = {}) {
   
-  const response = await fetch('http://localhost:8080/blog/create-post', {
+  const response = await fetch(`${serverUrl}blog/create-post`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

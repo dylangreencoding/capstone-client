@@ -1,8 +1,10 @@
+import { serverUrl } from "./utilities/server-url";
+
 export async function getUser (accessToken: string) {
   // access token expiration is checked inside useGetUser.ts custom-react-hook
   // that way the new access token can be put saved to react state variable
 
-  const response = await fetch('http://localhost:8080/auth/protected', {
+  const response = await fetch(`${serverUrl}auth/protected`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',

@@ -1,7 +1,4 @@
-import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
-//
-import { useGetUser } from '../custom-hooks/useGetUser';
+import { useState } from 'react';
 //
 import MainPanel from './main-panel';
 import QuarterPanel from './quarter-panel';
@@ -9,10 +6,11 @@ import QuarterPanel from './quarter-panel';
 
 interface Props {
   accessToken: string;
-  socket: any;
-
+  
   user: any;
   getUserData: any;
+
+  socket: any;
 }
 
 export default function Dashboard (props: Props) {

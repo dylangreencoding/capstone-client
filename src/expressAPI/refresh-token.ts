@@ -1,10 +1,12 @@
+import { serverUrl } from "./utilities/server-url";
+
 export async function refreshToken () {
-  const response = await fetch('http://localhost:8080/auth/refresh_token', {
+  const response = await fetch(`${serverUrl}auth/refresh_token`, {
     method: 'POST',
     credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': 'http://localhost:8080/auth/refresh_token',
+      'Access-Control-Allow-Origin': '*',
     },
   });
 

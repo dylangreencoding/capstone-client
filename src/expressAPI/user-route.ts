@@ -1,5 +1,6 @@
-import { isExpired } from "./decode-token";
+import { isExpired } from "./utilities/decode-token";
 import { refreshToken } from "./refresh-token";
+import { serverUrl } from "./utilities/server-url";
 
 export async function userRoute (route: string, accessToken: string, data_: any = {}, playerId?: string) {
 
@@ -23,7 +24,7 @@ export async function userRoute (route: string, accessToken: string, data_: any 
 
 
   console.log('user-route.ts', route, accessToken)
-  const url = `http://localhost:8080/auth/${route}`;
+  const url = `${serverUrl}auth/${route}`;
   const config = {
     method: 'POST',
     headers: {

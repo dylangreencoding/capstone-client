@@ -1,12 +1,12 @@
-
+import { serverUrl } from "./utilities/server-url";
 
 export async function logIn (data: any = {}) {
-  const response = await fetch('http://localhost:8080/auth/login', {
+  const response = await fetch(`${serverUrl}auth/login`, {
     method: 'POST',
     credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': 'http://localhost:8080/auth/login',
+      'Access-Control-Allow-Origin': '*',
       
     },
     body: JSON.stringify(data)

@@ -18,7 +18,7 @@ export default function App () {
   // however the SOCKET auth-header will only be updated when the useEffect dependency [accessToken] changes.
   // By this time the event has already been emitted from within the click event handler in game-tools.tsx.
   // The next socket event will work fine.
-  // To fix this, define the socket event handlers in the useEffect, and pass them down as props
+  // This is fine for this prototype.
   const [socket, setSocket] = useState<any>(null);
   useEffect(() => {
     console.log('app socket useEffect')
@@ -48,9 +48,10 @@ export default function App () {
     <div>
       <Dashboard 
         accessToken={accessToken} 
-        socket={socket}
         user={user}
         getUserData={getUserData}
+
+        socket={socket}
       />
     </div>
   )
