@@ -69,7 +69,7 @@ export default function LandingPage () {
       </ul>
       <footer>
         {/* REMOVE BEFORE DEPLOYMENT */}
-        { displayWritePost() }
+        {/* { displayWritePost() } */}
         <p>Copyright 2023 Dylan Green</p>
       </footer>
     </div>
