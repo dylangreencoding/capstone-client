@@ -5,7 +5,7 @@ export async function createAccount (data: any = {}) {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Origin': `${serverUrl}auth/create-account`,
     },
     body: JSON.stringify(data)
   });

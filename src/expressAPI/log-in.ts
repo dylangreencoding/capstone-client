@@ -6,7 +6,7 @@ export async function logIn (data: any = {}) {
     credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Origin': `${serverUrl}auth/login`,
       
     },
     body: JSON.stringify(data)

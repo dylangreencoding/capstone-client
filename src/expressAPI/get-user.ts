@@ -8,7 +8,7 @@ export async function getUser (accessToken: string) {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Origin': `${serverUrl}auth/protected`,
       'Authorization': `Bearer ${accessToken}`
     }
   });

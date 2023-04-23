@@ -6,7 +6,7 @@ export async function createBlogPost (data: any = {}) {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Origin': `${serverUrl}blog/create-post`,
     },
     body: JSON.stringify(data)
   });
