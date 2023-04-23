@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useGetUser } from "../../custom-hooks/useGetUser";
 //
 import { io } from 'socket.io-client';
+import { serverUrl } from "../../expressAPI/utilities/server-url";
 
 
 // container for dashboard
@@ -23,7 +24,7 @@ export default function App () {
   useEffect(() => {
     console.log('app socket useEffect')
     const newSocket = io(
-      'http://localhost:8080', 
+      serverUrl, 
       {
         transportOptions: {
           polling: {
