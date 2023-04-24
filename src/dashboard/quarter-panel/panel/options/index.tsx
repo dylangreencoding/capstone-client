@@ -173,7 +173,9 @@ export default function Options (props: Props) {
       <div className="mb36">
         <div className='flex-space-between mb12'>
           <h4>maps </h4>
-          <button type='button' className="btn" onClick={handleNewMap}>create</button>
+          { props.user.maps.length < 2 ?
+          <button type='button' className="btn" onClick={handleNewMap}>create</button> :
+          <span>2/2</span> }
         </div>
         <ul>
           {props.user.maps.map((map: any) => {
@@ -188,7 +190,9 @@ export default function Options (props: Props) {
       <div className="mb36">
         <div className='flex-space-between mb12'>
           <h4>characters </h4>
-          <button type='button' className="btn" onClick={handleNewChar}>create</button>
+          { props.user.chars.length < 1 ?
+          <button type='button' className="btn" onClick={handleNewChar}>create</button> :
+          <span>1/1</span> }
         </div>
         <ul>
           {props.user.chars.map((char: any) => {

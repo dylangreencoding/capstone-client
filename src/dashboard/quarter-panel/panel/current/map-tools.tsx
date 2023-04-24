@@ -93,7 +93,9 @@ export default function MapTools (props: Props) {
       
       <div className='mb24 tool-box'>
         <h3>{props.savedMap.name}</h3>
-        <button type='button' className="btn" onClick={handleHostGame}>host game</button>
+        { props.user.games.length < 1 ?
+        <button type='button' className="btn" onClick={handleHostGame}>host game</button> :
+        <span>1/1, games full</span> }
       </div>
 
       <div>
