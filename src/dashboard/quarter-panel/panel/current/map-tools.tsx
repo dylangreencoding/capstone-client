@@ -92,12 +92,12 @@ export default function MapTools(props: Props) {
     <div className="map-tools">
       <div className="mb24 tool-box">
         <h3>{props.savedMap.name}</h3>
-        {props.user.games.length! < 1 ? (
+        {props.user.games.length < 2 ? (
           <button type="button" className="btn" onClick={handleHostGame}>
             host game
           </button>
         ) : (
-          <span>1/1, games full</span>
+          <span className="btn">-games full-</span>
         )}
       </div>
 

@@ -2,7 +2,6 @@ import { useState } from "react";
 //
 import { userRoute } from "../../../../expressAPI/user-route";
 
-
 interface Props {
   setCurrent: Function;
   setTab: Function;
@@ -19,46 +18,52 @@ interface Props {
   socket: any;
 }
 
-export default function CharTools (props: Props) {
-  const [gameId, setGameId] = useState<string>('');
+export default function CharTools(props: Props) {
+  const [gameId, setGameId] = useState<string>("");
 
   const handleJoinGame = async (e: any) => {
-    e.preventDefault(); 
+    e.preventDefault();
 
-    const route = 'join-game'
-    const response = await userRoute(route, props.accessToken, {id: gameId, character: props.savedChar});
+    const route = "join-game";
+    const response = await userRoute(route, props.accessToken, {
+      id: gameId,
+      character: props.savedChar,
+    });
     await props.getUserData();
 
     const game = response.game[0];
 
     props.setSavedGame(game);
-    props.socket.emit('send_game', { game });
+    props.socket.emit("send_game", { game });
 
-    props.setCurrent('game');
-    props.setTab('current');
-
-  }
+    props.setCurrent("game");
+    props.setTab("current");
+  };
 
   return (
     <div>
-      <div className='mb36'>
+      <div className="mb36">
         <div>
           <h3>{props.savedChar.name}</h3>
         </div>
-        <div>
-          Level {props.savedChar.level}
-        </div>
+        <div>Level {props.savedChar.level}</div>
       </div>
       <form className="text-form" onSubmit={handleJoinGame}>
-          <input 
-            className='text-input' 
-            type='text' 
-            placeholder='Enter Game ID'
-            value={gameId}
-            onChange={ (e) => setGameId(e.target.value) }
-          />
-          <button type='submit' className="btn">join game as {props.savedChar.name}</button>
-        </form>
+        <input
+          className="text-input"
+          type="text"
+          placeholder="Enter Game ID"
+          value={gameId}
+          onChange={(e) => setGameId(e.target.value)}
+        />
+        {props.user.games.length < 2 ? (
+          <button type="submit" className="btn">
+            join game as {props.savedChar.name}
+          </button>
+        ) : (
+          <span className="btn">-games full-</span>
+        )}
+      </form>
     </div>
-  )
+  );
 }
