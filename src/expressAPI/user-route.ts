@@ -5,26 +5,26 @@ import { serverUrl } from "./utilities/server-url";
 export async function userRoute (route: string, accessToken: string, data_: any = {}, playerId?: string) {
 
   // arguments[0] can be
-  //// 'save-map', 'save-game', and 'save-char' are used for both CREATE and UPDATE
-  //// 'save-map'
-  //// 'save-game'
-  //// 'save-char'
+  // '---/save' is used for CREATE or UPDATE, depending on whether id is empty string
 
-  //// 'delete-map'
-  //// 'delete-game'
-  //// 'delete-char'
+  //// 'map/save'
+  //// 'map/delete'
 
-  //// 'join-game'
-  //// 'remove-player'
+  //// 'char/save'
+  //// 'char/delete'
+  
+  //// 'game/save'
+  //// 'game/delete'
+  //// 'game/join'
+  //// 'game/remove-player'
 
   let data;
-  route === 'remove-player' ?
+  route === 'game/remove-player' ?
     data = JSON.stringify({game: data_, playerId: playerId}) :
     data = JSON.stringify(data_) ;
 
 
-  console.log('user-route.ts', route, accessToken)
-  const url = `${serverUrl}auth/${route}`;
+  const url = `${serverUrl}${route}`;
   const config = {
     method: 'POST',
     headers: {

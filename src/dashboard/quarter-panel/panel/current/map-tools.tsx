@@ -25,7 +25,7 @@ export default function MapTools(props: Props) {
     currentMap.name = mapName;
     currentMap.currentMap = {};
 
-    const route = "save-map";
+    const route = "map/save";
     await userRoute(route, props.accessToken, currentMap);
     await props.getUserData();
   };
@@ -41,7 +41,7 @@ export default function MapTools(props: Props) {
     gameMap.selected = {};
     gameMap.tool = "none";
 
-    const route = "save-game";
+    const route = "game/save";
     const response = await userRoute(route, props.accessToken, gameMap);
     await props.getUserData();
     const currentGame = response.game;

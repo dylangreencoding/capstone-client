@@ -24,7 +24,7 @@ export default function CharTools(props: Props) {
   const handleJoinGame = async (e: any) => {
     e.preventDefault();
 
-    const route = "join-game";
+    const route = "game/join";
     const response = await userRoute(route, props.accessToken, {
       id: gameId,
       character: props.savedChar,
