@@ -161,6 +161,22 @@ ul {
   outline: hsl(0, 0%, 8%) solid 1px;
 }
 
+.auth-input:valid {
+  background-color: rgba(0, 128, 0, 0.05);
+}
+
+.auth-input:invalid:focus {
+  outline: maroon solid 2px;
+}
+
+.auth-label {
+  font-size: 1.2rem;
+  font-weight: 700;
+  display: flex;
+  flex-direction: column;
+
+}
+
 .auth-button {
   border: none;
   background: none;

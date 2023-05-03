@@ -55,9 +55,10 @@ export default function GameTools(props: Props) {
     currentGameMap.currentMap = {};
     currentGameMap.selected = {};
     currentGameMap.tool = "none";
-    if (message.length > 0 && message.length < 20) {
-      currentGameMap.messages.push(`${props.user.user.email}: ${message}`);
+    if (message.length > 0 && message.length <= 20) {
+      currentGameMap.messages.push(`${props.user.user.name}: ${message}`);
     }
+    setMessage("");
     console.log("GAMEMAP", currentGameMap);
     const route = "game/save";
     const response = await userRoute(route, props.accessToken, currentGameMap);
@@ -276,7 +277,9 @@ export default function GameTools(props: Props) {
           <input
             className="text-input"
             type="text"
-            placeholder="20 character maximum"
+            placeholder="hello"
+            title="1 - 20 characters"
+            maxLength={20}
             value={message}
             onChange={(e) => setMessage(e.target.value)}
           />

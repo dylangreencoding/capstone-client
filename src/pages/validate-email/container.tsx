@@ -1,32 +1,10 @@
+import { Link } from "react-router-dom";
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-//
-import { logIn } from "../../expressAPI/log-in";
+import ValidateEmail from ".";
 
-export default function LogIn() {
+export default function ValidateEmailContainer() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const navigate = useNavigate();
-
-  const handleLogin = async (e: any) => {
-    e.preventDefault();
-    const data = {
-      email: email,
-      password: password,
-    };
-    try {
-      const response = await logIn(data);
-      console.log(response);
-      sessionStorage.setItem(
-        "accessToken",
-        JSON.stringify(response.accessToken)
-      );
-      alert(response.message);
-      navigate("/capstone_user_account", { replace: true });
-    } catch (error) {
-      alert(error);
-    }
-  };
 
   return (
     <div className="container">
@@ -37,7 +15,7 @@ export default function LogIn() {
         </Link>
       </header>
       <main>
-        <form className="auth-form" onSubmit={handleLogin}>
+        <form className="auth-form">
           <label className="auth-label">
             Email
             <input
@@ -64,17 +42,10 @@ export default function LogIn() {
               onChange={(e) => setPassword(e.target.value)}
             />
           </label>
-          <button className="auth-button" type="submit">
-            Log In
-          </button>
         </form>
+        <ValidateEmail email={email} password={password} />
       </main>
       <footer>
-        <p>
-          <Link to={"/CreateAccount"} replace={true} className="link">
-            Create Account
-          </Link>
-        </p>
         <p>Copyright 2023 Dylan Green</p>
       </footer>
     </div>
