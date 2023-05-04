@@ -8,7 +8,6 @@ export default function CreateAccount() {
   const [name, setName] = useState<string>("");
   const [birthYear, setBirthYear] = useState<string>("");
   const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
   const [enterCodeNow, setEnterCodeNow] = useState<boolean>(false);
 
   const handleCreateAccount = async (e: any) => {
@@ -17,7 +16,6 @@ export default function CreateAccount() {
       name: name,
       birthYear: birthYear,
       email: email,
-      password: password,
     };
     try {
       const response = await createAccount(data);
@@ -78,45 +76,29 @@ export default function CreateAccount() {
               onChange={(e) => setEmail(e.target.value)}
             />
           </label>
-          <label className="auth-label">
-            Password
-            <input
-              className="auth-input"
-              required
-              type="password"
-              placeholder="!@#$%^&*"
-              minLength={8}
-              maxLength={20}
-              title="8 - 20 characters"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </label>
+
           {!enterCodeNow ? (
             <button className="auth-button" type="submit">
-              Create New Account
+              Create Account
             </button>
           ) : (
             <span />
           )}
         </form>
-        {enterCodeNow ? (
-          <ValidateEmail email={email} password={password} />
-        ) : (
-          <div />
-        )}
+        {enterCodeNow ? <ValidateEmail email={email} /> : <div />}
       </main>
       <footer>
         <p>
-          <Link to={"/LogIn"} replace={true} className="link">
-            Already have an account?
+          <Link to={"/ValidateEmail"} replace={true} className="link">
+            Resend email verification / reset password
           </Link>
         </p>
         <p>
-          <Link to={"/ValidateEmail"} replace={true} className="link">
-            Enter email validation code
+          <Link to={"/LogIn"} replace={true} className="link">
+            Login
           </Link>
         </p>
+
         <p>Copyright 2023 Dylan Green</p>
       </footer>
     </div>

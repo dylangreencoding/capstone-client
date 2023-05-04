@@ -63,6 +63,7 @@ body {
   margin-right: 1.2rem;
 }
 
+
 /* *************** */
 /*  HTML elements */
 /* ************* */
@@ -198,6 +199,11 @@ ul {
   background-color: hsl(0, 0%, 18%);
 }
 
+.resend-code-btn {
+  margin-left: 1.2rem;
+  padding: 0.3rem 1.2rem;
+}
+
 /* ************************* */
 /* For Dashboard components */
 /* *********************** */
@@ -266,6 +272,16 @@ ul {
 }
 
 /* text input */
+.text-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.text-label {
+  font-size: 1.2rem;
+  margin-bottom: 0.6rem;
+}
+
 .text-input {
   border: none;
   font-family: inherit;
@@ -277,14 +293,18 @@ ul {
   margin-right: 1.2rem;
 }
 
+.text-input-large {
+  border: none;
+  font-family: inherit;
+  background-color: hsla(0, 0%, 88%, 0.116);
+
+  font-size: 4.8rem;
+  font-weight: 700;
+}
+
 .text-input:focus {
   outline: none;
   background-color: #e0e0e0a6
-}
-
-.text-form {
-  display: flex;
-  flex-direction: column;
 }
 
 .char-sheet {
@@ -296,3 +316,12 @@ ul {
 .capstone-info {
   border: none;
 }
+
+
+
+
+
+
+
+
+

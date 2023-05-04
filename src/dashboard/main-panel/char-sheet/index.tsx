@@ -32,10 +32,10 @@ export default function CharSheet(props: Props) {
   return (
     <div className="char-sheet">
       <form className="text-form" onSubmit={handleSubmitChar}>
-        <label className="mb24">
+        <label className="text-label mb24">
           Name
           <input
-            className="text-input"
+            className="text-input-large"
             type="text"
             placeholder={charName}
             value={charName}
@@ -44,10 +44,10 @@ export default function CharSheet(props: Props) {
             }}
           />
         </label>
-        <label className="mb24">
+        <label className="text-label mb24">
           Level
           <input
-            className="text-input"
+            className="text-input-large"
             type="text"
             value={charLevel}
             onChange={(e) => {

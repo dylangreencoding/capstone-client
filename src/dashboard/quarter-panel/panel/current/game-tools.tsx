@@ -55,7 +55,7 @@ export default function GameTools(props: Props) {
     currentGameMap.currentMap = {};
     currentGameMap.selected = {};
     currentGameMap.tool = "none";
-    if (message.length > 0 && message.length <= 20) {
+    if (message.length > 0) {
       currentGameMap.messages.push(`${props.user.user.name}: ${message}`);
     }
     setMessage("");
@@ -278,8 +278,9 @@ export default function GameTools(props: Props) {
             className="text-input"
             type="text"
             placeholder="hello"
-            title="1 - 20 characters"
-            maxLength={20}
+            title="1 - 40 characters"
+            minLength={1}
+            maxLength={40}
             value={message}
             onChange={(e) => setMessage(e.target.value)}
           />

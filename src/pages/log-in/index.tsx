@@ -71,6 +71,11 @@ export default function LogIn() {
       </main>
       <footer>
         <p>
+          <Link to={"/ValidateEmail"} replace={true} className="link">
+            Resend email verification / reset password
+          </Link>
+        </p>
+        <p>
           <Link to={"/CreateAccount"} replace={true} className="link">
             Create Account
           </Link>

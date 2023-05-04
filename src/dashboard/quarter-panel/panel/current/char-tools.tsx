@@ -49,13 +49,19 @@ export default function CharTools(props: Props) {
         <div>Level {props.savedChar.level}</div>
       </div>
       <form className="text-form" onSubmit={handleJoinGame}>
-        <input
-          className="text-input"
-          type="text"
-          placeholder="Enter Game ID"
-          value={gameId}
-          onChange={(e) => setGameId(e.target.value)}
-        />
+        <label className="text-label">
+          Game ID
+          <input
+            className="text-input"
+            required
+            minLength={1}
+            type="text"
+            placeholder="221b2e95-ce8a-40d2-b0f1-96754196d657"
+            title="Enter Game ID"
+            value={gameId}
+            onChange={(e) => setGameId(e.target.value)}
+          />
+        </label>
         {props.user.games.length < 2 ? (
           <button type="submit" className="btn">
             join game as {props.savedChar.name}

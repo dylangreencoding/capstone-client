@@ -16,18 +16,22 @@ interface Props {
 }
 
 export default function MapTools(props: Props) {
-  const [mapName, setmapName] = useState<string>(props.savedMap.name);
+  const [mapName, setMapName] = useState<string>("");
 
   let currentMap = props.savedMap;
 
   const handleSaveMap = async (e: any) => {
     e.preventDefault();
-    currentMap.name = mapName;
+    mapName.length > 0
+      ? (currentMap.name = mapName)
+      : (currentMap.name = currentMap.name);
     currentMap.currentMap = {};
 
     const route = "map/save";
     await userRoute(route, props.accessToken, currentMap);
     await props.getUserData();
+
+    setMapName("");
   };
 
   const handleHostGame = async (e: any) => {
@@ -186,9 +190,12 @@ export default function MapTools(props: Props) {
           <input
             className="text-input"
             type="text"
-            placeholder="*name your map*"
+            placeholder="my map name"
+            minLength={1}
+            maxLength={20}
+            title="1 - 20 characters"
             value={mapName}
-            onChange={(e) => setmapName(e.target.value)}
+            onChange={(e) => setMapName(e.target.value)}
           />
           <button type="submit" className="btn">
             save

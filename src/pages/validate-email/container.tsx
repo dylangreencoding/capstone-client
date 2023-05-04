@@ -1,10 +1,11 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import ValidateEmail from ".";
+import { resendValidationCode } from "../../expressAPI/email-v-code";
 
 export default function ValidateEmailContainer() {
   const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [sendCount, setSendCount] = useState<number>(0);
 
   return (
     <div className="container">
@@ -15,35 +16,39 @@ export default function ValidateEmailContainer() {
         </Link>
       </header>
       <main>
-        <form className="auth-form">
+        <h2>Verify Email / Reset Password</h2>
+        <p>Retrieve the verification code from your email.</p>
+        <p>Use it to set your password and log in to your account.</p>
+        <p>
+          Or if there was an issue during account creation, and you need to
+          resend the verification code.
+        </p>
+        <form
+          className="auth-form"
+          onSubmit={async () => {
+            await resendValidationCode(email);
+            setSendCount(() => sendCount + 1);
+          }}
+        >
           <label className="auth-label">
             Email
-            <input
-              className="auth-input"
-              required
-              type="email"
-              title="Enter email"
-              placeholder="email@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </label>
-          <label className="auth-label">
-            Password
-            <input
-              className="auth-input"
-              required
-              type="password"
-              minLength={8}
-              maxLength={20}
-              title="8 - 20 characters"
-              placeholder="!@#$%^&*"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
+            <div>
+              <input
+                className="auth-input"
+                required
+                type="email"
+                title="Enter email"
+                placeholder="email@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <button type="submit" className="auth-button resend-code-btn">
+                {`send verification code (sent ${sendCount})`}
+              </button>
+            </div>
           </label>
         </form>
-        <ValidateEmail email={email} password={password} />
+        <ValidateEmail email={email} />
       </main>
       <footer>
         <p>Copyright 2023 Dylan Green</p>
