@@ -35,6 +35,10 @@ export default function CreateAccount() {
         </Link>
       </header>
       <main>
+        <h2>Create Account</h2>
+        <p>
+          You will be asked to retrieve the verification code from your email.
+        </p>
         <form className="auth-form" onSubmit={handleCreateAccount}>
           <label className="auth-label">
             Name
@@ -98,7 +102,11 @@ export default function CreateAccount() {
             Login
           </Link>
         </p>
-
+        <p>
+          <Link to={"/"} replace={true} className="link">
+            Home
+          </Link>
+        </p>
         <p>Copyright 2023 Dylan Green</p>
       </footer>
     </div>

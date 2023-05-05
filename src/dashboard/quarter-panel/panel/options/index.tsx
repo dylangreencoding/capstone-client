@@ -200,7 +200,7 @@ export default function Options(props: Props) {
               </li>
             );
           })}
-          <li>- </li>
+          {props.user.maps.length > 0 ? <li /> : <li>- </li>}
         </ul>
       </div>
       <div className="mb36">
@@ -237,7 +237,7 @@ export default function Options(props: Props) {
               </li>
             );
           })}
-          <li>- </li>
+          {props.user.chars.length > 0 ? <li /> : <li>- </li>}
         </ul>
       </div>
       <div className="mb36">

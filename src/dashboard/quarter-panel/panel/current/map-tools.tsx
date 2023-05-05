@@ -26,6 +26,7 @@ export default function MapTools(props: Props) {
       ? (currentMap.name = mapName)
       : (currentMap.name = currentMap.name);
     currentMap.currentMap = {};
+    currentMap.tool = "none";
 
     const route = "map/save";
     await userRoute(route, props.accessToken, currentMap);
@@ -107,14 +108,19 @@ export default function MapTools(props: Props) {
 
       <div>
         <div>
-          <div className="mb24">
+          <div className="mb24 tool-box">
             <div>
+              <strong>{getSelected()}</strong>
+            </div>
+            <div className="small">
               {props.savedMap.selected.x}, {props.savedMap.selected.y}
             </div>
-            <div>{getSelected()}</div>
           </div>
 
-          <div className="tool-box mb24">
+          <div className="tool-box mb24 tool-box-border">
+            <div className="tb-header">
+              <span className="tb-heading">map tools</span>
+            </div>
             <div>
               <button
                 type="button"

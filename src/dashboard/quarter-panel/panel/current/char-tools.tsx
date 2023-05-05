@@ -59,7 +59,7 @@ export default function CharTools(props: Props) {
             placeholder="221b2e95-ce8a-40d2-b0f1-96754196d657"
             title="Enter Game ID"
             value={gameId}
-            onChange={(e) => setGameId(e.target.value)}
+            onChange={(e) => setGameId(e.target.value.trim())}
           />
         </label>
         {props.user.games.length < 2 ? (

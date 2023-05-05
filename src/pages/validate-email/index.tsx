@@ -67,7 +67,7 @@ export default function ValidateEmail(props: Props) {
             title="paste code here"
             placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImMxMmRjMmE3LWJjNmMtNDAwNy04NTFiLWMzMGViY2RjM2YyOSIsImlhdCI6MTY4MzA4NDA0OCwiZXhwIjoxNjgzMDg0NjQ4fQ.MICk2vPlDkbTgJEOJL9sha2YouCjoRaq98Tp05HPW_U"
             value={code}
-            onChange={(e) => setCode(e.target.value)}
+            onChange={(e) => setCode(e.target.value.trim())}
           />
         </label>
         <button className="auth-button" type="submit">

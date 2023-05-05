@@ -17,6 +17,13 @@ interface Props {
 
 export default function GameTools(props: Props) {
   const [message, setMessage] = useState<string>("");
+  let playerNames: any = {};
+  for (const key of Object.keys(props.savedGame.selectFrom)) {
+    if (props.savedGame.players[props.savedGame.selectFrom[key].maker]) {
+      playerNames[props.savedGame.selectFrom[key].maker] =
+        props.savedGame.selectFrom[key].name;
+    }
+  }
 
   const gameroomId = props.savedGame.id;
   const userEmail = props.user.user.email;
@@ -55,8 +62,11 @@ export default function GameTools(props: Props) {
     currentGameMap.currentMap = {};
     currentGameMap.selected = {};
     currentGameMap.tool = "none";
+
+    let playerName = playerNames[props.user.user.id] || "HOST";
+
     if (message.length > 0) {
-      currentGameMap.messages.push(`${props.user.user.name}: ${message}`);
+      currentGameMap.messages.push(`${playerName}: ${message}`);
     }
     setMessage("");
     console.log("GAMEMAP", currentGameMap);
@@ -126,13 +136,6 @@ export default function GameTools(props: Props) {
 
     props.setSavedGame({ ...props.savedGame, currentGame });
   };
-  let playerNames: any = {};
-  for (const key of Object.keys(props.savedGame.selectFrom)) {
-    if (props.savedGame.players[props.savedGame.selectFrom[key].maker]) {
-      playerNames[props.savedGame.selectFrom[key].maker] =
-        props.savedGame.selectFrom[key].name;
-    }
-  }
 
   const handleRemovePlayer = async (e: any) => {
     const playerId = e.target.value;
@@ -172,11 +175,7 @@ export default function GameTools(props: Props) {
   return (
     <div className="game-tools">
       <div className="mb24 tool-box">
-        {props.savedGame.players[props.user.user.id] === "host" ? (
-          <h3>{props.savedGame.id}</h3>
-        ) : (
-          <h3>{props.savedGame.name}</h3>
-        )}
+        <h3>{props.savedGame.name}</h3>
         <button
           type="button"
           value={props.savedGame.id}
@@ -188,107 +187,136 @@ export default function GameTools(props: Props) {
             : "leave game"}
         </button>
       </div>
-
-      <div>
-        <div>
-          {props.savedGame.players[props.user.user.id] === "host" ? (
-            <ul className="mb24 tool-box">
-              {Object.keys(props.savedGame.players).map((playerId: any) => {
-                return (
-                  <li key={playerId} className="flex-space-between">
-                    <button
-                      type="button"
-                      value={playerId}
-                      onClick={handlePlacePlayer}
-                      className="btn"
-                    >
-                      {props.savedGame.players[playerId] === "host"
-                        ? props.savedGame.players[playerId]
-                        : playerNames[playerId]}
-                    </button>
-                    {props.savedGame.players[playerId] === "host" ? (
-                      <span />
-                    ) : (
-                      <button
-                        className="btn"
-                        type="button"
-                        value={playerId}
-                        onClick={handleRemovePlayer}
-                      >
-                        remove
-                      </button>
-                    )}
-                  </li>
-                );
-              })}
-              <li>- </li>
-            </ul>
-          ) : (
-            <ul className="mb24"></ul>
-          )}
-
-          <div className="mb24">
-            <div>
-              {props.savedGame.selected.x}, {props.savedGame.selected.y}
+      <div className="mb24 tool-box">
+        {props.savedGame.players[props.user.user.id] === "host" ? (
+          <div>
+            <div className="tb-header">
+              <span className="tb-heading">game id</span>
             </div>
-            <div>{getSelected()}</div>
+
+            <button
+              type="button"
+              title="copy to clipboard"
+              value={props.savedGame.id}
+              onClick={(e) => {
+                navigator.clipboard.writeText(props.savedGame.id);
+              }}
+              className="btn small"
+            >
+              <div className="small">{props.savedGame.id}</div>
+            </button>
           </div>
-
-          <div className="mb24 tool-box">
-            <div>
-              <button
-                type="button"
-                className={`btn ${
-                  props.savedGame.tool === "none" ? "active" : ""
-                }`}
-                value="none"
-                onClick={handlePickTool}
-              >
-                select
-              </button>
-            </div>
-            <div>
-              <button
-                type="button"
-                className={`btn ${
-                  props.savedGame.tool === "move" ? "active" : ""
-                }`}
-                value="move"
-                onClick={handlePickTool}
-              >
-                move
-              </button>
-            </div>
-            <div>
-              <button
-                type="button"
-                className={`btn ${
-                  props.savedGame.tool === "shoot" ? "active" : ""
-                }`}
-                value="shoot"
-                onClick={handlePickTool}
-              >
-                shoot
-              </button>
-            </div>
-          </div>
-        </div>
-        <form className="text-form tool-box" onSubmit={handleSendGame}>
-          <input
-            className="text-input"
-            type="text"
-            placeholder="hello"
-            title="1 - 40 characters"
-            minLength={1}
-            maxLength={40}
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-          />
-          <button type="submit" className="btn">
-            send
-          </button>
-        </form>
+        ) : (
+          <span />
+        )}
       </div>
+
+      {props.savedGame.players[props.user.user.id] === "host" ? (
+        <ul className="mb24 tool-box tool-box-border">
+          <div className="tb-header">
+            <span className="tb-heading">players</span>
+          </div>
+          {Object.keys(props.savedGame.players).map((playerId: any) => {
+            return (
+              <li key={playerId} className="flex-space-between">
+                <button
+                  type="button"
+                  value={playerId}
+                  onClick={handlePlacePlayer}
+                  className={
+                    props.savedGame.tool === playerId ? `btn active` : `btn`
+                  }
+                >
+                  {props.savedGame.players[playerId] === "host"
+                    ? props.savedGame.players[playerId]
+                    : playerNames[playerId]}
+                </button>
+                {props.savedGame.players[playerId] === "host" ? (
+                  <span />
+                ) : (
+                  <button
+                    className="btn"
+                    type="button"
+                    value={playerId}
+                    onClick={handleRemovePlayer}
+                  >
+                    remove
+                  </button>
+                )}
+              </li>
+            );
+          })}
+          <li>- </li>
+        </ul>
+      ) : (
+        <ul className="mb24"></ul>
+      )}
+
+      <div className="mb24 tool-box">
+        <div>
+          <strong>{getSelected()}</strong>
+        </div>
+        <div>
+          <small>
+            {props.savedGame.selected.x}, {props.savedGame.selected.y}
+          </small>
+        </div>
+      </div>
+
+      <div className="mb24 tool-box tool-box-border">
+        <div className="tb-header">
+          <span className="tb-heading">map tools</span>
+        </div>
+        <div>
+          <button
+            type="button"
+            className={`btn ${props.savedGame.tool === "none" ? "active" : ""}`}
+            value="none"
+            onClick={handlePickTool}
+          >
+            select
+          </button>
+        </div>
+        <div>
+          <button
+            type="button"
+            className={`btn ${props.savedGame.tool === "move" ? "active" : ""}`}
+            value="move"
+            onClick={handlePickTool}
+          >
+            move
+          </button>
+        </div>
+        <div>
+          <button
+            type="button"
+            className={`btn ${
+              props.savedGame.tool === "shoot" ? "active" : ""
+            }`}
+            value="shoot"
+            onClick={handlePickTool}
+          >
+            shoot
+          </button>
+        </div>
+      </div>
+
+      {/* chat message input and send button */}
+      <form className="text-form tool-box" onSubmit={handleSendGame}>
+        <input
+          className="text-input"
+          type="text"
+          placeholder="hello"
+          title="1 - 40 characters"
+          minLength={1}
+          maxLength={40}
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+        />
+        <button type="submit" className="btn">
+          send
+        </button>
+      </form>
     </div>
   );
 }

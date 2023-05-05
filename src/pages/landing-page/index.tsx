@@ -7,14 +7,12 @@ export default function LandingPage() {
         <h1>Capstone</h1>
       </header>
       <main>
-        <h2>What is this?</h2>
+        <h2>What is Capstone?</h2>
         <p>
           This is a virtual battlemap for playing tabletop roleplaying games.
         </p>
-        <p>
-          You can create and save maps, characters and monsters, and run
-          multiple game sessions.
-        </p>
+        <p>Create maps and characters.</p>
+        <p>Host and join games.</p>
         <p>
           <Link to={"/Login"} replace={true} className="link">
             Log In
@@ -27,6 +25,11 @@ export default function LandingPage() {
         </p>
       </main>
       <footer>
+        <p>
+          <Link to={"/ValidateEmail"} replace={true} className="link">
+            Resend email verification / reset password
+          </Link>
+        </p>
         <p>Copyright 2023 Dylan Green</p>
       </footer>
     </div>

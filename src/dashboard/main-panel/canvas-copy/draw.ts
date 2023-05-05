@@ -6,6 +6,10 @@ export function draw (ctx: any, canvasWidth: number, canvasHeight: number, mouse
   ctx.strokeStyle = "#252525";
   ctx.lineWidth = 1;
 
+
+
+
+
   // draw grid
   for (let x = savedMap.x - savedMap.scale/2; x <= (savedMap.width * savedMap.scale) + savedMap.x; x += savedMap.scale) {
     ctx.beginPath();
@@ -24,6 +28,11 @@ export function draw (ctx: any, canvasWidth: number, canvasHeight: number, mouse
     ctx.stroke();
   }
 
+
+
+
+
+
   // draw selectables
   for (const key of Object.keys(savedMap.selectFrom)) {
     savedMap.selectFrom[key].type === 'location' ? 
@@ -35,6 +44,11 @@ export function draw (ctx: any, canvasWidth: number, canvasHeight: number, mouse
     ctx.closePath();
     ctx.fill();
   }
+
+
+
+
+
 
   // draw lines
   for (const line of savedMap.lines) {
@@ -48,6 +62,11 @@ export function draw (ctx: any, canvasWidth: number, canvasHeight: number, mouse
     ctx.closePath();
     ctx.stroke();
   }
+
+
+
+
+
 
   // draw selected/selector tools
   if (savedMap.tool === 'none') {
@@ -223,6 +242,8 @@ export function draw (ctx: any, canvasWidth: number, canvasHeight: number, mouse
       ctx.closePath();
       ctx.stroke();
     }
+
+
   } else if (savedMap.tool.length > 20) {
       ctx.strokeStyle = 'blue';
       ctx.beginPath();
@@ -230,6 +251,7 @@ export function draw (ctx: any, canvasWidth: number, canvasHeight: number, mouse
       ctx.closePath();
       ctx.stroke();
   }
+  
   
     // chatmessages
     if (savedMap.messages) {

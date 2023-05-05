@@ -36,6 +36,7 @@ export default function LogIn() {
           Home
         </Link>
       </header>
+
       <main>
         <form className="auth-form" onSubmit={handleLogin}>
           <label className="auth-label">
@@ -78,6 +79,11 @@ export default function LogIn() {
         <p>
           <Link to={"/CreateAccount"} replace={true} className="link">
             Create Account
+          </Link>
+        </p>
+        <p>
+          <Link to={"/"} replace={true} className="link">
+            Home
           </Link>
         </p>
         <p>Copyright 2023 Dylan Green</p>
