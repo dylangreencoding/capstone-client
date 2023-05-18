@@ -21,60 +21,52 @@ interface Props {
   socket: any;
 }
 
-export default function Current (props: Props) {
-  
+export default function Current(props: Props) {
   const displayCurrent = () => {
-    if (props.current === 'map') {
-      return <MapTools 
-        setCurrent={props.setCurrent}
-        setTab={props.setTab}
-
-        savedMap={props.savedMap}
-        setSavedMap={props.setSavedMap}
-        savedGame={props.savedGame}
-        setSavedGame={props.setSavedGame}
-
-        accessToken={props.accessToken}
-        user={props.user}
-        getUserData={props.getUserData}
-
-      />
-    } else if (props.current === 'game') {
-      return <GameTools 
-        setTab={props.setTab}
-        setCurrent={props.setCurrent}
-
-        savedGame={props.savedGame}
-        setSavedGame={props.setSavedGame}
-
-        accessToken={props.accessToken}
-        user={props.user}
-        getUserData={props.getUserData}
-
-        socket={props.socket}
-      />
-    } else if (props.current === 'char') {
-      return <CharTools 
-        setCurrent={props.setCurrent}
-        setTab={props.setTab}
-
-        savedChar={props.savedChar}
-        setSavedChar={props.setSavedChar}
-        savedGame={props.savedGame}
-        setSavedGame={props.setSavedGame}
-
-        accessToken={props.accessToken}
-        user={props.user}
-        getUserData={props.getUserData}
-
-        socket={props.socket}
-      />
+    if (props.current === "map") {
+      return (
+        <MapTools
+          setCurrent={props.setCurrent}
+          setTab={props.setTab}
+          savedMap={props.savedMap}
+          setSavedMap={props.setSavedMap}
+          savedGame={props.savedGame}
+          setSavedGame={props.setSavedGame}
+          accessToken={props.accessToken}
+          user={props.user}
+          getUserData={props.getUserData}
+        />
+      );
+    } else if (props.current === "game") {
+      return (
+        <GameTools
+          setTab={props.setTab}
+          setCurrent={props.setCurrent}
+          savedGame={props.savedGame}
+          setSavedGame={props.setSavedGame}
+          accessToken={props.accessToken}
+          user={props.user}
+          getUserData={props.getUserData}
+          socket={props.socket}
+        />
+      );
+    } else if (props.current === "char") {
+      return (
+        <CharTools
+          setCurrent={props.setCurrent}
+          setTab={props.setTab}
+          savedChar={props.savedChar}
+          setSavedChar={props.setSavedChar}
+          savedGame={props.savedGame}
+          setSavedGame={props.setSavedGame}
+          accessToken={props.accessToken}
+          user={props.user}
+          getUserData={props.getUserData}
+          socket={props.socket}
+        />
+      );
     }
-  }
-  
-  return (
-    <div className='current'>
-      {displayCurrent()}
-    </div>
-  )
+  };
+
+  return <div className="current">{displayCurrent()}</div>;
 }

@@ -6,41 +6,69 @@ export function draw (ctx: any, canvasWidth: number, canvasHeight: number, mouse
   ctx.strokeStyle = "#252525";
   ctx.lineWidth = 1;
 
+  ///////////////////////////////////////
+  // draw grid //////////////////////////
+  // optimized to only draw the part of the grid that is within the canvas
+  // probably less efficient for small maps
+  // certainly more efficient with very large maps
+  const verticalLineTop = savedMap.y >= 0 ? savedMap.y : 0 ;
+  const verticalLineBottom = savedMap.y + (savedMap.height * savedMap.scale) <= canvasHeight ? (savedMap.y + savedMap.height * savedMap.scale) - savedMap.scale : canvasHeight ;
 
+  const horizontalLineLeft = savedMap.x >= 0 ? savedMap.x : 0 ;
+  const horizontalLineRight = savedMap.x + (savedMap.width * savedMap.scale) <= canvasWidth ? (savedMap.x + savedMap.width*savedMap.scale) - savedMap.scale : canvasWidth ;
 
-
-
-  // draw grid
-  for (let x = savedMap.x - savedMap.scale/2; x <= (savedMap.width * savedMap.scale) + savedMap.x; x += savedMap.scale) {
+  for (let x = savedMap.x; x <= (savedMap.x + savedMap.width*savedMap.scale) - savedMap.scale; x += savedMap.scale) {
     ctx.beginPath();
-    ctx.moveTo(x, savedMap.y - savedMap.scale/2);
-    ctx.lineTo(x, (savedMap.height * savedMap.scale) + savedMap.y - savedMap.scale/2);
-    ctx.moveTo(x, savedMap.y - savedMap.scale/2);
+    ctx.arc(x, verticalLineTop, savedMap.scale*0.2, 0, Math.PI*2);
+    ctx.closePath();
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.arc(x, verticalLineBottom, savedMap.scale*0.2, 0, Math.PI*2);
+    ctx.closePath();
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo(x, verticalLineTop);
+    ctx.lineTo(x, verticalLineBottom);
+    ctx.moveTo(x, verticalLineTop);
     ctx.closePath();
     ctx.stroke();
   }
-  for (let y = savedMap.y - savedMap.scale/2; y <= (savedMap.height * savedMap.scale) + savedMap.y; y += savedMap.scale) {
+  for (let y = savedMap.y; y <= (savedMap.y + savedMap.height*savedMap.scale) - savedMap.scale; y += savedMap.scale) {
     ctx.beginPath();
-    ctx.moveTo(savedMap.x - savedMap.scale/2, y);
-    ctx.lineTo((savedMap.width * savedMap.scale) - savedMap.scale/2 + savedMap.x, y);
-    ctx.moveTo(savedMap.x - savedMap.scale/2, y);
+    ctx.arc(horizontalLineLeft, y, savedMap.scale*0.2, 0, Math.PI*2);
+    ctx.closePath();
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.arc(horizontalLineRight, y, savedMap.scale*0.2, 0, Math.PI*2);
+    ctx.closePath();
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo(horizontalLineLeft, y);
+    ctx.lineTo(horizontalLineRight, y);
+    ctx.moveTo(horizontalLineLeft, y);
     ctx.closePath();
     ctx.stroke();
   }
+  /////////////////////////////////
+  /////////////////////////////////
 
 
 
 
 
 
-  // draw selectables
-  for (const key of Object.keys(savedMap.selectFrom)) {
-    savedMap.selectFrom[key].type === 'location' ? 
+  // draw entities
+  for (const key of Object.keys(savedMap.entities)) {
+    savedMap.entities[key].type === 'location' ? 
     ctx.fillStyle = 'darkgreen' : 
     ctx.fillStyle = 'blue';
     
     ctx.beginPath();
-    ctx.arc(savedMap.selectFrom[key].x, savedMap.selectFrom[key].y, savedMap.scale*0.25, 0, Math.PI*2);
+    ctx.arc(savedMap.entities[key].x + savedMap.x, savedMap.entities[key].y + savedMap.y, savedMap.scale*0.25, 0, Math.PI*2);
     ctx.closePath();
     ctx.fill();
   }

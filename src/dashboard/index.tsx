@@ -3,6 +3,7 @@ import { useState } from "react";
 import MainPanel from "./main-panel";
 import QuarterPanel from "./quarter-panel";
 //
+import { blankMap, blankChar } from "./object-templates";
 
 interface Props {
   accessToken: string;
@@ -19,36 +20,6 @@ export default function Dashboard(props: Props) {
   // sets options tab and main panel display
   const [current, setCurrent] = useState<string>("map");
   const [tab, setTab] = useState<string>("options");
-
-  // blank map template
-  const blankMap = {
-    id: "",
-    maker: "",
-    name: "please choose a map",
-
-    x: 0,
-    y: 0,
-    scale: 25,
-    selected: { x: undefined, y: undefined },
-    selectFrom: {},
-    tool: "none",
-
-    width: 2,
-    height: 2,
-
-    lines: [],
-  };
-  // blank char template
-  const blankChar = {
-    id: "",
-    maker: "",
-    name: "please choose a character",
-
-    x: -100,
-    y: -100,
-
-    level: 5,
-  };
 
   // might rename these
   const [savedMap, setSavedMap] = useState<any>(blankMap);

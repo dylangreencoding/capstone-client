@@ -4,6 +4,8 @@ import { useEffect } from "react";
 import { logOut } from "../../../../expressAPI/log-out";
 import { userRoute } from "../../../../expressAPI/user-route";
 import DisplayGames from "./displayGames";
+//
+import { blankMap, blankChar } from "../../../object-templates";
 
 interface Props {
   setCurrent: Function;
@@ -43,27 +45,11 @@ export default function Options(props: Props) {
     }
   };
 
-  // for handleNewMap
-  const blankMap = {
-    id: "",
-    maker: props.user.user.id,
-    name: "new map",
-
-    x: 0,
-    y: 0,
-    scale: 25,
-    selected: { x: undefined, y: undefined },
-    selectFrom: {},
-    tool: "none",
-
-    width: 50,
-    height: 25,
-
-    lines: [],
-  };
   // create blank map in database
   const handleNewMap = async (e: any) => {
     e.preventDefault();
+    blankMap.maker = props.user.user.id;
+    blankMap.name = "new map";
     const route = "map/save";
     await userRoute(route, props.accessToken, blankMap);
     await props.getUserData();
@@ -106,18 +92,10 @@ export default function Options(props: Props) {
     props.setSavedMap(selectedMap);
   };
 
-  const blankChar = {
-    id: "",
-    maker: props.user.user.id,
-    name: "new character",
-
-    x: -100,
-    y: -100,
-
-    level: 5,
-  };
-
   const handleNewChar = async (e: any) => {
+    e.preventDefault();
+    blankChar.maker = props.user.user.id;
+    blankChar.name = "Elvis";
     const route = "char/save";
     await userRoute(route, props.accessToken, blankChar);
     await props.getUserData();
@@ -168,7 +146,15 @@ export default function Options(props: Props) {
       </div>
       <div className="mb36">
         <div className="flex-space-between mb12">
-          <h4>maps </h4>
+          <h4
+            className="offline"
+            onClick={() => {
+              props.setCurrent("map");
+              props.setTab("current");
+            }}
+          >
+            map{" "}
+          </h4>
           {props.user.maps.length < 2 ? (
             <button type="button" className="btn" onClick={handleNewMap}>
               create
@@ -205,7 +191,15 @@ export default function Options(props: Props) {
       </div>
       <div className="mb36">
         <div className="flex-space-between mb12">
-          <h4>characters </h4>
+          <h4
+            className="offline"
+            onClick={() => {
+              props.setCurrent("char");
+              props.setTab("current");
+            }}
+          >
+            character{" "}
+          </h4>
           {props.user.chars.length < 1 ? (
             <button type="button" className="btn" onClick={handleNewChar}>
               create
@@ -242,7 +236,15 @@ export default function Options(props: Props) {
       </div>
       <div className="mb36">
         <div className="flex-space-between mb12">
-          <h4>games </h4>
+          <h4
+            className="offline"
+            onClick={() => {
+              props.setCurrent("game");
+              props.setTab("current");
+            }}
+          >
+            game{" "}
+          </h4>
         </div>
         {props.user.games && props.user.games.length > 0 ? (
           <DisplayGames

@@ -2,6 +2,7 @@ import CharSheet from "./char-sheet";
 import CapstoneInfo from "./capstone-info";
 
 import CanvasCopy from "./canvas-copy";
+import NewCanvas from "./NEW-CANVAS";
 
 interface Props {
   current: string;
@@ -19,38 +20,34 @@ interface Props {
   getUserData: Function;
 }
 
-export default function MainPanel (props: Props) {
-
+export default function MainPanel(props: Props) {
   const displayMainPanel = () => {
-    if (props.tab === 'options') {
-      return <CapstoneInfo />
-    } else if (props.tab === 'current' && props.current === 'char') {
-      return <CharSheet 
-        savedChar={props.savedChar}
-        setSavedChar={props.setSavedChar}
-
-        accessToken={props.accessToken}
-        getUserData={props.getUserData}
-      />
+    if (props.tab === "options") {
+      return <CapstoneInfo />;
+    } else if (props.tab === "current" && props.current === "char") {
+      return (
+        <CharSheet
+          savedChar={props.savedChar}
+          setSavedChar={props.setSavedChar}
+          accessToken={props.accessToken}
+          getUserData={props.getUserData}
+        />
+      );
     } else {
-      return <CanvasCopy
-        width={window.innerWidth * 0.75}
-        height={window.innerHeight}
-
-        current={props.current}
-        setCurrent={props.setCurrent}
-
-        savedMap={props.savedMap}
-        setSavedMap={props.setSavedMap}
-        savedGame={props.savedGame}
-        setSavedGame={props.setSavedGame}
-      />
+      return (
+        <NewCanvas
+          width={window.innerWidth * 0.75}
+          height={window.innerHeight}
+          current={props.current}
+          setCurrent={props.setCurrent}
+          savedMap={props.savedMap}
+          setSavedMap={props.setSavedMap}
+          savedGame={props.savedGame}
+          setSavedGame={props.setSavedGame}
+        />
+      );
     }
-  }
+  };
 
-  return (
-    <div className='main-panel'>
-      { displayMainPanel() }
-    </div>
-  )
+  return <div className="main-panel">{displayMainPanel()}</div>;
 }

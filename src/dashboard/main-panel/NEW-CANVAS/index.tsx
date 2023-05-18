@@ -16,7 +16,7 @@ interface Props {
   setSavedGame: Function;
 }
 
-export default function CanvasCopy(props: Props) {
+export default function NewCanvas(props: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   // currentMap is used to set state variable
@@ -100,25 +100,6 @@ export default function CanvasCopy(props: Props) {
       return hashY;
     };
 
-    // when the board is moved
-    const reHashSelectFrom = () => {
-      let newSelectFrom: any = {};
-      for (const key of Object.keys(currentMap.selectFrom)) {
-        // make sure piece is on board
-        if (key.length < 11) {
-          newSelectFrom[
-            locationToString({
-              x: currentMap.selectFrom[key].x,
-              y: currentMap.selectFrom[key].y,
-            })
-          ] = currentMap.selectFrom[key];
-        } else {
-          newSelectFrom[key] = currentMap.selectFrom[key];
-        }
-      }
-      return newSelectFrom;
-    };
-
     // for constructing line object
     const getLine = (start: any, end: any) => {
       return {
@@ -145,8 +126,15 @@ export default function CanvasCopy(props: Props) {
         m_object.selected.x !== undefined &&
         m_object.selected.y !== undefined
       ) {
-        selected = currentMap.selectFrom[locationToString(m_object.selected)];
-        if (selected != undefined) {
+        selected =
+          currentMap.entities[
+            locationToString({
+              x: m_object.selected.x - currentMap.x,
+              y: m_object.selected.y - currentMap.y,
+            })
+          ];
+        console.log(selected);
+        if (selected !== undefined) {
           return selected;
         } else {
           return "empty square";
@@ -170,6 +158,7 @@ export default function CanvasCopy(props: Props) {
       canvas.height,
       mouse,
       current === "map" ? props.savedMap : props.savedGame
+      // currentMap
     );
     // *** INITIALIZE HASHMAPS *** \\
     let hashX = getHashX();
@@ -210,13 +199,6 @@ export default function CanvasCopy(props: Props) {
           line.aY += mouse.movementXY.y;
           line.bX += mouse.movementXY.x;
           line.bY += mouse.movementXY.y;
-        }
-
-        // object.keys produces an array
-        // for-of uses an iterator
-        for (const key of Object.keys(currentMap.selectFrom)) {
-          currentMap.selectFrom[key].x += mouse.movementXY.x;
-          currentMap.selectFrom[key].y += mouse.movementXY.y;
         }
       } else {
         if (mouse.position.x !== undefined && mouse.position.y !== undefined) {
@@ -275,6 +257,7 @@ export default function CanvasCopy(props: Props) {
         canvas.height,
         mouse,
         current === "map" ? props.savedMap : props.savedGame
+        // currentMap
       );
     };
 
@@ -312,9 +295,14 @@ export default function CanvasCopy(props: Props) {
           mouse.selected.x !== undefined &&
           mouse.selected.y !== undefined
         ) {
-          currentMap.selectFrom[locationToString(mouse.selected)] = {
-            x: mouse.selected.x,
-            y: mouse.selected.y,
+          currentMap.entities[
+            locationToString({
+              x: mouse.selected.x - currentMap.x,
+              y: mouse.selected.y - currentMap.y,
+            })
+          ] = {
+            x: mouse.selected.x - currentMap.x,
+            y: mouse.selected.y - currentMap.y,
             type: "location",
             level: 10,
           };
@@ -329,37 +317,32 @@ export default function CanvasCopy(props: Props) {
           ) {
             const moveFrom = getSelected(currentMap);
             const moveTo = getSelected(mouse);
+            console.log(currentMap.selected, mouse.selected, moveFrom, moveTo);
             if (
               moveFrom !== "empty square" &&
               moveFrom !== "none selected" &&
               moveTo === "empty square" &&
               mouse.canGoHere === true
             ) {
-              // get replacement value
-              const replacementValue =
-                currentMap.selectFrom[
-                  locationToString({
-                    x: currentMap.selected.x,
-                    y: currentMap.selected.y,
-                  })
-                ];
-              replacementValue.x = mouse.selected.x;
-              replacementValue.y = mouse.selected.y;
-
               // delete current entry
-              delete currentMap.selectFrom[
+              delete currentMap.entities[
                 locationToString({
-                  x: currentMap.selected.x,
-                  y: currentMap.selected.y,
+                  x: moveFrom.x,
+                  y: moveFrom.y,
                 })
               ];
-              console.log("RP", replacementValue);
 
               // make new entry
-              currentMap.selectFrom[
-                locationToString({ x: mouse.selected.x, y: mouse.selected.y })
-              ] = replacementValue;
+              moveFrom.x = mouse.selected.x - currentMap.x;
+              moveFrom.y = mouse.selected.y - currentMap.y;
+              currentMap.entities[
+                locationToString({
+                  x: moveFrom.x,
+                  y: moveFrom.y,
+                })
+              ] = moveFrom;
             }
+            console.log(currentMap.entities);
 
             currentMap.selected = { x: undefined, y: undefined };
           } else {
@@ -382,8 +365,11 @@ export default function CanvasCopy(props: Props) {
               shootTo !== "empty square" &&
               mouse.canGoHere === true
             ) {
-              delete currentMap.selectFrom[
-                locationToString({ x: mouse.selected.x, y: mouse.selected.y })
+              delete currentMap.entities[
+                locationToString({
+                  x: mouse.selected.x - currentMap.x,
+                  y: mouse.selected.y - currentMap.y,
+                })
               ];
             }
 
@@ -394,17 +380,20 @@ export default function CanvasCopy(props: Props) {
         } else if (currentMap.tool.length > 20) {
           const moveTo = getSelected(mouse);
           if (moveTo === "empty square") {
-            const replacementValue = currentMap.selectFrom[currentMap.tool];
+            const replacementValue = currentMap.entities[currentMap.tool];
             replacementValue.x = mouse.selected.x;
             replacementValue.y = mouse.selected.y;
 
             // delete current entry
-            delete currentMap.selectFrom[currentMap.tool];
+            delete currentMap.entities[currentMap.tool];
             console.log("place char replacement value", replacementValue);
 
             // make new entry
-            currentMap.selectFrom[
-              locationToString({ x: mouse.selected.x, y: mouse.selected.y })
+            currentMap.entities[
+              locationToString({
+                x: mouse.selected.x - currentMap.x,
+                y: mouse.selected.y - currentMap.y,
+              })
             ] = replacementValue;
 
             // reset tool
@@ -422,15 +411,18 @@ export default function CanvasCopy(props: Props) {
           ? props.setSavedMap({ ...props.savedMap, currentMap })
           : props.setSavedGame({ ...props.savedGame, currentMap });
 
+        console.log(currentMap.x, hashX);
+
         draw(
           ctx,
           canvas.width,
           canvas.height,
           mouse,
           current === "map" ? props.savedMap : props.savedGame
+          // currentMap
         );
       } else {
-        currentMap.selectFrom = reHashSelectFrom();
+        // currentMap.d = reHashSelectFrom();
         currentMap.selected = { x: undefined, y: undefined };
 
         props.current === "map"
@@ -443,6 +435,7 @@ export default function CanvasCopy(props: Props) {
           canvas.height,
           mouse,
           current === "map" ? props.savedMap : props.savedGame
+          // currentMap
         );
       }
 
@@ -459,6 +452,7 @@ export default function CanvasCopy(props: Props) {
         canvas.height,
         mouse,
         current === "map" ? props.savedMap : props.savedGame
+        // currentMap
       );
     };
 
@@ -475,6 +469,7 @@ export default function CanvasCopy(props: Props) {
         canvas.height,
         mouse,
         current === "map" ? props.savedMap : props.savedGame
+        // currentMap
       );
     };
 
@@ -487,6 +482,7 @@ export default function CanvasCopy(props: Props) {
         canvas.height,
         mouse,
         current === "map" ? props.savedMap : props.savedGame
+        // currentMap
       );
     };
 

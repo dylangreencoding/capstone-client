@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { userRoute } from "../../../../expressAPI/user-route";
+//
+import { getSelected } from "../../../get-selected";
 
 interface Props {
   setCurrent: Function;
@@ -18,10 +20,9 @@ interface Props {
 export default function MapTools(props: Props) {
   const [mapName, setMapName] = useState<string>("");
 
-  let currentMap = props.savedMap;
-
   const handleSaveMap = async (e: any) => {
     e.preventDefault();
+    const currentMap = props.savedMap;
     mapName.length > 0
       ? (currentMap.name = mapName)
       : (currentMap.name = currentMap.name);
@@ -68,31 +69,6 @@ export default function MapTools(props: Props) {
     props.setSavedMap({ ...props.savedMap, currentMap });
   };
 
-  const getSelected = () => {
-    const locationToString = (location: any) => {
-      const x = location.x.toString();
-      const y = location.y.toString();
-      const xy = x.concat(" ", y);
-      return xy;
-    };
-
-    let selected;
-    if (
-      props.savedMap.selected.x !== undefined &&
-      props.savedMap.selected.y !== undefined
-    ) {
-      selected =
-        props.savedMap.selectFrom[locationToString(props.savedMap.selected)];
-      if (selected != undefined) {
-        return selected.type;
-      } else {
-        return "empty square";
-      }
-    } else {
-      return "none selected";
-    }
-  };
-
   return (
     <div className="map-tools">
       <div className="mb24 tool-box">
@@ -110,10 +86,11 @@ export default function MapTools(props: Props) {
         <div>
           <div className="mb24 tool-box">
             <div>
-              <strong>{getSelected()}</strong>
+              <strong>{getSelected(props.savedMap)}</strong>
             </div>
             <div className="small">
-              {props.savedMap.selected.x}, {props.savedMap.selected.y}
+              {props.savedMap.selected.x - props.savedMap.x},{" "}
+              {props.savedMap.selected.y - props.savedMap.y}
             </div>
           </div>
 

@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { userRoute } from "../../../../expressAPI/user-route";
+//
+import { getSelected } from "../../../get-selected";
 
 interface Props {
   setTab: Function;
@@ -18,10 +20,10 @@ interface Props {
 export default function GameTools(props: Props) {
   const [message, setMessage] = useState<string>("");
   let playerNames: any = {};
-  for (const key of Object.keys(props.savedGame.selectFrom)) {
-    if (props.savedGame.players[props.savedGame.selectFrom[key].maker]) {
-      playerNames[props.savedGame.selectFrom[key].maker] =
-        props.savedGame.selectFrom[key].name;
+  for (const key of Object.keys(props.savedGame.entities)) {
+    if (props.savedGame.players[props.savedGame.entities[key].maker]) {
+      playerNames[props.savedGame.entities[key].maker] =
+        props.savedGame.entities[key].name;
     }
   }
 
@@ -85,38 +87,11 @@ export default function GameTools(props: Props) {
     props.setSavedGame({ ...props.savedGame, currentGame });
   };
 
-  const getSelected = () => {
-    const locationToString = (location: any) => {
-      const x = location.x.toString();
-      const y = location.y.toString();
-      const xy = x.concat(" ", y);
-      return xy;
-    };
-
-    let selected;
-    if (
-      props.savedGame.selected.x !== undefined &&
-      props.savedGame.selected.y !== undefined
-    ) {
-      selected =
-        props.savedGame.selectFrom[locationToString(props.savedGame.selected)];
-      if (selected != undefined && selected.type) {
-        return selected.type;
-      } else if (selected != undefined && selected.name) {
-        return selected.name;
-      } else {
-        return "empty square";
-      }
-    } else {
-      return "none selected";
-    }
-  };
-
   const handlePlacePlayer = (e: any) => {
     // console.log(`playerID: ${e.target.value}`);
     const currentGame = props.savedGame;
     let unplaced = false;
-    for (const key of Object.keys(currentGame.selectFrom)) {
+    for (const key of Object.keys(currentGame.entities)) {
       if (key === e.target.value) {
         unplaced = true;
       }
@@ -126,10 +101,10 @@ export default function GameTools(props: Props) {
       currentGame.tool = e.target.value;
     } else {
       currentGame.tool = "none";
-      for (const key of Object.keys(currentGame.selectFrom)) {
-        if (currentGame.selectFrom[key].maker === e.target.value) {
-          currentGame.selected.x = currentGame.selectFrom[key].x;
-          currentGame.selected.y = currentGame.selectFrom[key].y;
+      for (const key of Object.keys(currentGame.entities)) {
+        if (currentGame.entities[key].maker === e.target.value) {
+          currentGame.selected.x = currentGame.entities[key].x;
+          currentGame.selected.y = currentGame.entities[key].y;
         }
       }
     }
@@ -254,7 +229,7 @@ export default function GameTools(props: Props) {
 
       <div className="mb24 tool-box">
         <div>
-          <strong>{getSelected()}</strong>
+          <strong>{getSelected(props.savedGame)}</strong>
         </div>
         <div>
           <small>

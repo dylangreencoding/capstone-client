@@ -4,6 +4,7 @@ import { refreshToken } from '../expressAPI/refresh-token';
 import { isExpired } from '../expressAPI/utilities/decode-token';
 
 export const useGetUser = () => {
+
   const getToken = () => {
     const tokenJSON : any = sessionStorage.getItem('accessToken');
     const token = JSON.parse(tokenJSON);
@@ -12,6 +13,16 @@ export const useGetUser = () => {
   
   const [accessToken, setAccessToken]  = useState<string>(getToken());
   const [user, setUser] = useState<any>({ user: {}, maps: [], chars: [], games: [] });
+
+  ///////////// FOR OFFLINE DEVELOPMENT //////////////////////////////
+  if (accessToken === null) {
+    const user = { user: { id: 'o', name: 'o' }, maps: [], chars: [], games: [] };
+    const returnOfflineUser = () => {
+      return user.games;
+    };
+    return { accessToken, user, getUserData: returnOfflineUser };
+  };
+  ////////////////////////////////////////////////////////////////////
 
   async function handleDataFetch () {
     const expired = isExpired(accessToken);

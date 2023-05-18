@@ -385,6 +385,14 @@ ol {
 
 
 
+/* FOR OFFLINE DEVELOPMENT */
+.offline:hover {
+  cursor: pointer;
+  color: blueviolet;
+}
+
+
+
 
 
 
