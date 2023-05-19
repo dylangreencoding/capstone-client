@@ -1,7 +1,6 @@
 import CharSheet from "./char-sheet";
 import CapstoneInfo from "./capstone-info";
 
-import CanvasCopy from "./canvas-copy";
 import NewCanvas from "./NEW-CANVAS";
 
 interface Props {
