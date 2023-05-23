@@ -71,26 +71,26 @@ export default function Options(props: Props) {
   };
 
   // delete a map
-  const handleDeleteMap = async (e: any) => {
-    e.preventDefault();
+  // const handleDeleteMap = async (e: any) => {
+  //   e.preventDefault();
 
-    let selectedMap;
-    for (const map of props.user.maps) {
-      if (map.id === e.target.value) {
-        selectedMap = map;
-      }
-    }
+  //   let selectedMap;
+  //   for (const map of props.user.maps) {
+  //     if (map.id === e.target.value) {
+  //       selectedMap = map;
+  //     }
+  //   }
 
-    const route = "map/delete";
-    await userRoute(route, props.accessToken, selectedMap);
-    await props.getUserData();
+  //   const route = "map/delete";
+  //   await userRoute(route, props.accessToken, selectedMap);
+  //   await props.getUserData();
 
-    // so you cannot view a map you just deleted
-    selectedMap.name = "Please choose a map";
-    selectedMap.height = 2;
-    selectedMap.width = 2;
-    props.setSavedMap(selectedMap);
-  };
+  //   // so you cannot view a map you just deleted
+  //   selectedMap.name = "Please choose a map";
+  //   selectedMap.height = 2;
+  //   selectedMap.width = 2;
+  //   props.setSavedMap(selectedMap);
+  // };
 
   const handleNewChar = async (e: any) => {
     e.preventDefault();
@@ -145,7 +145,7 @@ export default function Options(props: Props) {
         </button>
       </div>
       <div className="mb36">
-        <div className="flex-space-between mb12">
+        <div className={`flex-with-gap mb12`}>
           <h4
             className="offline"
             onClick={() => {
@@ -153,14 +153,25 @@ export default function Options(props: Props) {
               props.setTab("current");
             }}
           >
-            map{" "}
+            maps{" "}
           </h4>
           {props.user.maps.length < 2 ? (
-            <button type="button" className="btn" onClick={handleNewMap}>
-              create
+            <button
+              type="button"
+              className="svg-btn edit"
+              onClick={handleNewMap}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                className="w-5 h-5 svg-large"
+              >
+                <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
+              </svg>
             </button>
           ) : (
-            <span>2/2</span>
+            <span className="small">full</span>
           )}
         </div>
         <ul>
@@ -175,14 +186,6 @@ export default function Options(props: Props) {
                 >
                   {map.name}
                 </button>
-                <button
-                  type="button"
-                  value={map.id}
-                  onClick={handleDeleteMap}
-                  className="btn"
-                >
-                  delete
-                </button>
               </li>
             );
           })}
@@ -190,7 +193,7 @@ export default function Options(props: Props) {
         </ul>
       </div>
       <div className="mb36">
-        <div className="flex-space-between mb12">
+        <div className="flex-with-gap mb12">
           <h4
             className="offline"
             onClick={() => {
@@ -198,14 +201,25 @@ export default function Options(props: Props) {
               props.setTab("current");
             }}
           >
-            character{" "}
+            characters{" "}
           </h4>
           {props.user.chars.length < 1 ? (
-            <button type="button" className="btn" onClick={handleNewChar}>
-              create
+            <button
+              type="button"
+              className="svg-btn edit"
+              onClick={handleNewChar}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                className="w-5 h-5 svg-large"
+              >
+                <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
+              </svg>
             </button>
           ) : (
-            <span>1/1</span>
+            <span className="small">full</span>
           )}
         </div>
         <ul>
@@ -243,7 +257,7 @@ export default function Options(props: Props) {
               props.setTab("current");
             }}
           >
-            game{" "}
+            games{" "}
           </h4>
         </div>
         {props.user.games && props.user.games.length > 0 ? (

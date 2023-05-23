@@ -1,12 +1,12 @@
+export const locationToString = (location: any) => {
+  const x = location.x.toString();
+  const y = location.y.toString();
+  const xy = x.concat(" ", y);
+  return xy;
+};
+
 
 export const getSelected = (map_: any) => {
-  const locationToString = (location: any) => {
-    const x = location.x.toString();
-    const y = location.y.toString();
-    const xy = x.concat(" ", y);
-    return xy;
-  };
-
   let selected;
   if (
     map_.selected.x !== undefined &&
@@ -19,14 +19,26 @@ export const getSelected = (map_: any) => {
           y: map_.selected.y - map_.y,
         })
       ];
-    if (selected != undefined && selected.type) {
-      return selected.type;
-    } else if (selected != undefined && selected.name) {
-      return selected.name;
+
+    
+    if (selected != undefined) {
+      return selected;
     } else {
-      return "empty square";
+      return {
+        name: "empty",
+        x: map_.selected.x - map_.x,
+        y: map_.selected.y - map_.y,
+        level: 0,
+        actions: [],
+      };
     }
   } else {
-    return "none selected";
+    return {
+      name: "none",
+      x: 'x',
+      y: 'y',
+      level: 0,
+      actions: [],
+    };
   }
 };

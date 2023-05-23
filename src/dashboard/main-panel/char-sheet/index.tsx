@@ -52,7 +52,7 @@ export default function CharSheet(props: Props) {
             value={charLevel}
             onChange={(e) => {
               setCharLevel(
-                isNaN(Number(e.target.value)) ? 5 : Number(e.target.value)
+                isNaN(Number(e.target.value)) ? 10 : Number(e.target.value)
               );
             }}
           />

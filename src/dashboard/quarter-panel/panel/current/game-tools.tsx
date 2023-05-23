@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import { userRoute } from "../../../../expressAPI/user-route";
+import SelectedBox from "./display/selected-box";
 //
-import { getSelected } from "../../../get-selected";
+import MapHeader from "./display/map-header";
 
 interface Props {
   setTab: Function;
+  current: string;
   setCurrent: Function;
 
   savedGame: any;
@@ -88,7 +90,6 @@ export default function GameTools(props: Props) {
   };
 
   const handlePlacePlayer = (e: any) => {
-    // console.log(`playerID: ${e.target.value}`);
     const currentGame = props.savedGame;
     let unplaced = false;
     for (const key of Object.keys(currentGame.entities)) {
@@ -103,8 +104,8 @@ export default function GameTools(props: Props) {
       currentGame.tool = "none";
       for (const key of Object.keys(currentGame.entities)) {
         if (currentGame.entities[key].maker === e.target.value) {
-          currentGame.selected.x = currentGame.entities[key].x;
-          currentGame.selected.y = currentGame.entities[key].y;
+          currentGame.selected.x = currentGame.entities[key].x + currentGame.x;
+          currentGame.selected.y = currentGame.entities[key].y + currentGame.y;
         }
       }
     }
@@ -129,42 +130,21 @@ export default function GameTools(props: Props) {
     await props.getUserData();
   };
 
-  // delete a game
-  const handleDeleteGame = async (e: any) => {
-    e.preventDefault();
-    let game = props.savedGame;
-    const route = "game/delete";
-    const response = await userRoute(route, props.accessToken, game);
-    game = response.game[0];
-    props.socket.emit("send_game", { game });
-
-    // ...updates display...
-    await props.getUserData();
-
-    // so you cannot view a game you just left/deleted
-    props.setSavedGame({});
-    props.setTab("options");
-    props.setCurrent("map");
-  };
-
   return (
     <div className="game-tools">
-      <div className="mb24 tool-box">
-        <h3>{props.savedGame.name}</h3>
-        <button
-          type="button"
-          value={props.savedGame.id}
-          onClick={handleDeleteGame}
-          className="btn"
-        >
-          {props.savedGame.players[props.user.user.id] === "host"
-            ? "delete game"
-            : "leave game"}
-        </button>
-      </div>
-      <div className="mb24 tool-box">
+      <MapHeader
+        setTab={props.setTab}
+        current={props.current}
+        setCurrent={props.setCurrent}
+        map_={props.savedGame}
+        setMap_={props.setSavedGame}
+        accessToken={props.accessToken}
+        user={props.user}
+        socket={props.socket}
+      />
+      <div>
         {props.savedGame.players[props.user.user.id] === "host" ? (
-          <div>
+          <div className="mb24 tool-box">
             <div className="tb-header">
               <span className="tb-heading">game id</span>
             </div>
@@ -186,61 +166,52 @@ export default function GameTools(props: Props) {
         )}
       </div>
 
-      {props.savedGame.players[props.user.user.id] === "host" ? (
-        <ul className="mb24 tool-box tool-box-border">
-          <div className="tb-header">
-            <span className="tb-heading">players</span>
-          </div>
-          {Object.keys(props.savedGame.players).map((playerId: any) => {
-            return (
-              <li key={playerId} className="flex-space-between">
-                <button
-                  type="button"
-                  value={playerId}
-                  onClick={handlePlacePlayer}
-                  className={
-                    props.savedGame.tool === playerId ? `btn active` : `btn`
-                  }
-                >
-                  {props.savedGame.players[playerId] === "host"
-                    ? props.savedGame.players[playerId]
-                    : playerNames[playerId]}
-                </button>
-                {props.savedGame.players[playerId] === "host" ? (
-                  <span />
-                ) : (
+      <ul className="mb24 tool-box tool-box-border">
+        {Object.keys(props.savedGame.players).map((playerId: any) => {
+          return (
+            <li key={playerId}>
+              {props.savedGame.players[playerId] === "host" ? (
+                <div className="tb-header">
+                  <span className="tb-heading">Players</span>
+                </div>
+              ) : (
+                <div className="flex-with-gap">
+                  <span>{playerNames[playerId]}</span>
                   <button
-                    className="btn"
                     type="button"
                     value={playerId}
-                    onClick={handleRemovePlayer}
+                    title="Select Character"
+                    onClick={handlePlacePlayer}
+                    className={
+                      props.savedGame.tool === playerId ? `btn active` : `btn`
+                    }
                   >
-                    remove
+                    select
                   </button>
-                )}
-              </li>
-            );
-          })}
-          <li>- </li>
-        </ul>
-      ) : (
-        <ul className="mb24"></ul>
-      )}
-
-      <div className="mb24 tool-box">
-        <div>
-          <strong>{getSelected(props.savedGame)}</strong>
-        </div>
-        <div>
-          <small>
-            {props.savedGame.selected.x}, {props.savedGame.selected.y}
-          </small>
-        </div>
-      </div>
+                  {props.savedGame.players[props.user.user.id] === "host" ? (
+                    <button
+                      className="btn"
+                      type="button"
+                      title="Remove Player"
+                      value={playerId}
+                      onClick={handleRemovePlayer}
+                    >
+                      remove
+                    </button>
+                  ) : (
+                    <span></span>
+                  )}
+                </div>
+              )}
+            </li>
+          );
+        })}
+        <li>- </li>
+      </ul>
 
       <div className="mb24 tool-box tool-box-border">
         <div className="tb-header">
-          <span className="tb-heading">map tools</span>
+          <span className="tb-heading">Tools</span>
         </div>
         <div>
           <button
@@ -252,29 +223,9 @@ export default function GameTools(props: Props) {
             select
           </button>
         </div>
-        <div>
-          <button
-            type="button"
-            className={`btn ${props.savedGame.tool === "move" ? "active" : ""}`}
-            value="move"
-            onClick={handlePickTool}
-          >
-            move
-          </button>
-        </div>
-        <div>
-          <button
-            type="button"
-            className={`btn ${
-              props.savedGame.tool === "shoot" ? "active" : ""
-            }`}
-            value="shoot"
-            onClick={handlePickTool}
-          >
-            shoot
-          </button>
-        </div>
       </div>
+
+      <SelectedBox map_={props.savedGame} setMap_={props.setSavedGame} />
 
       {/* chat message input and send button */}
       <form className="text-form tool-box" onSubmit={handleSendGame}>
@@ -283,14 +234,19 @@ export default function GameTools(props: Props) {
           type="text"
           placeholder="hello"
           title="1 - 40 characters"
+          required
           minLength={1}
           maxLength={40}
           value={message}
           onChange={(e) => setMessage(e.target.value)}
         />
-        <button type="submit" className="btn">
-          send
-        </button>
+        {message.length > 0 ? (
+          <button type="submit" className="btn">
+            send
+          </button>
+        ) : (
+          <span className="small">Please enter a message</span>
+        )}
       </form>
     </div>
   );

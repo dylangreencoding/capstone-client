@@ -63,9 +63,7 @@ export function draw (ctx: any, canvasWidth: number, canvasHeight: number, mouse
 
   // draw entities
   for (const key of Object.keys(savedMap.entities)) {
-    savedMap.entities[key].type === 'location' ? 
-    ctx.fillStyle = 'darkgreen' : 
-    ctx.fillStyle = 'blue';
+    ctx.fillStyle = savedMap.entities[key].color;
     
     ctx.beginPath();
     ctx.arc(savedMap.entities[key].x + savedMap.x, savedMap.entities[key].y + savedMap.y, savedMap.scale*0.25, 0, Math.PI*2);
@@ -81,12 +79,12 @@ export function draw (ctx: any, canvasWidth: number, canvasHeight: number, mouse
   // draw lines
   for (const line of savedMap.lines) {
     ctx.strokeStyle = '#737373';
-    ctx.lineWidth = 3;
+    ctx.lineWidth = 6;
 
     ctx.beginPath();
-    ctx.moveTo(line.aX, line.aY);
-    ctx.lineTo(line.bX, line.bY);
-    ctx.moveTo(line.aX, line.aY);
+    ctx.moveTo(line.aX + savedMap.x, line.aY + savedMap.y);
+    ctx.lineTo(line.bX + savedMap.x, line.bY + savedMap.y);
+    ctx.moveTo(line.aX + savedMap.x, line.aY + savedMap.y);
     ctx.closePath();
     ctx.stroke();
   }
@@ -115,25 +113,62 @@ export function draw (ctx: any, canvasWidth: number, canvasHeight: number, mouse
   } else if (savedMap.tool === 'add line') {
     ctx.fillStyle = '#e0e0e0a6';
     
-    ctx.beginPath();
-    ctx.fillRect(savedMap.selected.x - savedMap.scale*0.25, savedMap.selected.y - savedMap.scale*0.25, savedMap.scale*0.5, savedMap.scale*0.5)
-    ctx.closePath();
-    ctx.fill();
-    
-    ctx.beginPath();
-    ctx.arc(mouse.selector.x, mouse.selector.y, savedMap.scale*0.3, 0, Math.PI*2);
-    ctx.closePath();
-    ctx.fill();
+    if (savedMap.selected.x === undefined || savedMap.selected.y === undefined) {
+      ctx.beginPath();
+      ctx.arc(mouse.selector.x, mouse.selector.y, savedMap.scale*0.3, 0, Math.PI*2);
+      ctx.closePath();
+      ctx.fill();
+    } else {
+      ctx.beginPath();
+      ctx.arc(savedMap.selected.x, savedMap.selected.y, savedMap.scale*0.3, 0, Math.PI*2);
+      ctx.closePath();
+      ctx.fill();
+    }
     
     ctx.strokeStyle = '#e0e0e0a6';
-    ctx.lineWidth = 3;
+    ctx.lineWidth = 6;
 
-    ctx.beginPath();
-    ctx.moveTo(savedMap.selected.x, savedMap.selected.y);
-    ctx.lineTo(mouse.selector.x, mouse.selector.y);
-    ctx.moveTo(savedMap.selected.x, savedMap.selected.y);
-    ctx.closePath();
-    ctx.stroke();
+    const diffX = savedMap.selected.x - mouse.selector.x;
+    const diffY = savedMap.selected.y - mouse.selector.y;
+    console.log('LINE', diffX, diffY)
+
+    // horizontal line
+    if (Math.abs(diffX) > 2 * Math.abs(diffY)) {
+      ctx.beginPath();
+      ctx.moveTo(savedMap.selected.x, savedMap.selected.y);
+      ctx.lineTo(mouse.selector.x, savedMap.selected.y);
+      ctx.moveTo(savedMap.selected.x, savedMap.selected.y);
+      ctx.closePath();
+      ctx.stroke();
+
+    // vertical line
+    } else if (Math.abs(diffY) > 2 * Math.abs(diffX)) {
+      ctx.beginPath();
+      ctx.moveTo(savedMap.selected.x, savedMap.selected.y);
+      ctx.lineTo(savedMap.selected.x, mouse.selector.y);
+      ctx.moveTo(savedMap.selected.x, savedMap.selected.y);
+      ctx.closePath();
+      ctx.stroke();
+
+    // diagonal lines (quadrants II and IV)
+    } else if ((diffX >= 0 && diffY >= 0) || (diffX < 0 && diffY < 0)) {
+      ctx.beginPath();
+      ctx.moveTo(savedMap.selected.x, savedMap.selected.y);
+      ctx.lineTo(savedMap.selected.x + (mouse.selector.x - savedMap.selected.x), savedMap.selected.y + (mouse.selector.x - savedMap.selected.x));
+      ctx.moveTo(savedMap.selected.x, savedMap.selected.y);
+      ctx.closePath();
+      ctx.stroke();
+
+    // diagonal lines (quadrants I and III)
+    } else if ((diffX >= 0 && diffY < 0) || (diffY >= 0 && diffX < 0)) {
+      ctx.beginPath();
+      ctx.moveTo(savedMap.selected.x, savedMap.selected.y);
+      ctx.lineTo(savedMap.selected.x + (mouse.selector.x - savedMap.selected.x), savedMap.selected.y - (mouse.selector.x - savedMap.selected.x));
+      ctx.moveTo(savedMap.selected.x, savedMap.selected.y);
+      ctx.closePath();
+      ctx.stroke();
+    }
+    
 
   } else if (savedMap.tool === 'add location') {
     ctx.strokeStyle = 'green';
@@ -152,7 +187,7 @@ export function draw (ctx: any, canvasWidth: number, canvasHeight: number, mouse
   } else if (savedMap.tool === 'move') {
     ctx.lineWidth = 1;
     
-    if (mouse.canGoHere) {
+    if (mouse.canGoHere || savedMap.selected.x === undefined || savedMap.selected.y === undefined) {
       ctx.strokeStyle = 'gold';
       ctx.beginPath();
       ctx.strokeRect(savedMap.selected.x - savedMap.scale*0.5, savedMap.selected.y - savedMap.scale*0.5, savedMap.scale, savedMap.scale)
@@ -212,7 +247,7 @@ export function draw (ctx: any, canvasWidth: number, canvasHeight: number, mouse
   } else if (savedMap.tool === 'shoot') {
     ctx.lineWidth = 1;
     
-    if (mouse.canGoHere) {
+    if (mouse.canGoHere || savedMap.selected.x === undefined || savedMap.selected.y === undefined) {
       ctx.strokeStyle = "#e0e0e0a6"
       
       ctx.beginPath();
@@ -274,6 +309,7 @@ export function draw (ctx: any, canvasWidth: number, canvasHeight: number, mouse
 
   } else if (savedMap.tool.length > 20) {
       ctx.strokeStyle = 'blue';
+      ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.arc(mouse.selector.x, mouse.selector.y, savedMap.scale*0.35, 0, Math.PI*2);
       ctx.closePath();

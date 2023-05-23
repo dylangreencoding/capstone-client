@@ -35,7 +35,7 @@ export default function DisplayGames(props: Props) {
     <ul>
       {props.user.games.map((game: any) => {
         return (
-          <li key={game.id} className="flex-space-between">
+          <li key={game.id}>
             <div>
               <span className="hg">
                 {game.players[props.user.user.id] === "host" ? "h " : "g "}

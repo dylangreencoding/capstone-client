@@ -26,8 +26,9 @@ export default function Current(props: Props) {
     if (props.current === "map") {
       return (
         <MapTools
-          setCurrent={props.setCurrent}
           setTab={props.setTab}
+          current={props.current}
+          setCurrent={props.setCurrent}
           savedMap={props.savedMap}
           setSavedMap={props.setSavedMap}
           savedGame={props.savedGame}
@@ -41,6 +42,7 @@ export default function Current(props: Props) {
       return (
         <GameTools
           setTab={props.setTab}
+          current={props.current}
           setCurrent={props.setCurrent}
           savedGame={props.savedGame}
           setSavedGame={props.setSavedGame}

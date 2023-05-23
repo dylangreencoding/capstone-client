@@ -101,13 +101,42 @@ export default function NewCanvas(props: Props) {
     };
 
     // for constructing line object
-    const getLine = (start: any, end: any) => {
-      return {
-        aX: start.x,
-        aY: start.y,
-        bX: end.x,
-        bY: end.y,
-      };
+    const getLine = (start: any, end: any, x: number, y: number) => {
+      const diffX = start.x - end.x;
+      const diffY = start.y - end.y;
+      if (Math.abs(diffX) > 2 * Math.abs(diffY)) {
+        // horizontal lines
+        return {
+          aX: start.x - x,
+          aY: start.y - y,
+          bX: end.x - x,
+          bY: start.y - y,
+        };
+      } else if (Math.abs(diffY) > 2 * Math.abs(diffX)) {
+        // vertical lines
+        return {
+          aX: start.x - x,
+          aY: start.y - y,
+          bX: start.x - x,
+          bY: end.y - y,
+        };
+      } else if ((diffX >= 0 && diffY >= 0) || (diffX < 0 && diffY < 0)) {
+        // diagonal lines (quadrants II and IV)
+        return {
+          aX: start.x - x,
+          aY: start.y - y,
+          bX: start.x + (end.x - start.x) - x,
+          bY: start.y + (end.x - start.x) - y,
+        };
+      } else if ((diffX >= 0 && diffY < 0) || (diffY >= 0 && diffX < 0)) {
+        // diagonal lines (quadrants I and III)
+        return {
+          aX: start.x - x,
+          aY: start.y - y,
+          bX: start.x + (end.x - start.x) - x,
+          bY: start.y - (end.x - start.x) - y,
+        };
+      }
     };
 
     const locationToString = (location: any) => {
@@ -118,22 +147,17 @@ export default function NewCanvas(props: Props) {
       return xy;
     };
 
-    // m_object parameter can be mouse object or map object
-    // both have m_object.selected property
-    const getSelected = (m_object: any) => {
+    const selectEntity = (coords: any) => {
       let selected;
-      if (
-        m_object.selected.x !== undefined &&
-        m_object.selected.y !== undefined
-      ) {
+      if (coords.x !== undefined && coords.y !== undefined) {
         selected =
           currentMap.entities[
             locationToString({
-              x: m_object.selected.x - currentMap.x,
-              y: m_object.selected.y - currentMap.y,
+              x: coords.x - currentMap.x,
+              y: coords.y - currentMap.y,
             })
           ];
-        console.log(selected);
+
         if (selected !== undefined) {
           return selected;
         } else {
@@ -192,14 +216,6 @@ export default function NewCanvas(props: Props) {
         currentMap.selected = {};
         currentMap.x += mouse.movementXY.x;
         currentMap.y += mouse.movementXY.y;
-
-        // moves lines
-        for (const line of currentMap.lines) {
-          line.aX += mouse.movementXY.x;
-          line.aY += mouse.movementXY.y;
-          line.bX += mouse.movementXY.x;
-          line.bY += mouse.movementXY.y;
-        }
       } else {
         if (mouse.position.x !== undefined && mouse.position.y !== undefined) {
           // set / draw selector on grid
@@ -221,7 +237,7 @@ export default function NewCanvas(props: Props) {
                   (currentMap.selected.y - mouse.selector.y)
             );
 
-            const moveFrom = getSelected(currentMap);
+            const moveFrom = selectEntity(currentMap.selected);
 
             if (distance <= moveFrom.level * currentMap.scale) {
               mouse.canGoHere = true;
@@ -236,8 +252,8 @@ export default function NewCanvas(props: Props) {
                 doIntersect(
                   { x: currentMap.selected.x, y: currentMap.selected.y },
                   { x: mouse.selector.x, y: mouse.selector.y },
-                  { x: line.aX, y: line.aY },
-                  { x: line.bX, y: line.bY }
+                  { x: line.aX + currentMap.x, y: line.aY + currentMap.y },
+                  { x: line.bX + currentMap.x, y: line.bY + currentMap.y }
                 ) === true
               ) {
                 mouse.canGoHere = false;
@@ -264,6 +280,7 @@ export default function NewCanvas(props: Props) {
     const handleMouseUp = (e: MouseEvent) => {
       mouse.pressed = false;
       mouse.selected = getMousePositionXY(e);
+      console.log(hashX);
 
       if (mouse.movedMap === false) {
         // deselects selected
@@ -283,7 +300,12 @@ export default function NewCanvas(props: Props) {
             mouse.selected.x !== undefined &&
             mouse.selected.y !== undefined
           ) {
-            const newLine = getLine(currentMap.selected, mouse.selected);
+            const newLine = getLine(
+              currentMap.selected,
+              mouse.selected,
+              currentMap.x,
+              currentMap.y
+            );
             currentMap.lines.push(newLine);
             currentMap.selected = { x: undefined, y: undefined };
           } else {
@@ -303,11 +325,13 @@ export default function NewCanvas(props: Props) {
           ] = {
             x: mouse.selected.x - currentMap.x,
             y: mouse.selected.y - currentMap.y,
-            type: "location",
+            name: "Zombie",
             level: 10,
+            actions: ["move", "shoot"],
+            color: "green",
           };
 
-          currentMap.selected = { x: undefined, y: undefined };
+          currentMap.selected = { x: mouse.selected.x, y: mouse.selected.y };
         } else if (currentMap.tool === "move" && mouse.doubleTap !== true) {
           if (
             currentMap.selected.x !== undefined &&
@@ -315,8 +339,8 @@ export default function NewCanvas(props: Props) {
             mouse.selected.x !== undefined &&
             mouse.selected.y !== undefined
           ) {
-            const moveFrom = getSelected(currentMap);
-            const moveTo = getSelected(mouse);
+            const moveFrom = selectEntity(currentMap.selected);
+            const moveTo = selectEntity(mouse.selected);
             console.log(currentMap.selected, mouse.selected, moveFrom, moveTo);
             if (
               moveFrom !== "empty square" &&
@@ -344,7 +368,7 @@ export default function NewCanvas(props: Props) {
             }
             console.log(currentMap.entities);
 
-            currentMap.selected = { x: undefined, y: undefined };
+            currentMap.selected = { x: mouse.selected.x, y: mouse.selected.y };
           } else {
             currentMap.selected = mouse.selected;
           }
@@ -355,8 +379,8 @@ export default function NewCanvas(props: Props) {
             mouse.selected.x !== undefined &&
             mouse.selected.y !== undefined
           ) {
-            const shootFrom = getSelected(currentMap);
-            const shootTo = getSelected(mouse);
+            const shootFrom = selectEntity(currentMap.selected);
+            const shootTo = selectEntity(mouse.selected);
 
             // TODO change this condition to if you include if it is your character/turn to go
             if (
@@ -372,17 +396,15 @@ export default function NewCanvas(props: Props) {
                 })
               ];
             }
-
-            currentMap.selected = { x: undefined, y: undefined };
           } else {
             currentMap.selected = mouse.selected;
           }
         } else if (currentMap.tool.length > 20) {
-          const moveTo = getSelected(mouse);
+          const moveTo = selectEntity(mouse.selected);
           if (moveTo === "empty square") {
             const replacementValue = currentMap.entities[currentMap.tool];
-            replacementValue.x = mouse.selected.x;
-            replacementValue.y = mouse.selected.y;
+            replacementValue.x = mouse.selected.x - currentMap.x;
+            replacementValue.y = mouse.selected.y - currentMap.y;
 
             // delete current entry
             delete currentMap.entities[currentMap.tool];
@@ -422,7 +444,6 @@ export default function NewCanvas(props: Props) {
           // currentMap
         );
       } else {
-        // currentMap.d = reHashSelectFrom();
         currentMap.selected = { x: undefined, y: undefined };
 
         props.current === "map"
