@@ -40,7 +40,7 @@ export const useGetUser = () => {
       result = await getUser(accessToken)
     }
     console.log(result);
-    setUser({ user: result.user[0], maps: result.maps, chars: result.chars, games: result.games });
+    setUser({ user: result.user[0], maps: result.maps || [], chars: result.chars || [], games: result.games || [] });
 
     // this is for making sure you can't click into a game you were removed from
     // it is a way of getting around an unfinished socket server
