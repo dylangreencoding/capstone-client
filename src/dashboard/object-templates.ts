@@ -8,7 +8,20 @@ export const blankMap : any = {
   y: 0,
   scale: 25,
   selected: { x: undefined, y: undefined },
-  entities: {},
+  entities: {
+    'qwertyuiopasdfghjklzxcvbnm': {
+      id: "",
+      maker: "qwertyuiopasdfghjklzxcvbnm",
+      name: "guest",
+    
+      x: -100,
+      y: -100,
+    
+      level: 10,
+      actions: ['move', 'shoot'],
+      color: 'grey',
+    },
+  },
   tool: "none",
 
   width: 20,
@@ -18,20 +31,20 @@ export const blankMap : any = {
 
   // FOR GAMES ONLY // FOR OFFLINE DEVELOPMENT
   messages: [],
-  players: { o: "host" },
+  players: { o: "host", "qwertyuiopasdfghjklzxcvbnm": "guest" },
 };
 // blank char template
 export const blankChar : any = {
   id: "",
   maker: "",
-  name: "please choose a character",
+  name: "blank",
 
   x: -100,
   y: -100,
 
   level: 10,
   actions: ['move', 'shoot'],
-  color: 'blue',
+  color: 'grey',
 };
 
 export const mapToolDescriptions : any = {

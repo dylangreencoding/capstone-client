@@ -328,7 +328,7 @@ export default function NewCanvas(props: Props) {
             name: "Zombie",
             level: 10,
             actions: ["move", "shoot"],
-            color: "green",
+            color: "grey",
           };
 
           currentMap.selected = { x: mouse.selected.x, y: mouse.selected.y };
@@ -420,6 +420,7 @@ export default function NewCanvas(props: Props) {
 
             // reset tool
             currentMap.tool = "none";
+            currentMap.selected = mouse.selected;
           }
         } else {
           currentMap.selected = mouse.selected;

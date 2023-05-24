@@ -37,9 +37,6 @@ export default function DisplayGames(props: Props) {
         return (
           <li key={game.id}>
             <div>
-              <span className="hg">
-                {game.players[props.user.user.id] === "host" ? "h " : "g "}
-              </span>
               <button
                 type="button"
                 value={game.id}

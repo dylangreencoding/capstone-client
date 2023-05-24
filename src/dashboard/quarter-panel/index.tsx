@@ -21,36 +21,33 @@ interface Props {
   socket: any;
 }
 
-
-
-export default function QuarterPanel (props: Props) {
-  
+export default function QuarterPanel(props: Props) {
   return (
-    <div className='quarter-panel'>
-      <Panel 
+    <div className="quarter-panel">
+      <Panel
         tab={props.tab}
         setTab={props.setTab}
         current={props.current}
         setCurrent={props.setCurrent}
-
         savedMap={props.savedMap}
         setSavedMap={props.setSavedMap}
         savedChar={props.savedChar}
         setSavedChar={props.setSavedChar}
         savedGame={props.savedGame}
         setSavedGame={props.setSavedGame}
-
         accessToken={props.accessToken}
         user={props.user}
         getUserData={props.getUserData}
-
         socket={props.socket}
       />
-      <Tabs 
+      <Tabs
         tab={props.tab}
         setTab={props.setTab}
         current={props.current}
+        savedMap={props.savedMap}
+        savedChar={props.savedChar}
+        savedGame={props.savedGame}
       />
     </div>
-  )
+  );
 }

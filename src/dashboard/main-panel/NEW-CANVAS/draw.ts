@@ -171,8 +171,8 @@ export function draw (ctx: any, canvasWidth: number, canvasHeight: number, mouse
     
 
   } else if (savedMap.tool === 'add location') {
-    ctx.strokeStyle = 'green';
-    ctx.lineWidth = 1;
+    ctx.strokeStyle = 'grey';
+    ctx.lineWidth = 2;
 
     ctx.beginPath();
     ctx.strokeRect(savedMap.selected.x - savedMap.scale*0.5, savedMap.selected.y - savedMap.scale*0.5, savedMap.scale, savedMap.scale)
@@ -180,7 +180,7 @@ export function draw (ctx: any, canvasWidth: number, canvasHeight: number, mouse
     ctx.fill();
     
     ctx.beginPath();
-    ctx.arc(mouse.selector.x, mouse.selector.y, savedMap.scale*0.25, 0, Math.PI*2);
+    ctx.arc(mouse.selector.x, mouse.selector.y, savedMap.scale*0.35, 0, Math.PI*2);
     ctx.closePath();
     ctx.stroke();
 
@@ -308,7 +308,7 @@ export function draw (ctx: any, canvasWidth: number, canvasHeight: number, mouse
 
 
   } else if (savedMap.tool.length > 20) {
-      ctx.strokeStyle = 'blue';
+      ctx.strokeStyle = 'grey';
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.arc(mouse.selector.x, mouse.selector.y, savedMap.scale*0.35, 0, Math.PI*2);
