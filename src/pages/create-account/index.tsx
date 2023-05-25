@@ -9,9 +9,11 @@ export default function CreateAccount() {
   const [birthYear, setBirthYear] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [enterCodeNow, setEnterCodeNow] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleCreateAccount = async (e: any) => {
     e.preventDefault();
+    setLoading(true);
     const data = {
       name: name,
       birthYear: birthYear,
@@ -20,8 +22,10 @@ export default function CreateAccount() {
     try {
       const response = await createAccount(data);
       alert(response.message);
+      setLoading(false);
       setEnterCodeNow(true);
     } catch (error) {
+      setLoading(false);
       alert("Account may already exist, try logging in");
     }
   };
@@ -81,15 +85,26 @@ export default function CreateAccount() {
             />
           </label>
 
-          {!enterCodeNow ? (
-            <button className="auth-button" type="submit">
-              Create Account
-            </button>
+          {!loading ? (
+            !enterCodeNow ? (
+              <button className="auth-button" type="submit">
+                Create Account
+              </button>
+            ) : (
+              <span className="small">
+                There should be a verification code in your email. If there is
+                no code, the Gmail API refresh token may have expired. Feel free
+                to try again{" "}
+                <Link to={"/ValidateEmail"} replace={true} className="link">
+                  Resend email verification / reset password
+                </Link>
+              </span>
+            )
           ) : (
-            <span />
+            <span className="small">Loading...</span>
           )}
         </form>
-        {enterCodeNow ? <ValidateEmail email={email} /> : <div />}
+        <ValidateEmail email={email} />
       </main>
       <footer>
         <p>

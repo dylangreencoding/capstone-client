@@ -12,10 +12,11 @@ export default function ValidateEmail(props: Props) {
   const navigate = useNavigate();
   const [password, setPassword] = useState<string>("");
   const [code, setCode] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleValidateEmail = async (e: any) => {
     e.preventDefault();
-
+    setLoading(true);
     const codeData = {
       validationCode: code,
       password: password,
@@ -34,9 +35,11 @@ export default function ValidateEmail(props: Props) {
         "accessToken",
         JSON.stringify(response.accessToken)
       );
+      setLoading(false);
       alert(response.message);
       navigate("/capstone_user_account", { replace: true });
     } catch (error) {
+      setLoading(false);
       alert(error);
     }
   };
@@ -70,9 +73,13 @@ export default function ValidateEmail(props: Props) {
             onChange={(e) => setCode(e.target.value.trim())}
           />
         </label>
-        <button className="auth-button" type="submit">
-          Verify & Login
-        </button>
+        {!loading ? (
+          <button className="auth-button" type="submit">
+            Verify & Login
+          </button>
+        ) : (
+          <span className="small">Verifying...</span>
+        )}
       </form>
     </div>
   );

@@ -23,11 +23,14 @@ interface Props {
 
 export default function MapTools(props: Props) {
   const [loading, setLoading] = useState<boolean>(false);
-  const [changedName, setChangedName] = useState<boolean>(false);
-  const entitiesBeforeChanges = useRef<string>(
+  const [name, setName] = useState<string>("");
+  const [nameBeforeChanges, setNameBeforeChanges] = useState<string>(
+    JSON.stringify(props.savedMap.name)
+  );
+  const [entitiesBeforeChanges, setEntitiesBeforeChanges] = useState<string>(
     JSON.stringify(props.savedMap.entities)
   );
-  const linesBeforeChanges = useRef<string>(
+  const [linesBeforeChanges, setLinesBeforeChanges] = useState<string>(
     JSON.stringify(props.savedMap.lines)
   );
 
@@ -42,8 +45,9 @@ export default function MapTools(props: Props) {
     await userRoute(route, props.accessToken, currentMap);
     await props.getUserData();
     props.setSavedMap(currentMap);
-    entitiesBeforeChanges.current = JSON.stringify(currentMap.entities);
-    linesBeforeChanges.current = JSON.stringify(currentMap.lines);
+    setEntitiesBeforeChanges(JSON.stringify(currentMap.entities));
+    setLinesBeforeChanges(JSON.stringify(currentMap.lines));
+    setNameBeforeChanges(JSON.stringify(props.savedMap.name));
     setLoading(false);
   };
 
@@ -68,15 +72,14 @@ export default function MapTools(props: Props) {
     props.setCurrent("game");
     props.setTab("current");
 
-    setChangedName(false);
     setLoading(false);
   };
 
   const displaySaveMap = () => {
     if (
-      JSON.stringify(props.savedMap.entities) !==
-        entitiesBeforeChanges.current ||
-      JSON.stringify(props.savedMap.lines) !== linesBeforeChanges.current
+      JSON.stringify(props.savedMap.entities) !== entitiesBeforeChanges ||
+      JSON.stringify(props.savedMap.lines) !== linesBeforeChanges ||
+      JSON.stringify(props.savedMap.name) !== nameBeforeChanges
     ) {
       return (
         <button type="submit" className="btn" title="Save">
@@ -122,6 +125,8 @@ export default function MapTools(props: Props) {
         accessToken={props.accessToken}
         user={props.user}
         socket={null}
+        name={name}
+        setName={setName}
       />
       <div>
         <Tools map_={props.savedMap} setMap_={props.setSavedMap} />

@@ -7,9 +7,11 @@ export default function LogIn() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const navigate = useNavigate();
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleLogin = async (e: any) => {
     e.preventDefault();
+    setLoading(true);
     const data = {
       email: email,
       password: password,
@@ -21,9 +23,11 @@ export default function LogIn() {
         "accessToken",
         JSON.stringify(response.accessToken)
       );
+      setLoading(false);
       alert(response.message);
       navigate("/capstone_user_account", { replace: true });
     } catch (error) {
+      setLoading(false);
       alert(error);
     }
   };
@@ -65,9 +69,13 @@ export default function LogIn() {
               onChange={(e) => setPassword(e.target.value)}
             />
           </label>
-          <button className="auth-button" type="submit">
-            Log In
-          </button>
+          {!loading ? (
+            <button className="auth-button" type="submit">
+              Log In
+            </button>
+          ) : (
+            <span className="small">Logging in...</span>
+          )}
         </form>
       </main>
       <footer>

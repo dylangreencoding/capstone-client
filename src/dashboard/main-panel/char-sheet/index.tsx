@@ -13,10 +13,11 @@ interface Props {
 export default function CharSheet(props: Props) {
   const [charName, setCharName] = useState<string>(props.savedChar.name);
   const [charLevel, setCharLevel] = useState<number>(props.savedChar.level);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleSubmitChar = async (e: any) => {
     e.preventDefault();
-
+    setLoading(true);
     let currentChar = props.savedChar;
     currentChar.name = charName;
     currentChar.level = charLevel;
@@ -27,6 +28,22 @@ export default function CharSheet(props: Props) {
     await userRoute(route, props.accessToken, currentChar);
 
     await props.getUserData();
+    setLoading(false);
+  };
+
+  const displaySubmitChar = () => {
+    if (
+      charName !== props.savedChar.name ||
+      charLevel !== props.savedChar.level
+    ) {
+      return (
+        <button className="btn" type="submit">
+          save
+        </button>
+      );
+    } else {
+      return <span>- no changes to save -</span>;
+    }
   };
 
   return (
@@ -57,9 +74,11 @@ export default function CharSheet(props: Props) {
             }}
           />
         </label>
-        <button className="btn" type="submit">
-          save
-        </button>
+        {!loading ? (
+          displaySubmitChar()
+        ) : (
+          <span className="small">Loading...</span>
+        )}
       </form>
     </div>
   );

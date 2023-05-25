@@ -49,7 +49,7 @@ export default function Options(props: Props) {
   const handleNewMap = async (e: any) => {
     e.preventDefault();
     blankMap.maker = props.user.user.id;
-    blankMap.name = "new map";
+    blankMap.name = "Wonderland";
     const route = "map/save";
     await userRoute(route, props.accessToken, blankMap);
     await props.getUserData();
@@ -69,28 +69,6 @@ export default function Options(props: Props) {
     props.setCurrent("map");
     props.setTab("current");
   };
-
-  // delete a map
-  // const handleDeleteMap = async (e: any) => {
-  //   e.preventDefault();
-
-  //   let selectedMap;
-  //   for (const map of props.user.maps) {
-  //     if (map.id === e.target.value) {
-  //       selectedMap = map;
-  //     }
-  //   }
-
-  //   const route = "map/delete";
-  //   await userRoute(route, props.accessToken, selectedMap);
-  //   await props.getUserData();
-
-  //   // so you cannot view a map you just deleted
-  //   selectedMap.name = "Please choose a map";
-  //   selectedMap.height = 2;
-  //   selectedMap.width = 2;
-  //   props.setSavedMap(selectedMap);
-  // };
 
   const handleNewChar = async (e: any) => {
     e.preventDefault();
@@ -116,26 +94,6 @@ export default function Options(props: Props) {
     props.setTab("current");
   };
 
-  const handleDeleteChar = async (e: any) => {
-    e.preventDefault();
-
-    let selectedChar;
-    for (const char of props.user.chars) {
-      if (char.id === e.target.value) {
-        selectedChar = char;
-      }
-    }
-
-    const route = "char/delete";
-    await userRoute(route, props.accessToken, selectedChar);
-    await props.getUserData();
-
-    // so you cannot view a character you just deleted
-    selectedChar.name = "Please choose a character";
-    selectedChar.level = 0;
-    props.setSavedChar(selectedChar);
-  };
-
   return (
     <div className="options">
       <div className="flex-space-between mb36">
@@ -147,11 +105,11 @@ export default function Options(props: Props) {
       <div className="mb36">
         <div className={`flex-with-gap mb12`}>
           <h4
-            className="offline"
-            onClick={() => {
-              props.setCurrent("map");
-              props.setTab("current");
-            }}
+          // className=""
+          // onClick={() => {
+          //   props.setCurrent("map");
+          //   props.setTab("current");
+          // }}
           >
             maps{" "}
           </h4>
@@ -167,7 +125,11 @@ export default function Options(props: Props) {
                 fill="currentColor"
                 className="w-5 h-5 svg-large"
               >
-                <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
+                <path
+                  fillRule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-11.25a.75.75 0 00-1.5 0v2.5h-2.5a.75.75 0 000 1.5h2.5v2.5a.75.75 0 001.5 0v-2.5h2.5a.75.75 0 000-1.5h-2.5v-2.5z"
+                  clipRule="evenodd"
+                />
               </svg>
             </button>
           ) : (
@@ -195,11 +157,11 @@ export default function Options(props: Props) {
       <div className="mb36">
         <div className="flex-with-gap mb12">
           <h4
-            className="offline"
-            onClick={() => {
-              props.setCurrent("char");
-              props.setTab("current");
-            }}
+          // className="offline"
+          // onClick={() => {
+          //   props.setCurrent("char");
+          //   props.setTab("current");
+          // }}
           >
             characters{" "}
           </h4>
@@ -215,7 +177,11 @@ export default function Options(props: Props) {
                 fill="currentColor"
                 className="w-5 h-5 svg-large"
               >
-                <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
+                <path
+                  fillRule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-11.25a.75.75 0 00-1.5 0v2.5h-2.5a.75.75 0 000 1.5h2.5v2.5a.75.75 0 001.5 0v-2.5h2.5a.75.75 0 000-1.5h-2.5v-2.5z"
+                  clipRule="evenodd"
+                />
               </svg>
             </button>
           ) : (
@@ -234,14 +200,6 @@ export default function Options(props: Props) {
                 >
                   {char.name}
                 </button>
-                <button
-                  type="button"
-                  value={char.id}
-                  onClick={handleDeleteChar}
-                  className="btn"
-                >
-                  delete
-                </button>
               </li>
             );
           })}
@@ -251,11 +209,11 @@ export default function Options(props: Props) {
       <div className="mb36">
         <div className="flex-space-between mb12">
           <h4
-            className="offline"
-            onClick={() => {
-              props.setCurrent("game");
-              props.setTab("current");
-            }}
+          // className="offline"
+          // onClick={() => {
+          //   props.setCurrent("game");
+          //   props.setTab("current");
+          // }}
           >
             games{" "}
           </h4>

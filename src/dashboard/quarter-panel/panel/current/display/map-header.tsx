@@ -13,20 +13,23 @@ interface Props {
   accessToken: string;
   user: any;
   socket: any;
+
+  name: string;
+  setName: Function;
 }
 
 export default function MapHeader(props: Props) {
-  const [name, setName] = useState<string>("");
+  // const [name, setName] = useState<string>("");
   const [confirmAction, setConfirmAction] = useState<string>("");
 
   const handleConfirmAction = async (e: any) => {
     e.preventDefault();
     const currentMap = props.map_;
     if (confirmAction === "rename map") {
-      if (name !== currentMap.name) {
-        currentMap.name = name;
+      if (props.name !== currentMap.name) {
+        currentMap.name = props.name;
         props.setMap_(currentMap);
-        setName("");
+        props.setName("");
         setConfirmAction("");
       }
     } else if (confirmAction === "delete map") {
@@ -37,6 +40,13 @@ export default function MapHeader(props: Props) {
         props.setMap_(blankMap);
         props.setTab("options");
       } else if (props.current === "game") {
+        if (
+          props.map_.players[props.user.user.id] === "host" &&
+          Object.keys(props.map_.players).length > 1
+        ) {
+          alert("To delete a game, you must first remove all players");
+          return;
+        }
         let game = props.map_;
         const route = "game/delete";
         const response = await userRoute(route, props.accessToken, game);
@@ -113,8 +123,8 @@ export default function MapHeader(props: Props) {
             minLength={1}
             maxLength={20}
             title="1 - 20 characters"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            value={props.name}
+            onChange={(e) => props.setName(e.target.value)}
           />
           <div className="flex-with-gap">
             <button type="submit" className="svg-btn confirm" title="Confirm">

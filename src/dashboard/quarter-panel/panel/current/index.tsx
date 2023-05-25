@@ -55,6 +55,7 @@ export default function Current(props: Props) {
     } else if (props.current === "char") {
       return (
         <CharTools
+          current={props.current}
           setCurrent={props.setCurrent}
           setTab={props.setTab}
           savedChar={props.savedChar}

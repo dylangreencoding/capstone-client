@@ -24,6 +24,7 @@ interface Props {
 export default function GameTools(props: Props) {
   const [message, setMessage] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
+  const [name, setName] = useState<string>("");
 
   // gameRoomId and userEmail component scoped variables, based on state
   // for use in structuring syntax, used throughout for consistency
@@ -126,6 +127,7 @@ export default function GameTools(props: Props) {
       if (placed !== true) {
         currentGame.selected.x = undefined;
         currentGame.selected.y = undefined;
+        alert("This player's piece is no longer on the board.");
       }
     }
 
@@ -140,7 +142,7 @@ export default function GameTools(props: Props) {
 
   const displaySendGame = () => {
     if (message.length <= 0) {
-      return <span className="small">Please enter a message</span>;
+      return <span className="small">Add a message before sending</span>;
     } else {
       return (
         <button type="submit" className="btn">
@@ -161,6 +163,8 @@ export default function GameTools(props: Props) {
         accessToken={props.accessToken}
         user={props.user}
         socket={props.socket}
+        name={name}
+        setName={setName}
       />
       <div>
         {props.savedGame.players[props.user.user.id] === "host" ? (
@@ -206,8 +210,8 @@ export default function GameTools(props: Props) {
                         value={playerId}
                         title={
                           props.savedGame.entities[playerId]
-                            ? "Place this piece"
-                            : "Select this piece"
+                            ? "Place this player's piece"
+                            : "Select this player's piece"
                         }
                         onClick={handlePlacePlayer}
                         className={`btn ${

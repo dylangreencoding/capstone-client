@@ -2,7 +2,7 @@
 export const blankMap : any = {
   id: "",
   maker: "",
-  name: "please choose a map",
+  name: "blank",
 
   x: 0,
   y: 0,

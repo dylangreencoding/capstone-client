@@ -7,6 +7,7 @@ export default function ValidateEmailContainer() {
   const [email, setEmail] = useState<string>("");
   const [sendCount, setSendCount] = useState<number>(0);
   const [sendAgainIn, setSendAgainIn] = useState<number>(0);
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     if (sendAgainIn > 0) {
@@ -42,9 +43,11 @@ export default function ValidateEmailContainer() {
           onSubmit={async (e) => {
             e.preventDefault();
             if (sendAgainIn === 0) {
+              setLoading(true);
               await resendValidationCode(email);
               setSendCount(() => sendCount + 1);
               setSendAgainIn(60);
+              setLoading(false);
             }
           }}
         >
@@ -60,16 +63,21 @@ export default function ValidateEmailContainer() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
-              <button
-                type="submit"
-                className={
-                  sendAgainIn > 0
-                    ? "auth-button resend-code-btn inactive"
-                    : "auth-button resend-code-btn"
-                }
-              >
-                {`send verification code (sent ${sendCount})`}
-              </button>
+              {!loading ? (
+                <button
+                  type="submit"
+                  className={
+                    sendAgainIn > 0
+                      ? "auth-button resend-code-btn inactive"
+                      : "auth-button resend-code-btn"
+                  }
+                >
+                  {`send verification code (sent ${sendCount})`}
+                </button>
+              ) : (
+                <span></span>
+              )}
+
               <span className="ml6">
                 {sendAgainIn > 0 ? `send again in ${sendAgainIn}` : ""}
               </span>
