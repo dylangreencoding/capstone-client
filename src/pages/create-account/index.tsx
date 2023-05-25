@@ -26,6 +26,7 @@ export default function CreateAccount() {
       setEnterCodeNow(true);
     } catch (error) {
       setLoading(false);
+      // setEnterCodeNow(true);
       alert("Account may already exist, try logging in");
     }
   };
@@ -93,18 +94,25 @@ export default function CreateAccount() {
             ) : (
               <span className="small">
                 There should be a verification code in your email. If there is
-                no code, the Gmail API refresh token may have expired. Feel free
-                to try again{" "}
-                <Link to={"/ValidateEmail"} replace={true} className="link">
-                  Resend email verification / reset password
+                no code, the Gmail API OAuth probably expired (expires after 7
+                days while still in "testing"). You might try to{" "}
+                <Link
+                  to={"/ValidateEmail"}
+                  replace={true}
+                  className="link"
+                  title="Resend Verification Code"
+                >
+                  resend the code
                 </Link>
+                . If you still don't get an email, let me know and I will pop a
+                fresh token in for you.
               </span>
             )
           ) : (
             <span className="small">Loading...</span>
           )}
         </form>
-        <ValidateEmail email={email} />
+        {enterCodeNow ? <ValidateEmail email={email} /> : <div></div>}
       </main>
       <footer>
         <p>

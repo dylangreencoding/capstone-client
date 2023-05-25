@@ -142,7 +142,7 @@ export default function MapTools(props: Props) {
                 <div>{displayHostGame()}</div>
               </div>
             ) : (
-              <span className="small">loading...</span>
+              <span className="small">Loading...</span>
             )}
           </div>
         </form>

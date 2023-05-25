@@ -35,9 +35,6 @@ export default function ValidateEmailContainer() {
           You can also use this form to reset your password and log in to your
           account.
         </p>
-        <p>
-          You will be asked to retrieve the verification code from your email.
-        </p>
         <form
           className="auth-form"
           onSubmit={async (e) => {
@@ -64,26 +61,38 @@ export default function ValidateEmailContainer() {
                 onChange={(e) => setEmail(e.target.value)}
               />
               {!loading ? (
-                <button
-                  type="submit"
-                  className={
-                    sendAgainIn > 0
-                      ? "auth-button resend-code-btn inactive"
-                      : "auth-button resend-code-btn"
-                  }
-                >
-                  {`send verification code (sent ${sendCount})`}
-                </button>
+                <span>
+                  <button
+                    type="submit"
+                    className={
+                      sendAgainIn > 0
+                        ? "auth-button resend-code-btn inactive"
+                        : "auth-button resend-code-btn"
+                    }
+                  >
+                    {`send code ${sendCount > 0 ? `(sent ${sendCount})` : ``}`}
+                  </button>
+                  <span className="ml6">
+                    {sendAgainIn > 0 ? `send again in ${sendAgainIn}` : ""}
+                  </span>
+                </span>
               ) : (
-                <span></span>
+                <span className="small ml10"> Sending...</span>
               )}
-
-              <span className="ml6">
-                {sendAgainIn > 0 ? `send again in ${sendAgainIn}` : ""}
-              </span>
             </div>
           </label>
+          {sendCount > 0 ? (
+            <div className="small">
+              There should be a verification code in your email. If there is no
+              code, the Gmail API OAuth probably expired (expires after 7 days
+              while still in "testing"). Maybe try again. If you still don't get
+              an email, let me know and I will pop a fresh token in for you.
+            </div>
+          ) : (
+            <div></div>
+          )}
         </form>
+
         <ValidateEmail email={email} />
       </main>
       <footer>

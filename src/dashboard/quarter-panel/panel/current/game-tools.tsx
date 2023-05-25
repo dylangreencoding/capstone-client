@@ -295,7 +295,7 @@ export default function GameTools(props: Props) {
         {!loading ? (
           displaySendGame()
         ) : (
-          <span className="small">Loading...</span>
+          <span className="small">Sending...</span>
         )}
       </form>
     </div>

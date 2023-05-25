@@ -24,7 +24,7 @@ export const blankMap : any = {
   },
   tool: "none",
 
-  width: 20,
+  width: 30,
   height: 20,
 
   lines: [],
