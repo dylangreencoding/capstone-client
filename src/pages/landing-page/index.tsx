@@ -28,7 +28,7 @@ export default function LandingPage() {
           </Link>
         </p>
 
-        <ul>
+        <ul className="mb24">
           <li>
             The frontend uses{" "}
             <a className="a-bold" href="https://react.dev/" target="_blank">
@@ -113,6 +113,14 @@ export default function LandingPage() {
             line-intersection algorithm provides rudimentary collision
             detection.
           </li>
+        </ul>
+        <ul className="mb24">
+          <li>Recently optimizing grid, ui/ux</li>
+          <li>
+            Currently improving error handling, ensuring all error messages are
+            passed from back end to front end successfully
+          </li>
+          <li>I could yap for days about my development process</li>
         </ul>
       </main>
       <footer>

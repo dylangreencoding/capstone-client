@@ -104,8 +104,8 @@ export default function CreateAccount() {
                 >
                   resend the code
                 </Link>
-                . If you still don't get an email, let me know and I will pop a
-                fresh token in for you.
+                . If you still don't get an email, let me know and I will pop in
+                a fresh token for you.
               </span>
             )
           ) : (

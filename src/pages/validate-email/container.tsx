@@ -85,8 +85,9 @@ export default function ValidateEmailContainer() {
             <div className="small">
               There should be a verification code in your email. If there is no
               code, the Gmail API OAuth probably expired (expires after 7 days
-              while still in "testing"). Maybe try again. If you still don't get
-              an email, let me know and I will pop a fresh token in for you.
+              while still in "testing"). Make sure your email is spelled
+              correctly. If you still don't get an email, let me know and I will
+              pop in a fresh token for you.
             </div>
           ) : (
             <div></div>
