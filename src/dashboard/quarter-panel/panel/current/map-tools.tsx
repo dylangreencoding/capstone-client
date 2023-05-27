@@ -99,6 +99,9 @@ export default function MapTools(props: Props) {
   };
 
   const displayHostGame = () => {
+    if (props.savedMap.maker === "") {
+      return <span></span>;
+    }
     if (props.user.games.length < 2) {
       return (
         <button
