@@ -76,6 +76,13 @@ export default function MapTools(props: Props) {
   };
 
   const displaySaveMap = () => {
+    if (props.savedMap.maker === "") {
+      return (
+        <span className="small">
+          - this is a dead map, create a new map in order to save -
+        </span>
+      );
+    }
     if (
       JSON.stringify(props.savedMap.entities) !== entitiesBeforeChanges ||
       JSON.stringify(props.savedMap.lines) !== linesBeforeChanges ||
