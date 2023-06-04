@@ -48,8 +48,8 @@ export default function LandingPage() {
             app verification process
           </a>{" "}
           yet, so the token used to access the Gmail API is revoked after seven
-          days. If run into any trouble during account creation, please let me
-          know, and I will pop in a fresh token for you.
+          days. If you run into any trouble during account creation, please let
+          me know, and I will pop in a fresh token for you.
         </p>
         <ul className="mb24">
           <li>
@@ -138,8 +138,8 @@ export default function LandingPage() {
           </li>
         </ul>
         <p>
-          I could talk for days about the development process. There is a lot
-          more to come!
+          I could talk for days about the development process. It's just
+          beginning!
         </p>
       </main>
       <footer>
