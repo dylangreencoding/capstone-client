@@ -13,7 +13,9 @@ export async function validateEmail (codeData: any) {
   });
 
   if (!response.ok) {
-    throw new Error(`client validate-email failed, ${JSON.stringify(data)}`)
+    const responseJson = await response.json();
+    console.log(responseJson, response.status);
+    return await responseJson;
   }
   
   return await response.json()

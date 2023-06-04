@@ -36,42 +36,61 @@ export default function MapTools(props: Props) {
 
   const handleSaveMap = async (e: any) => {
     e.preventDefault();
+    if (!props.accessToken) {
+      alert("You are not logged in.");
+      return;
+    }
+    
     setLoading(true);
-    const currentMap = props.savedMap;
-    currentMap.currentMap = {};
-    currentMap.tool = "none";
+    try {
+      const currentMap = props.savedMap;
+      currentMap.currentMap = {};
+      currentMap.tool = "none";
 
-    const route = "map/save";
-    await userRoute(route, props.accessToken, currentMap);
-    await props.getUserData();
-    props.setSavedMap(currentMap);
-    setEntitiesBeforeChanges(JSON.stringify(currentMap.entities));
-    setLinesBeforeChanges(JSON.stringify(currentMap.lines));
-    setNameBeforeChanges(JSON.stringify(props.savedMap.name));
+      const route = "map/save";
+      await userRoute(route, props.accessToken, currentMap);
+      await props.getUserData();
+      props.setSavedMap(currentMap);
+      setEntitiesBeforeChanges(JSON.stringify(currentMap.entities));
+      setLinesBeforeChanges(JSON.stringify(currentMap.lines));
+      setNameBeforeChanges(JSON.stringify(props.savedMap.name));
+    } catch (error) {
+      alert(error);
+    }
+
     setLoading(false);
   };
 
   const handleHostGame = async (e: any) => {
     e.preventDefault();
+    if (!props.accessToken) {
+      alert("You are not logged in.");
+      return;
+    }
+
     setLoading(true);
-    const gameMap = props.savedMap;
-    gameMap.id = "";
-    gameMap.messages = [];
-    gameMap.players = {};
-    gameMap.players[props.user.user.id] = "host";
-    gameMap.currentMap = {};
-    gameMap.selected = {};
-    gameMap.tool = "none";
+    try {
+      const gameMap = props.savedMap;
+      gameMap.id = "";
+      gameMap.messages = [];
+      gameMap.players = {};
+      gameMap.players[props.user.user.id] = "host";
+      gameMap.currentMap = {};
+      gameMap.selected = {};
+      gameMap.tool = "none";
 
-    const route = "game/save";
-    const response = await userRoute(route, props.accessToken, gameMap);
-    await props.getUserData();
-    const currentGame = response.game;
-    props.setSavedGame(currentGame);
+      const route = "game/save";
+      const response = await userRoute(route, props.accessToken, gameMap);
+      await props.getUserData();
+      const currentGame = response.game;
+      props.setSavedGame(currentGame);
 
-    props.setCurrent("game");
-    props.setTab("current");
+      props.setCurrent("game");
+      props.setTab("current");
 
+    } catch (error) {
+      alert(error);
+    }
     setLoading(false);
   };
 

@@ -21,9 +21,14 @@ interface Props {
 export default function MapHeader(props: Props) {
   // const [name, setName] = useState<string>("");
   const [confirmAction, setConfirmAction] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleConfirmAction = async (e: any) => {
     e.preventDefault();
+    if (!props.accessToken) {
+      alert("You are not logged in.");
+      return;
+    }
     const currentMap = props.map_;
     if (confirmAction === "rename map") {
       if (props.name !== currentMap.name) {
@@ -33,31 +38,37 @@ export default function MapHeader(props: Props) {
         setConfirmAction("");
       }
     } else if (confirmAction === "delete map") {
-      if (props.current === "map") {
-        const route = "map/delete";
-        await userRoute(route, props.accessToken, props.map_);
+      setLoading(true);
+      try {
+        if (props.current === "map") {
+          const route = "map/delete";
+          await userRoute(route, props.accessToken, props.map_);
 
-        props.setMap_(blankMap);
-        props.setTab("options");
-      } else if (props.current === "game") {
-        if (
-          props.map_.players[props.user.user.id] === "host" &&
-          Object.keys(props.map_.players).length > 1
-        ) {
-          alert("To delete a game, you must first remove all players");
-          return;
+          props.setMap_(blankMap);
+          props.setTab("options");
+        } else if (props.current === "game") {
+          if (
+            props.map_.players[props.user.user.id] === "host" &&
+            Object.keys(props.map_.players).length > 1
+          ) {
+            alert("To delete a game, you must first remove all players");
+            return;
+          }
+          let game = props.map_;
+          const route = "game/delete";
+          const response = await userRoute(route, props.accessToken, game);
+          game = response.game[0];
+          props.socket.emit("send_game", { game });
+
+          // so you cannot view a game you just left/deleted
+          props.setMap_(blankMap);
+          props.setTab("options");
+          props.setCurrent("map");
         }
-        let game = props.map_;
-        const route = "game/delete";
-        const response = await userRoute(route, props.accessToken, game);
-        game = response.game[0];
-        props.socket.emit("send_game", { game });
-
-        // so you cannot view a game you just left/deleted
-        props.setMap_(blankMap);
-        props.setTab("options");
-        props.setCurrent("map");
+      } catch (error) {
+        alert(error);
       }
+      setLoading(false);
     }
   };
 
@@ -210,5 +221,9 @@ export default function MapHeader(props: Props) {
     }
   };
 
-  return <div className="mb24 tool-box">{displayMapHeader()}</div>;
+  return (
+    <div className="mb24 tool-box">
+      {!loading ? displayMapHeader() : <span />}
+    </div>
+  );
 }

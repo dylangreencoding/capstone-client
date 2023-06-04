@@ -59,9 +59,16 @@ export default function ValidateEmailContainer() {
             e.preventDefault();
             if (sendAgainIn === 0) {
               setLoading(true);
-              await resendValidationCode(email);
-              setSendCount(() => sendCount + 1);
-              setSendAgainIn(60);
+              try {
+                const response = await resendValidationCode(email);
+                alert(response.message);
+                if (response.type === "200 OK") {
+                  setSendCount(() => sendCount + 1);
+                  setSendAgainIn(20);
+                }
+              } catch (error) {
+                alert(error);
+              }
               setLoading(false);
             }
           }}
@@ -99,17 +106,20 @@ export default function ValidateEmailContainer() {
               )}
             </div>
           </label>
-          {sendCount > 0 ? (
-            <div className="small">
-              There should be a verification code in your email. If there is no
-              code, the Gmail API OAuth probably expired (expires after 7 days
-              while still in "testing"). Make sure your email is spelled
-              correctly. If you still don't get an email, let me know and I will
-              pop in a fresh token for you.
-            </div>
-          ) : (
-            <div></div>
-          )}
+          <div className="small">
+            If the verification email fails to send, it is probably because the
+            refresh token used to access the Gmail API was revoked (only lasts 7
+            days for{" "}
+            <a
+              className="a-bold"
+              style={{ fontSize: "1.2rem" }}
+              href="https://support.google.com/cloud/answer/7454865?hl=en"
+              target="_blank"
+            >
+              unverified apps
+            </a>
+            ). Let me know and I will pop in a fresh token for you.
+          </div>
         </form>
 
         <ValidateEmail email={email} />

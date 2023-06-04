@@ -18,6 +18,7 @@ export async function userRoute (route: string, accessToken: string, data_: any 
   //// 'game/join'
   //// 'game/remove-player'
 
+
   let data;
   route === 'game/remove-player' ?
     data = JSON.stringify({game: data_, playerId: playerId}) :
@@ -58,7 +59,9 @@ export async function userRoute (route: string, accessToken: string, data_: any 
   }
 
   if (!response.ok) {
-    throw new Error(`client userRoute "${route}" failed, ${accessToken}`)
+    const responseJson = await response.json();
+    console.log(responseJson, response.status);
+    return await responseJson;
   }
   
   return await response.json()

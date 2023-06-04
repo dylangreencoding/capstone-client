@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 //
 import { createAccount } from "../../expressAPI/create-account";
 import ValidateEmail from "../validate-email";
@@ -22,13 +22,13 @@ export default function CreateAccount() {
     try {
       const response = await createAccount(data);
       alert(response.message);
-      setLoading(false);
-      setEnterCodeNow(true);
+      if (response.type === "200 OK" || response.type === "502 Bad Gateway") {
+        setEnterCodeNow(true);
+      }
     } catch (error) {
-      setLoading(false);
-      // setEnterCodeNow(true);
-      alert("Account may already exist, try logging in");
+      alert(error);
     }
+    setLoading(false);
   };
 
   return (
@@ -111,9 +111,18 @@ export default function CreateAccount() {
               </button>
             ) : (
               <span className="small">
-                There should be a verification code in your email. If there is
-                no code, the Gmail API OAuth probably expired (expires after 7
-                days while still in "testing"). You might try to{" "}
+                If the verification email failed to send, it is probably because
+                the refresh token used to access the Gmail API was revoked (only
+                lasts 7 days for{" "}
+                <a
+                  className="a-bold"
+                  style={{ fontSize: "1.2rem" }}
+                  href="https://support.google.com/cloud/answer/7454865?hl=en"
+                  target="_blank"
+                >
+                  unverified apps
+                </a>
+                ). You might try to{" "}
                 <Link
                   to={"/ValidateEmail"}
                   replace={true}

@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 //
 import { logOut } from "../../../../expressAPI/log-out";
 import { userRoute } from "../../../../expressAPI/user-route";
@@ -27,14 +27,25 @@ export default function Options(props: Props) {
   // This is the initial data fetch at login
   // It is here so that when a player is removed from a game,
   // their list of displayed games is up to date
+  // TODO: improve this; too many unneccessary requests for data
+  // It will involve adding a socket event listener here
   useEffect(() => {
     props.getUserData();
   }, []);
+
+  const [loading, setLoading] = useState<boolean>(false);
 
   // logout button
   const navigate = useNavigate();
   const handleLogout = async (e: any) => {
     e.preventDefault();
+    setLoading(true);
+
+    if (!props.accessToken) {
+      alert("You were not logged in, but here you go.");
+      navigate("/", { replace: true });
+      return;
+    }
     try {
       const response = await logOut();
       sessionStorage.removeItem("accessToken");
@@ -43,15 +54,28 @@ export default function Options(props: Props) {
     } catch (error) {
       alert(error);
     }
+    setLoading(false);
   };
 
   // create blank map in database
   const handleNewMap = async (e: any) => {
     e.preventDefault();
-    blankMap.maker = props.user.user.id;
-    const route = "map/save";
-    await userRoute(route, props.accessToken, blankMap);
-    await props.getUserData();
+    setLoading(true);
+
+    if (!props.accessToken) {
+      alert("You are not logged in.");
+      return;
+    }
+
+    try {
+      blankMap.maker = props.user.user.id;
+      const route = "map/save";
+      await userRoute(route, props.accessToken, blankMap);
+      await props.getUserData();
+    } catch (error) {
+      alert(error);
+    }
+    setLoading(false);
   };
 
   const handleChooseMap = (e: any) => {
@@ -71,11 +95,24 @@ export default function Options(props: Props) {
 
   const handleNewChar = async (e: any) => {
     e.preventDefault();
-    blankChar.maker = props.user.user.id;
-    blankChar.name = "Elvis";
-    const route = "char/save";
-    await userRoute(route, props.accessToken, blankChar);
-    await props.getUserData();
+
+    setLoading(true);
+
+    if (!props.accessToken) {
+      alert("You are not logged in.");
+      return;
+    }
+
+    try {
+      blankChar.maker = props.user.user.id;
+      blankChar.name = "Elvis";
+      const route = "char/save";
+      await userRoute(route, props.accessToken, blankChar);
+      await props.getUserData();
+    } catch (error) {
+      alert(error);
+    }
+    setLoading(false);
   };
 
   const handleChooseChar = (e: any) => {
@@ -97,14 +134,18 @@ export default function Options(props: Props) {
     <div className="options">
       <div className="flex-space-between mb36">
         <h3>{props.user.user.name}</h3>
-        <button type="button" className="btn" onClick={handleLogout}>
-          log out
-        </button>
+        {!loading ? (
+          <button type="button" className="btn" onClick={handleLogout}>
+            log out
+          </button>
+        ) : (
+          <span>...</span>
+        )}
       </div>
       <div className="mb36">
         <div className={`flex-with-gap mb12`}>
           <h4
-          // className=""
+          // className="offline"
           // onClick={() => {
           //   props.setCurrent("map");
           //   props.setTab("current");
@@ -113,24 +154,28 @@ export default function Options(props: Props) {
             maps{" "}
           </h4>
           {props.user.maps.length < 2 ? (
-            <button
-              type="button"
-              className="svg-btn edit"
-              onClick={handleNewMap}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-                className="w-5 h-5 svg-large"
+            !loading ? (
+              <button
+                type="button"
+                className="svg-btn edit"
+                onClick={handleNewMap}
               >
-                <path
-                  fillRule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-11.25a.75.75 0 00-1.5 0v2.5h-2.5a.75.75 0 000 1.5h2.5v2.5a.75.75 0 001.5 0v-2.5h2.5a.75.75 0 000-1.5h-2.5v-2.5z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </button>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  className="w-5 h-5 svg-large"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-11.25a.75.75 0 00-1.5 0v2.5h-2.5a.75.75 0 000 1.5h2.5v2.5a.75.75 0 001.5 0v-2.5h2.5a.75.75 0 000-1.5h-2.5v-2.5z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </button>
+            ) : (
+              <span />
+            )
           ) : (
             <span className="small">full</span>
           )}
@@ -165,24 +210,28 @@ export default function Options(props: Props) {
             characters{" "}
           </h4>
           {props.user.chars.length < 1 ? (
-            <button
-              type="button"
-              className="svg-btn edit"
-              onClick={handleNewChar}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-                className="w-5 h-5 svg-large"
+            !loading ? (
+              <button
+                type="button"
+                className="svg-btn edit"
+                onClick={handleNewChar}
               >
-                <path
-                  fillRule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-11.25a.75.75 0 00-1.5 0v2.5h-2.5a.75.75 0 000 1.5h2.5v2.5a.75.75 0 001.5 0v-2.5h2.5a.75.75 0 000-1.5h-2.5v-2.5z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </button>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  className="w-5 h-5 svg-large"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-11.25a.75.75 0 00-1.5 0v2.5h-2.5a.75.75 0 000 1.5h2.5v2.5a.75.75 0 001.5 0v-2.5h2.5a.75.75 0 000-1.5h-2.5v-2.5z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </button>
+            ) : (
+              <span />
+            )
           ) : (
             <span className="small">full</span>
           )}

@@ -26,6 +26,10 @@ export default function GameTools(props: Props) {
   const [loading, setLoading] = useState<boolean>(false);
   const [name, setName] = useState<string>("");
 
+  if (!props.savedGame) {
+    props.setTab("options");
+  }
+
   // gameRoomId and userEmail component scoped variables, based on state
   // for use in structuring syntax, used throughout for consistency
   const gameroomId = props.savedGame.id;
@@ -62,43 +66,56 @@ export default function GameTools(props: Props) {
   const handleSendGame = async (e: any) => {
     e.preventDefault();
     setLoading(true);
-    const currentGameMap = props.savedGame;
-    currentGameMap.currentMap = {};
-    currentGameMap.selected = {};
-    currentGameMap.tool = "none";
+    try {
+      const currentGameMap = props.savedGame;
+      currentGameMap.currentMap = {};
+      currentGameMap.selected = {};
+      currentGameMap.tool = "none";
 
-    if (message.length > 0) {
-      currentGameMap.messages.push(`${props.user.user.name}: ${message}`);
+      if (message.length > 0) {
+        currentGameMap.messages.push(`${props.user.user.name}: ${message}`);
+      }
+      setMessage("");
+      console.log("GAMEMAP", currentGameMap);
+      const route = "game/save";
+      const response = await userRoute(
+        route,
+        props.accessToken,
+        currentGameMap
+      );
+      await props.getUserData();
+      props.setSavedGame(response.game);
+      const game = response.game;
+
+      props.socket.emit("send_game", { game });
+    } catch (error) {
+      alert(error);
     }
-    setMessage("");
-    console.log("GAMEMAP", currentGameMap);
-    const route = "game/save";
-    const response = await userRoute(route, props.accessToken, currentGameMap);
-    await props.getUserData();
-    props.setSavedGame(response.game);
-    const game = response.game;
-
-    props.socket.emit("send_game", { game });
     setLoading(false);
   };
 
   const handleRemovePlayer = async (e: any) => {
     e.preventDefault();
+
     setLoading(true);
-    const playerId = e.target.value;
-    // removes player from game,
-    // effectively as if the player had left
-    const route = "game/remove-player";
-    const response = await userRoute(
-      route,
-      props.accessToken,
-      props.savedGame,
-      playerId
-    );
-    props.setSavedGame(response.game);
-    const game = response.game;
-    props.socket.emit("send_game", { game });
-    await props.getUserData();
+    try {
+      const playerId = e.target.value;
+      // removes player from game,
+      // effectively as if the player had left
+      const route = "game/remove-player";
+      const response = await userRoute(
+        route,
+        props.accessToken,
+        props.savedGame,
+        playerId
+      );
+      props.setSavedGame(response.game);
+      const game = response.game;
+      props.socket.emit("send_game", { game });
+      await props.getUserData();
+    } catch (error) {
+      alert(error);
+    }
     setLoading(false);
   };
 

@@ -13,7 +13,9 @@ export async function logIn (data: any = {}) {
   });
 
   if (!response.ok) {
-    throw new Error('capstone-client-login failed')
+    const responseJson = await response.json();
+    console.log(responseJson, response.status);
+    return await responseJson;
   }
 
   return await response.json()

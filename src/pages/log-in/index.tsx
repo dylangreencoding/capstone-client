@@ -19,17 +19,18 @@ export default function LogIn() {
     try {
       const response = await logIn(data);
       console.log(response);
-      sessionStorage.setItem(
-        "accessToken",
-        JSON.stringify(response.accessToken)
-      );
-      setLoading(false);
       alert(response.message);
-      navigate("/capstone_user_account", { replace: true });
+      if (response.type === "200 OK") {
+        sessionStorage.setItem(
+          "accessToken",
+          JSON.stringify(response.accessToken)
+        );
+        navigate("/capstone_user_account", { replace: true });
+      }
     } catch (error) {
-      setLoading(false);
       alert(error);
     }
+    setLoading(false);
   };
 
   return (

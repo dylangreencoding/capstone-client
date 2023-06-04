@@ -13,8 +13,10 @@ export async function resendValidationCode (email: string) {
   });
 
   if (!response.ok) {
-    throw new Error(`client resend-validation-email failed, ${JSON.stringify(data)}`)
+    const responseJson = await response.json();
+    console.log(responseJson, response.status);
+    return await responseJson;
   }
   
-  return await response.json()
+  return await response.json();
 }

@@ -18,6 +18,7 @@ export default function CharSheet(props: Props) {
   const handleSubmitChar = async (e: any) => {
     e.preventDefault();
     setLoading(true);
+    try {
     let currentChar = props.savedChar;
     currentChar.name = charName;
     currentChar.level = charLevel;
@@ -28,6 +29,9 @@ export default function CharSheet(props: Props) {
     await userRoute(route, props.accessToken, currentChar);
 
     await props.getUserData();
+    } catch (error) {
+      alert(error)
+    }
     setLoading(false);
   };
 

@@ -23,7 +23,7 @@ export default function Tabs(props: Props) {
     } else if (props.current === "char") {
       return props.savedChar.name;
     } else if (props.current === "game") {
-      return props.savedGame.name;
+      return props.savedGame ? props.savedGame.name : "";
     }
   };
 

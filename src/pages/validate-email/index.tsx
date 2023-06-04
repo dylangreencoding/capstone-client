@@ -25,23 +25,30 @@ export default function ValidateEmail(props: Props) {
       email: props.email,
       password: password,
     };
-
     try {
-      await validateEmail(codeData);
+      const response1 = await validateEmail(codeData);
+      if (response1.type !== "200 OK") {
+        alert(response1.message);
+        setLoading(false);
+        return;
+      }
 
       const response = await logIn(data);
-      console.log(response);
-      sessionStorage.setItem(
-        "accessToken",
-        JSON.stringify(response.accessToken)
-      );
-      setLoading(false);
-      alert(response.message);
-      navigate("/capstone_user_account", { replace: true });
+      console.log(response.type);
+      if (response.type === "200 OK") {
+        sessionStorage.setItem(
+          "accessToken",
+          JSON.stringify(response.accessToken)
+        );
+        alert(response.message);
+        navigate("/capstone_user_account", { replace: true });
+      } else {
+        alert(response.message);
+      }
     } catch (error) {
-      setLoading(false);
       alert(error);
     }
+    setLoading(false);
   };
 
   return (
