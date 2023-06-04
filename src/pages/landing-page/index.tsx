@@ -138,8 +138,10 @@ export default function LandingPage() {
           </li>
         </ul>
         <p>
-          I could talk for days about the development process. It's just
-          beginning!
+          I could talk for days about the development process. This is meant to
+          be open-source, in the traditional spirit of tabletop roleplaying
+          games. I'm currently working on modularizing the code, to make it more
+          accessible to multi-person development.
         </p>
       </main>
       <footer>
