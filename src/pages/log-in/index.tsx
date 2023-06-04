@@ -60,6 +60,7 @@ export default function LogIn() {
       </header>
 
       <main>
+        <p>If you already have an account.</p>
         <form className="auth-form" onSubmit={handleLogin}>
           <label className="auth-label">
             Email
