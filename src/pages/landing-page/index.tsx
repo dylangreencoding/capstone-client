@@ -9,32 +9,55 @@ export default function LandingPage() {
       <main>
         <h2>Welcome</h2>
         <p>
-          This is prototype demo for a game platform I'm building. It is
-          imagined as virtual interface for tabletop roleplaying.
+          This is prototype demonstration for a tabletop gaming platform. I used
+          this as my final project for Coding Temple's{" "}
+          <a
+            href="https://www.codingtemple.com/software-engineering/"
+            className="a-bold"
+            target="_blank"
+          >
+            software engineering program
+          </a>
+          .
         </p>
         <p>
           {" "}
           It is still in development, but it can already do some pretty cool
           stuff. Hope you like it!
         </p>
-        <p>
-          <Link to={"/Login"} replace={true} className="link">
-            Log In
-          </Link>
+        <div>
+          <p>
+            <Link to={"/Login"} replace={true} className="link">
+              Log In &rarr;
+            </Link>
+          </p>
+          <p>
+            <Link to={"/CreateAccount"} replace={true} className="link">
+              Create Account
+            </Link>
+          </p>
+        </div>
+        <p style={{ fontSize: "1.2rem" }}>
+          This app has not been through Google's{" "}
+          <a
+            className="a-bold"
+            style={{ fontSize: "1.2rem" }}
+            href="https://support.google.com/cloud/answer/7454865?hl=en"
+            target="_blank"
+          >
+            app verification process
+          </a>{" "}
+          yet, so the token used to access the Gmail API is revoked after seven
+          days. If run into any trouble during account creation, please let me
+          know, and I will pop in a fresh token for you.
         </p>
-        <p>
-          <Link to={"/CreateAccount"} replace={true} className="link">
-            Create Account
-          </Link>
-        </p>
-
         <ul className="mb24">
           <li>
-            The frontend uses{" "}
+            UI rendered with{" "}
             <a className="a-bold" href="https://react.dev/" target="_blank">
               React
             </a>
-            , and is written in{" "}
+            , and written in{" "}
             <a
               className="a-bold"
               href="https://www.typescriptlang.org/"
@@ -45,23 +68,15 @@ export default function LandingPage() {
             .
           </li>
           <li>
-            The backend uses{" "}
-            <a
-              className="a-bold"
-              href="https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs"
-              target="_blank"
-            >
+            API built with{" "}
+            <a className="a-bold" href="https://expressjs.com" target="_blank">
               Express
+            </a>{" "}
+            {"("}
+            <a className="a-bold" href="https://nodejs.org/en" target="_blank">
+              Node.js
             </a>
-            , and is written in{" "}
-            <a
-              className="a-bold"
-              href="https://en.wikipedia.org/wiki/ECMAScript"
-              target="_blank"
-            >
-              ES6
-            </a>
-            .
+            {")"}.
           </li>
           <li>
             <a
@@ -71,7 +86,15 @@ export default function LandingPage() {
             >
               HarperDB
             </a>{" "}
-            for the database.
+            for the database.{" "}
+            <a
+              className="a-bold"
+              href="https://www.harperdb.io/post/hern-stack-comin-in-hot"
+              target="_blank"
+            >
+              HERN
+            </a>{" "}
+            stack.
           </li>
           <li>
             <a className="a-bold" href="https://socket.io/" target="_blank">
@@ -114,14 +137,10 @@ export default function LandingPage() {
             detection.
           </li>
         </ul>
-        <ul className="mb24">
-          <li>Recently optimizing grid, ui/ux</li>
-          <li>
-            Currently improving error handling, ensuring all error messages are
-            passed from back end to front end successfully
-          </li>
-          <li>I could yap for days about my development process</li>
-        </ul>
+        <p>
+          I could talk for days about the development process. There is a lot
+          more to come!
+        </p>
       </main>
       <footer>
         <p>

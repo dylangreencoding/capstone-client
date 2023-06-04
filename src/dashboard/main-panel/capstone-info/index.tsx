@@ -6,7 +6,7 @@ export default function CapstoneInfo() {
         <p>Below are some brief usage guidlines, please experiment.</p>
         <ol>
           <li>
-            Create a new map,{" "}
+            Add a new map,{" "}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 20 20"
@@ -25,7 +25,7 @@ export default function CapstoneInfo() {
         </ol>
         <ol>
           <li>
-            Create a new character,{" "}
+            Add a new character,{" "}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 20 20"

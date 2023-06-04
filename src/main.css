@@ -92,10 +92,11 @@ body {
 header {
   margin-bottom: 6rem;
   padding-top: 2.4rem;
+  letter-spacing: 0.3rem;
   
   display: flex;
-  justify-content: space-between;
   align-items: baseline;
+  gap: 1rem;
 }
 
 footer {
