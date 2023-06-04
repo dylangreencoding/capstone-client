@@ -49,7 +49,13 @@ export default function LandingPage() {
           </a>{" "}
           yet, so the token used to access the Gmail API is revoked after seven
           days. If you run into any trouble during account creation, please let
-          me know, and I will pop in a fresh token for you.
+          me know, and I will pop in a fresh token for you. In the meantime,
+          here is the{" "}
+          <Link to={"/capstone-user-account"} replace={true} className="link">
+            dashboard
+          </Link>
+          . Click where it says 'blank', in the bottom right corner of the
+          window.
         </p>
         <ul className="mb24">
           <li>
