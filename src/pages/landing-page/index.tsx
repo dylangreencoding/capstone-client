@@ -23,7 +23,7 @@ export default function LandingPage() {
         <p>
           {" "}
           It is still in development, but it can already do some pretty cool
-          stuff. Hope you like it!
+          stuff. Let me know what you think.
         </p>
         <div>
           <p>
