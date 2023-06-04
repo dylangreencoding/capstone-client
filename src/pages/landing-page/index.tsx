@@ -51,7 +51,7 @@ export default function LandingPage() {
           days. If you run into any trouble during account creation, please let
           me know, and I will pop in a fresh token for you. In the meantime,
           here is the{" "}
-          <Link to={"/capstone-user-account"} replace={true} className="link">
+          <Link to={"/capstone_user_account"} replace={true} className="link">
             dashboard
           </Link>
           . Click where it says 'blank', in the bottom right corner of the
