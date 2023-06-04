@@ -49,7 +49,6 @@ export default function Options(props: Props) {
   const handleNewMap = async (e: any) => {
     e.preventDefault();
     blankMap.maker = props.user.user.id;
-    blankMap.name = "Wonderland";
     const route = "map/save";
     await userRoute(route, props.accessToken, blankMap);
     await props.getUserData();
