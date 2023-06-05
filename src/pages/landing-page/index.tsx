@@ -9,8 +9,8 @@ export default function LandingPage() {
       <main>
         <h2>Welcome</h2>
         <p>
-          This is prototype demonstration for a tabletop gaming platform. I used
-          this as my final project for Coding Temple's{" "}
+          This is prototype demo for a tabletop gaming platform. I used an early
+          version of this as my final project for Coding Temple's{" "}
           <a
             href="https://www.codingtemple.com/software-engineering/"
             className="a-bold"
@@ -23,7 +23,8 @@ export default function LandingPage() {
         <p>
           {" "}
           It is still in development, but it can already do some pretty cool
-          stuff. Let me know what you think.
+          stuff. Let me know what you think, or if you find any problems. And
+          thank you to everyone who has tested this thing, you know who you are.
         </p>
         <div>
           <p>
@@ -48,10 +49,15 @@ export default function LandingPage() {
             app verification process
           </a>{" "}
           yet, so the token used to access the Gmail API is revoked after seven
-          days. If you run into any trouble during account creation, please let
+          days. If you run into any problems during account creation, please let
           me know, and I will pop in a fresh token for you. In the meantime,
           here is the{" "}
-          <Link to={"/capstone_user_account"} replace={true} className="link">
+          <Link
+            to={"/capstone_user_account"}
+            replace={true}
+            className="link"
+            target="_blank"
+          >
             dashboard
           </Link>
           . Click where it says 'blank', in the bottom right corner of the
@@ -144,11 +150,18 @@ export default function LandingPage() {
           </li>
         </ul>
         <p>
-          I could talk for days about the development process. This is meant to
-          be open-source, in the traditional spirit of tabletop roleplaying
-          games. Next comes modularizing the code, to make it more accessible to
-          multi-person development.
+          I could probably talk for days about the development process. It was
+          an incredible learning experience. This is intended to be open-source,
+          in the spirit of tabletop roleplaying. Github repos coming soon.
         </p>
+        <ul>
+          <li>
+            <a>React UI</a>
+          </li>
+          <li>
+            <a>Express API</a>
+          </li>
+        </ul>
       </main>
       <footer>
         <p>
