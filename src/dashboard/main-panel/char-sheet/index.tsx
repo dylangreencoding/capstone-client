@@ -58,6 +58,7 @@ export default function CharSheet(props: Props) {
           <input
             className="text-input-large"
             type="text"
+            required
             minLength={1}
             maxLength={17}
             title="Enter character name"
@@ -73,6 +74,8 @@ export default function CharSheet(props: Props) {
           <input
             className="text-input-large"
             type="text"
+            spellCheck="false"
+            required
             minLength={1}
             maxLength={4}
             title="Enter character level"
