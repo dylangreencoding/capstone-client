@@ -127,6 +127,7 @@ export default function CharTools(props: Props) {
             className="text-input"
             required
             minLength={1}
+            maxLength={500}
             type="text"
             placeholder="221b2e95-ce8a-40d2-b0f1-96754196d657"
             title="Enter Game ID"

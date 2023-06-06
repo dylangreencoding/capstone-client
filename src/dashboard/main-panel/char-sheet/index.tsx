@@ -19,18 +19,18 @@ export default function CharSheet(props: Props) {
     e.preventDefault();
     setLoading(true);
     try {
-    let currentChar = props.savedChar;
-    currentChar.name = charName;
-    currentChar.level = charLevel;
-    currentChar.x = -100;
-    currentChar.y = -100;
+      let currentChar = props.savedChar;
+      currentChar.name = charName;
+      currentChar.level = charLevel;
+      currentChar.x = -100;
+      currentChar.y = -100;
 
-    const route = "char/save";
-    await userRoute(route, props.accessToken, currentChar);
+      const route = "char/save";
+      await userRoute(route, props.accessToken, currentChar);
 
-    await props.getUserData();
+      await props.getUserData();
     } catch (error) {
-      alert(error)
+      alert(error);
     }
     setLoading(false);
   };
@@ -58,6 +58,9 @@ export default function CharSheet(props: Props) {
           <input
             className="text-input-large"
             type="text"
+            minLength={1}
+            maxLength={17}
+            title="Enter character name"
             placeholder={charName}
             value={charName}
             onChange={(e) => {
@@ -70,6 +73,9 @@ export default function CharSheet(props: Props) {
           <input
             className="text-input-large"
             type="text"
+            minLength={1}
+            maxLength={4}
+            title="Enter character level"
             value={charLevel}
             onChange={(e) => {
               setCharLevel(
