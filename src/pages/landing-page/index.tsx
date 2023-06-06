@@ -150,9 +150,9 @@ export default function LandingPage() {
           </li>
         </ul>
         <p>
-          I could probably talk for days about the development process. It was
-          an incredible learning experience. This is intended to be open-source,
-          in the spirit of tabletop roleplaying. Github repos coming soon.
+          I could probably talk for days about the development process. It has
+          been a lot of fun. This is intended to be open-source, in the spirit
+          of tabletop roleplaying. Github repos coming soon.
         </p>
         <ul>
           <li>
