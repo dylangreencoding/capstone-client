@@ -9,8 +9,9 @@ export default function LandingPage() {
       <main>
         <h2>Welcome</h2>
         <p>
-          This is prototype demo for a tabletop gaming platform. I used an early
-          version of this as my final project for Coding Temple's{" "}
+          This is intended to be a virtual platform for tabletop roleplaying
+          games. I used an early version of this as my "capstone" project for
+          Coding Temple's{" "}
           <a
             href="https://www.codingtemple.com/software-engineering/"
             className="a-bold"
@@ -23,8 +24,8 @@ export default function LandingPage() {
         <p>
           {" "}
           It is still in development, but it can already do some pretty cool
-          stuff. Let me know what you think, or if you find any problems. And
-          thank you to everyone who has tested this thing, you know who you are.
+          stuff. Let me know what you think, or if you find any bugs. Thank you
+          to everyone who has tested this thing, you know who you are.
         </p>
         <div>
           <p>
@@ -38,31 +39,6 @@ export default function LandingPage() {
             </Link>
           </p>
         </div>
-        <p style={{ fontSize: "1.2rem" }}>
-          This app has not been through Google's{" "}
-          <a
-            className="a-bold"
-            style={{ fontSize: "1.2rem" }}
-            href="https://support.google.com/cloud/answer/7454865?hl=en"
-            target="_blank"
-          >
-            app verification process
-          </a>{" "}
-          yet, so the token used to access the Gmail API is revoked after seven
-          days. If you run into any problems during account creation, please let
-          me know, and I will pop in a fresh token for you. In the meantime,
-          here is the{" "}
-          <Link
-            to={"/capstone_user_account"}
-            replace={true}
-            className="link"
-            target="_blank"
-          >
-            dashboard
-          </Link>
-          . Click where it says 'blank', in the bottom right corner of the
-          window.
-        </p>
         <ul className="mb24">
           <li>
             UI rendered with{" "}
@@ -130,7 +106,7 @@ export default function LandingPage() {
             >
               Nodemailer
             </a>{" "}
-            for email verification and password recovery.
+            for email verification/password recovery.
           </li>
           <li>
             The gameboard is drawn using{" "}
@@ -150,26 +126,41 @@ export default function LandingPage() {
           </li>
         </ul>
         <p>
-          I could probably talk for days about the development process. It has
-          been a lot of fun. This is intended to be open-source, in the spirit
-          of tabletop roleplaying. Github repos coming soon.
+          This is intended to be open source, in the spirit of tabletop
+          roleplaying. Below are links to the github repos. Have fun, be kind.
         </p>
         <ul>
           <li>
-            <a>React UI</a>
+            <a
+              className="a-bold"
+              href="https://github.com/dylangreencoding/capstone-client"
+              target="_blank"
+            >
+              React UI
+            </a>
           </li>
           <li>
-            <a>Express API</a>
+            <a
+              className="a-bold"
+              href="https://github.com/dylangreencoding/capstone-server"
+              target="_blank"
+            >
+              Express API
+            </a>
           </li>
         </ul>
       </main>
       <footer>
         <p>
-          <Link to={"/ValidateEmail"} replace={true} className="link">
-            Resend email verification / reset password
-          </Link>
+          Copyright &copy; 2023{" "}
+          <a
+            className="dylangreen"
+            href="https://www.linkedin.com/in/dylan-green-647248274"
+            target="_blank"
+          >
+            Dylan Green
+          </a>
         </p>
-        <p>Copyright 2023 Dylan Green</p>
       </footer>
     </div>
   );

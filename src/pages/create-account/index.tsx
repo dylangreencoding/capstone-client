@@ -1,33 +1,60 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 //
 import { createAccount } from "../../expressAPI/create-account";
-import ValidateEmail from "../validate-email";
+import { logIn } from "../../expressAPI/log-in";
 
 export default function CreateAccount() {
+  const navigate = useNavigate();
+
   const [name, setName] = useState<string>("");
   const [birthYear, setBirthYear] = useState<string>("");
   const [email, setEmail] = useState<string>("");
-  const [enterCodeNow, setEnterCodeNow] = useState<boolean>(false);
+  const [password, setPassword] = useState<string>("");
+
   const [loading, setLoading] = useState<boolean>(false);
 
   const handleCreateAccount = async (e: any) => {
     e.preventDefault();
     setLoading(true);
+
     const data = {
       name: name,
       birthYear: birthYear,
       email: email,
+      password: password,
     };
+
     try {
-      const response = await createAccount(data);
-      alert(response.message);
-      if (response.type === "200 OK" || response.type === "502 Bad Gateway") {
-        setEnterCodeNow(true);
+      const response1 = await createAccount(data);
+
+      // if account creation fails, return
+      if (response1.type !== "200 OK") {
+        alert(response1.message);
+        setLoading(false);
+        return;
+      }
+
+      const response = await logIn({
+        email: data.email,
+        password: data.password,
+      });
+
+      // if login successful
+      if (response.type === "200 OK") {
+        sessionStorage.setItem(
+          "accessToken",
+          JSON.stringify(response.accessToken)
+        );
+        alert(response.message);
+        navigate("/capstone_user_account", { replace: true });
+      } else {
+        alert(response.message);
       }
     } catch (error) {
       alert(error);
     }
+
     setLoading(false);
   };
 
@@ -57,11 +84,10 @@ export default function CreateAccount() {
           </Link>
         </div>
       </header>
+
       <main>
         <h2>Create Account</h2>
-        <p>
-          You will be asked to retrieve the verification code from your email.
-        </p>
+        <p>Please fill out the form below to create an account and login.</p>
         <form className="auth-form" onSubmit={handleCreateAccount}>
           <label className="auth-label">
             Name
@@ -103,61 +129,54 @@ export default function CreateAccount() {
               onChange={(e) => setEmail(e.target.value)}
             />
           </label>
+          <label className="auth-label">
+            Password
+            <input
+              className="auth-input"
+              required
+              type="password"
+              minLength={8}
+              maxLength={20}
+              title="8 - 20 characters"
+              placeholder="!@#$%^&*"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </label>
 
           {!loading ? (
-            !enterCodeNow ? (
-              <button className="auth-button" type="submit">
-                Create Account
-              </button>
-            ) : (
-              <span className="small">
-                If the verification email failed to send, it is probably because
-                the refresh token used to access the Gmail API was revoked (only
-                lasts 7 days for{" "}
-                <a
-                  className="a-bold"
-                  style={{ fontSize: "1.2rem" }}
-                  href="https://support.google.com/cloud/answer/7454865?hl=en"
-                  target="_blank"
-                >
-                  unverified apps
-                </a>
-                ). You might try to{" "}
-                <Link
-                  to={"/ValidateEmail"}
-                  replace={true}
-                  className="link"
-                  title="Resend Verification Code"
-                >
-                  resend the code
-                </Link>
-                . If you still don't get an email, let me know and I will pop in
-                a fresh token for you.
-              </span>
-            )
+            <button className="auth-button" type="submit">
+              Create Account & Login
+            </button>
           ) : (
             <span className="small">Loading...</span>
           )}
         </form>
-        {enterCodeNow ? <ValidateEmail email={email} /> : <div></div>}
       </main>
+
       <footer>
-        <p>
-          <Link to={"/ValidateEmail"} replace={true} className="link">
-            Resend email verification / reset password
-          </Link>
-        </p>
         <p>
           <Link to={"/LogIn"} replace={true} className="link">
             Login
           </Link>
         </p>
+
         <p>
           <Link to={"/"} replace={true} className="link">
             Home
           </Link>
         </p>
-        <p>Copyright 2023 Dylan Green</p>
+
+        <p>
+          Copyright &copy; 2023{" "}
+          <a
+            className="dylangreen"
+            href="https://www.linkedin.com/in/dylan-green-647248274"
+            target="_blank"
+          >
+            Dylan Green
+          </a>
+        </p>
       </footer>
     </div>
   );

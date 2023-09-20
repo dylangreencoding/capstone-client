@@ -44,13 +44,9 @@ export default function ValidateEmailContainer() {
         </div>
       </header>
       <main>
-        <h2>Verify Email / Reset Password</h2>
+        <h2>Forgot Password?</h2>
         <p>
-          In case of some issue during account creation, use this form to resend
-          the verification code.
-        </p>
-        <p>
-          You can also use this form to reset your password and log in to your
+          You can use this form to change your password and log in to your
           account.
         </p>
         <form
@@ -130,7 +126,16 @@ export default function ValidateEmailContainer() {
             Home
           </Link>
         </p>
-        <p>Copyright 2023 Dylan Green</p>
+        <p>
+          Copyright &copy; 2023{" "}
+          <a
+            className="dylangreen"
+            href="https://www.linkedin.com/in/dylan-green-647248274"
+            target="_blank"
+          >
+            Dylan Green
+          </a>
+        </p>
       </footer>
     </div>
   );

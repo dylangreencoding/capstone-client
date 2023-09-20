@@ -27,6 +27,8 @@ export default function ValidateEmail(props: Props) {
     };
     try {
       const response1 = await validateEmail(codeData);
+
+      // if email validation fails, return
       if (response1.type !== "200 OK") {
         alert(response1.message);
         setLoading(false);
@@ -34,7 +36,7 @@ export default function ValidateEmail(props: Props) {
       }
 
       const response = await logIn(data);
-      console.log(response.type);
+      // console.log(response.type);
       if (response.type === "200 OK") {
         sessionStorage.setItem(
           "accessToken",

@@ -100,13 +100,13 @@ export default function LogIn() {
       </main>
       <footer>
         <p>
-          <Link to={"/ValidateEmail"} replace={true} className="link">
-            Resend email verification / reset password
+          <Link to={"/CreateAccount"} replace={true} className="link">
+            Create Account
           </Link>
         </p>
         <p>
-          <Link to={"/CreateAccount"} replace={true} className="link">
-            Create Account
+          <Link to={"/ValidateEmail"} replace={true} className="link">
+            Forgot password?
           </Link>
         </p>
         <p>
@@ -114,7 +114,16 @@ export default function LogIn() {
             Home
           </Link>
         </p>
-        <p>Copyright 2023 Dylan Green</p>
+        <p>
+          Copyright &copy; 2023{" "}
+          <a
+            className="dylangreen"
+            href="https://www.linkedin.com/in/dylan-green-647248274"
+            target="_blank"
+          >
+            Dylan Green
+          </a>
+        </p>
       </footer>
     </div>
   );
