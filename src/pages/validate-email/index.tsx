@@ -57,7 +57,7 @@ export default function ValidateEmail(props: Props) {
     <div>
       <form className="auth-form" onSubmit={handleValidateEmail}>
         <label className="auth-label">
-          Desired Password
+          New Password
           <input
             className="auth-input"
             required
