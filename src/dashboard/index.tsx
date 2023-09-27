@@ -70,7 +70,10 @@ export default function Dashboard(props: Props) {
             />
           </svg>
         </div>
-        <div className="text-align-center small">Please rotate your device</div>
+        <div className="text-align-center small">
+          Please use landscape view. This app is best viewed from a
+          desktop/laptop.
+        </div>
       </div>
     </div>
   );

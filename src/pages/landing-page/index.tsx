@@ -7,11 +7,9 @@ export default function LandingPage() {
         <h1>Capstone</h1>
       </header>
       <main>
-        <h2>Welcome</h2>
+        <h2>9/27/2023</h2>
         <p>
-          This is intended to be a virtual platform for tabletop roleplaying
-          games. I used an early version of this as my "capstone" project for
-          Coding Temple's{" "}
+          I used this as my "capstone" project for Coding Temple's{" "}
           <a
             href="https://www.codingtemple.com/software-engineering/"
             className="a-bold"
@@ -19,13 +17,14 @@ export default function LandingPage() {
           >
             software engineering program
           </a>
-          .
+          . It's intended to be a platform for tabletop roleplaying games.
         </p>
         <p>
           {" "}
-          It is still in development, but it can already do some pretty cool
-          stuff. Let me know what you think, or if you find any bugs. Thank you
-          to everyone who has tested this thing, you know who you are.
+          It's still in development, but it can already do some pretty cool
+          stuff. It's not optimized for mobile devices or touchscreens. You
+          might be able to get the gist from your phone, but I highly recommend
+          viewing it from a desktop/laptop.
         </p>
         <div>
           <p>
@@ -125,11 +124,8 @@ export default function LandingPage() {
             detection.
           </li>
         </ul>
-        <p>
-          This is intended to be open source, in the spirit of tabletop
-          roleplaying. Below are links to the github repos. Have fun, be kind.
-        </p>
-        <ul>
+        <p>It's open source. Below are links to the github repos.</p>
+        <ul className="mb24">
           <li>
             <a
               className="a-bold"
@@ -149,6 +145,11 @@ export default function LandingPage() {
             </a>
           </li>
         </ul>
+        <p>
+          I don't have much time to work on it at the moment but I think it has
+          the potential to be something very cool. I'll add a video giving a
+          tour of the code soon.
+        </p>
       </main>
       <footer>
         <p>

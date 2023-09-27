@@ -511,7 +511,7 @@ export default function NewCanvas(props: Props) {
     // to notify touchscreen users that canvas is not optimized for touch
     const handleTouchStart = (e: Event) => {
       alert(
-        "Not yet optimized for touchscreens. For grid functionality, use a mouse."
+        "The map grid doesn't work with touchscreens yet. You need a mouse. This app is best viewed from a laptop/desktop."
       );
     };
 
