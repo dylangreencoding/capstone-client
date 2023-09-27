@@ -76,8 +76,8 @@ export default function MapHeader(props: Props) {
     if (confirmAction === "") {
       return (
         <div className="flex-space-between">
+          <span style={{ overflow: "hidden" }}>{props.map_.name}</span>
           <div className="flex-with-gap">
-            <strong>{props.map_.name}</strong>
             <button
               type="button"
               className="svg-btn edit"
@@ -118,9 +118,6 @@ export default function MapHeader(props: Props) {
               </svg>
             </button>
           </div>
-          <div>
-            <strong className="small">{props.current.toUpperCase()}</strong>
-          </div>
         </div>
       );
     } else if (confirmAction === "rename map") {
@@ -132,8 +129,8 @@ export default function MapHeader(props: Props) {
             required
             placeholder={props.map_.name}
             minLength={1}
-            maxLength={20}
-            title="1 - 20 characters"
+            maxLength={12}
+            title="1 - 12 characters"
             value={props.name}
             onChange={(e) => props.setName(e.target.value)}
           />
@@ -222,7 +219,11 @@ export default function MapHeader(props: Props) {
   };
 
   return (
-    <div className="mb24 tool-box">
+    <div className="mb24 tool-box tool-box-border mt12">
+      <div className="tb-header">
+        <span className="tb-heading">{props.current.toUpperCase()}</span>
+      </div>
+
       {!loading ? displayMapHeader() : <span />}
     </div>
   );

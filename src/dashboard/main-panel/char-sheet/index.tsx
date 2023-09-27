@@ -60,7 +60,7 @@ export default function CharSheet(props: Props) {
             type="text"
             required
             minLength={1}
-            maxLength={17}
+            maxLength={12}
             title="Enter character name"
             placeholder={charName}
             value={charName}

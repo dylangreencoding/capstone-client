@@ -133,7 +133,7 @@ export default function Options(props: Props) {
   return (
     <div className="options">
       <div className="flex-space-between mb36">
-        <h3>{props.user.user.name}</h3>
+        <h3 style={{ overflow: "hidden" }}>{props.user.user.name}</h3>
         {!loading ? (
           <button type="button" className="btn" onClick={handleLogout}>
             log out

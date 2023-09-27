@@ -508,6 +508,13 @@ export default function NewCanvas(props: Props) {
       );
     };
 
+    // to notify touchscreen users that canvas is not optimized for touch
+    const handleTouchStart = (e: Event) => {
+      alert(
+        "Not yet optimized for touchscreens. For grid functionality, use a mouse."
+      );
+    };
+
     canvas.addEventListener("mousedown", handleMouseDown);
     canvas.addEventListener("mousemove", handleMouseMove);
     canvas.addEventListener("mouseup", handleMouseUp);
@@ -515,6 +522,8 @@ export default function NewCanvas(props: Props) {
     canvas.addEventListener("mouseenter", handleMouseEnter);
     canvas.addEventListener("mouseleave", handleMouseLeave);
     window.addEventListener("resize", handleResize);
+
+    canvas.addEventListener("touchstart", handleTouchStart);
     return () => {
       canvas.removeEventListener("mousedown", handleMouseDown);
       canvas.removeEventListener("mousemove", handleMouseMove);
@@ -523,7 +532,8 @@ export default function NewCanvas(props: Props) {
       canvas.removeEventListener("mouseenter", handleMouseEnter);
       canvas.removeEventListener("mouseleave", handleMouseLeave);
       window.removeEventListener("resize", handleResize);
-      console.log("canvas");
+
+      canvas.removeEventListener("touchstart", handleTouchStart);
     };
     // when these change the useEffect is called
   }, [props.savedMap, props.savedGame, props.current]);

@@ -40,7 +40,7 @@ export default function MapTools(props: Props) {
       alert("You are not logged in.");
       return;
     }
-    
+
     setLoading(true);
     try {
       const currentMap = props.savedMap;
@@ -87,7 +87,6 @@ export default function MapTools(props: Props) {
 
       props.setCurrent("game");
       props.setTab("current");
-
     } catch (error) {
       alert(error);
     }

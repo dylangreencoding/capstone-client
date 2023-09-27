@@ -87,9 +87,12 @@ export default function CharTools(props: Props) {
   return (
     <div>
       <div className="mb36">
-        <div className="flex-space-between">
-          <div className="flex-with-gap">
-            <h3>{props.savedChar.name}</h3>
+        <div className="mb24 tool-box tool-box-border mt12">
+          <div className="tb-header">
+            <span className="tb-heading">{props.current.toUpperCase()}</span>
+          </div>
+          <div className="flex-space-between">
+            <span style={{ overflow: "hidden" }}>{props.savedChar.name}</span>
             {!loading ? (
               <button
                 type="button"
@@ -114,11 +117,10 @@ export default function CharTools(props: Props) {
               <span />
             )}
           </div>
-          <div>
-            <strong className="small">{props.current.toUpperCase()}</strong>
+          <div style={{ overflow: "hidden" }}>
+            Level {props.savedChar.level}
           </div>
         </div>
-        <div>Level {props.savedChar.level}</div>
       </div>
       <form className="text-form" onSubmit={handleJoinGame}>
         <label className="text-label">

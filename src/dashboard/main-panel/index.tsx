@@ -48,5 +48,16 @@ export default function MainPanel(props: Props) {
     }
   };
 
-  return <div className="main-panel">{displayMainPanel()}</div>;
+  return (
+    <div
+      className="main-panel"
+      style={
+        props.tab === "options" || props.current === "char"
+          ? { overflowY: "scroll" }
+          : {}
+      }
+    >
+      {displayMainPanel()}
+    </div>
+  );
 }
