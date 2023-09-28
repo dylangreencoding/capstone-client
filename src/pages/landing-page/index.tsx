@@ -124,7 +124,7 @@ export default function LandingPage() {
             detection.
           </li>
         </ul>
-        <p>It's open source. Below are links to the github repos.</p>
+        <p>It's open source. Here are links to the github repos:</p>
         <ul className="mb24">
           <li>
             <a
