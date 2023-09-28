@@ -145,11 +145,6 @@ export default function LandingPage() {
             </a>
           </li>
         </ul>
-        <p>
-          I don't have much time to work on it at the moment but I think it has
-          the potential to be something very cool. I'll add a video giving a
-          tour of the code soon.
-        </p>
       </main>
       <footer>
         <p>
