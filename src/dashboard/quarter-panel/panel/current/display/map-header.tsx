@@ -53,6 +53,7 @@ export default function MapHeader(props: Props) {
           ) {
             alert("To delete a game, you must first remove all players");
             setLoading(false);
+            setConfirmAction("");
             return;
           }
           let game = props.map_;
