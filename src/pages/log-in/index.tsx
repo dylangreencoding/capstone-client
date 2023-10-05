@@ -118,7 +118,7 @@ export default function LogIn() {
           Copyright &copy; 2023{" "}
           <a
             className="dylangreen"
-            href="https://www.linkedin.com/in/dylan-green-647248274"
+            href="https://www.linkedin.com/in/dylan-green-coding"
             target="_blank"
           >
             Dylan Green
