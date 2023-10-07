@@ -130,7 +130,7 @@ export default function ValidateEmailContainer() {
           Copyright &copy; 2023{" "}
           <a
             className="dylangreen"
-            href="https://www.linkedin.com/in/dylan-green-coding"
+            href="https://www.linkedin.com/in/dylangreencoding"
             target="_blank"
           >
             Dylan Green
