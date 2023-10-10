@@ -6,7 +6,7 @@ https://capstone-tabletop.herokuapp.com
 
 ## A note from the developer
 
-Things I will do differently in the next version, or in my next React project:
+Things I will do differently next time, in the next version of this project or any React project:
 
 1. Design, then build. This was a massive learning experience. I designed it as I built it because I didn't know what would work well and what wouldn't. Most of what is listed below is a direct product of a combined design and build phase.
 
@@ -20,7 +20,7 @@ Things I will do differently in the next version, or in my next React project:
 
 6. Rethink the data objects (user, map, character, and game) during the design phase, with the goal of making them as concise as possible.
 
-7. Optimize data fetching. Possibly using react-router's loader functions, but need to look into this more.
+7. Optimize data fetching. Possibly use react-router's loader functions, but need to look into this more.
 
 8. Rethink games connectivity. Make it possible to invite players to games by inputting their username. Trade out socket.IO for vanilla websockets and/or harperDB custom functions / AWS lambda functions.
 
