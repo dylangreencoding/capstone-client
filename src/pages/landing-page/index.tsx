@@ -7,7 +7,29 @@ export default function LandingPage() {
         <h1>Capstone</h1>
       </header>
       <main>
-        <h2>9/27/2023</h2>
+        <h2>10/24/2023</h2>
+        <p>
+          I'm currently working on the new mobile friendly UI for this project!
+          You can check out my progress{" "}
+          <a
+            href="https://dylangreencoding.github.io/tabletop/"
+            className="a-bold"
+            target="_blank"
+          >
+            here
+          </a>
+          . The biggest change, apart from the mobile-friendliness, is the
+          matrix (array of sparse arrays) used to draw only the pieces within
+          the viewport. That and the code is much cleaner. Repo{" "}
+          <a
+            href="https://github.com/dylangreencoding/tabletop"
+            className="a-bold"
+            target="_blank"
+          >
+            here
+          </a>
+          .
+        </p>
         <p>
           I used this as my "capstone" project for Coding Temple's{" "}
           <a
